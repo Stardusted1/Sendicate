@@ -1,4 +1,4 @@
-package Controllers;
+package App.Rest;
 
 import core.users.User;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +13,7 @@ public class UserController {
     @PostMapping("/user")
     public User user(@RequestParam(
             value = "name",
-            defaultValue = "Worlder"
+            defaultValue = "Worlders"
     ) String name) {
         User user = new User(name, "login", "password");
 
@@ -43,12 +43,12 @@ public class UserController {
 
     @DeleteMapping("/user/")
     public String DeleteMethod(/*@PathVariable int id*/) {
-        return "this is delete request";
+        return "this is delete! request";
         /*TODO: implement delete method */
     }
-    @PatchMapping
+    @PatchMapping("/user")
     public String PatchMethod(/*@PathVariable int id*/) {
-        return "this is patch request";
+        return "this is patch!1 request";
         /*TODO: implement patch method */
     }
 
