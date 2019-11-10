@@ -1,4 +1,4 @@
-package App.Rest;
+package App.rest;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

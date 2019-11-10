@@ -1,4 +1,4 @@
 package core.cargo.condition;
 
-public class AccelerationCondition {
+public class AccelerationCondition extends Condition{
 }

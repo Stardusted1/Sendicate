@@ -1,4 +1,4 @@
-package App.Rest;
+package App.rest;
 
 import core.users.User;
 import org.springframework.web.bind.annotation.*;
@@ -48,7 +48,7 @@ public class UserController {
     }
     @PatchMapping("/user")
     public String PatchMethod(/*@PathVariable int id*/) {
-        return "this is patch!1 request";
+        return "this is patch!2 request";
         /*TODO: implement patch method */
     }
 
