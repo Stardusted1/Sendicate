@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Sendicate/Sendicate.iml" filepath="$PROJECT_DIR$/Sendicate/Sendicate.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Sendicate.iml" filepath="$PROJECT_DIR$/Sendicate.iml" />
     </modules>
   </component>
 </project>
