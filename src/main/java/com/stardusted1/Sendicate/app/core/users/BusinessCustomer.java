@@ -2,6 +2,7 @@ package com.stardusted1.Sendicate.app.core.users;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
+import javax.validation.constraints.Email;
 import java.util.LinkedList;
 @MappedSuperclass
 public class BusinessCustomer extends Customer {
@@ -17,7 +18,7 @@ public class BusinessCustomer extends Customer {
     @Column(name = "siteAddress")
     protected String siteAddress;
 
-
+// TODO: 14.11.2019 сделать все через ид
 
     public BusinessCustomer(String name, String login, String password) {
         super(name, login, password);
@@ -40,7 +41,6 @@ public class BusinessCustomer extends Customer {
     public LinkedList<String> getEmails() {
         return emails;
     }
-
     public void AddEmail(String email) {
         this.emails.add(email);
     }

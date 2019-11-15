@@ -1,8 +1,7 @@
 package com.stardusted1.Sendicate.app.rest;
 
-import com.stardusted1.Sendicate.app.core.users.Customer;
 import com.stardusted1.Sendicate.app.core.users.Receiver;
-import com.stardusted1.Sendicate.app.core.users.repositories.ReceiverRepository;
+import com.stardusted1.Sendicate.app.core.repositories.ReceiverRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;

@@ -3,6 +3,7 @@ package com.stardusted1.Sendicate.app.core.users;
 import com.stardusted1.Sendicate.app.core.cargo.Supply;
 import com.stardusted1.Sendicate.app.core.cargo.Transmitter;
 import com.stardusted1.Sendicate.app.core.reporting.Report;
+import com.stardusted1.Sendicate.app.core.reporting.Reportable;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -84,8 +85,9 @@ public class Administrator extends User {
 //      TODO
     }
 
-    public boolean RemoveReport(Report report){
-        return false;
+    public boolean RemoveReport(Reportable object, Report report){
+        object.DeleteReport(report);
+        return true;
 //      TODO
     }
     public boolean RegisterNewTransmitter(Transmitter transmitter){

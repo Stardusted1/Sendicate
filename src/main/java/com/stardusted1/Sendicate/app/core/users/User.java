@@ -103,10 +103,7 @@ public class User implements Reportable {
         this.password = password;
     }
 
-    @Override
-    public LinkedList<Report> GetReports() {
-        return Reports;
-    }
+
 
     @Override
     public boolean AddReport(Report report) {
