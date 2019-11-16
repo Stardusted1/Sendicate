@@ -1,5 +1,7 @@
 package com.stardusted1.Sendicate.app.core.cargo.condition;
 
+import com.stardusted1.Sendicate.app.core.cargo.Frame;
+
 public abstract class Condition {
     protected int id;
     protected float max;
@@ -33,6 +35,8 @@ public abstract class Condition {
     public int getId(){
         return this.id;
     }
+
+    public abstract boolean CheckCondition(Frame frame);
 
 
 }

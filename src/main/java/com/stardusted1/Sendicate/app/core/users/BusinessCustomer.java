@@ -18,8 +18,6 @@ public class BusinessCustomer extends Customer {
     @Column(name = "siteAddress")
     protected String siteAddress;
 
-// TODO: 14.11.2019 сделать все через ид
-
     public BusinessCustomer(String name, String login, String password) {
         super(name, login, password);
         this.description = "";

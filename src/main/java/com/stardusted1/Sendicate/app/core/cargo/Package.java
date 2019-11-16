@@ -17,12 +17,25 @@ public class Package {
     protected long id;
     protected String payload;
     protected long supplyId;
-    @Transient
     protected ArrayList<Frame> history;
     @Transient
     protected ArrayList<Transmitter> transmitters;
-    @Transient
+
     protected ArrayList<Condition> conditions;
+
+    protected PackageStatus status;
+
+    public PackageStatus getStatus() {
+        return status;
+    }
+
+    public void setStatusSpoiled() {
+        this.status = PackageStatus.SPOILED;
+        // TODO: 17.11.2019 set Supply status = spoiled
+    }
+    public void setStatusNormal() {
+        this.status = PackageStatus.NORMAL;
+    }
 
 
     public Package() {
@@ -60,6 +73,16 @@ public class Package {
         return transmitters;
     }
 
+    public boolean addTransmitter(Transmitter transmitter) {
+        return false;
+        // TODO: 17.11.2019
+    }
+
+    public boolean removeTransmitter(Transmitter transmitter) {
+        return false;
+        // TODO: 17.11.2019
+    }
+
     public void setTransmitters(ArrayList<Transmitter> transmitters) {
         this.transmitters = transmitters;
     }
@@ -67,6 +90,8 @@ public class Package {
     public ArrayList<Condition> getConditions() {
         return conditions;
     }
+
+    // TODO: 17.11.2019 add, delete condition
 
     public void setConditions(ArrayList<Condition> conditions) {
         this.conditions = conditions;

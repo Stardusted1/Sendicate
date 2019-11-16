@@ -1,8 +1,5 @@
 package com.stardusted1.Sendicate.app.core.users;
 
-
-import com.stardusted1.Sendicate.app.core.reporting.Report;
-import com.stardusted1.Sendicate.app.core.reporting.Reportable;
 import com.stardusted1.Sendicate.app.service.Variables;
 
 import javax.persistence.*;
@@ -10,7 +7,7 @@ import java.util.Date;
 import java.util.LinkedList;
 
 @MappedSuperclass
-public class User implements Reportable {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -36,6 +33,7 @@ public class User implements Reportable {
         this.dateOfRegistration = new Date();
         this.token = "";
         this.isBanned = false;
+
     }
 
     public User() {
@@ -103,25 +101,4 @@ public class User implements Reportable {
         this.password = password;
     }
 
-
-
-    @Override
-    public boolean AddReport(Report report) {
-        try {
-            Reports.add(report);
-            return true;
-        } catch (Exception E) {
-            return false;
-        }
-    }
-
-    @Override
-    public boolean DeleteReport(Report report) {
-        try {
-            return Reports.remove(report);
-        } catch (Exception E) {
-            return false;
-        }
-
-    }
 }

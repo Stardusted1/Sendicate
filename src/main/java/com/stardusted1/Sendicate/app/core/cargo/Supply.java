@@ -1,8 +1,5 @@
 package com.stardusted1.Sendicate.app.core.cargo;
 
-import com.stardusted1.Sendicate.app.core.reporting.Report;
-import com.stardusted1.Sendicate.app.core.reporting.Reportable;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,6 +19,16 @@ public class Supply{
     protected long deliverymanId;
     protected long providerId;
     protected ArrayList<Package> packages;
+    protected SupplyCondition condition;
+
+    public SupplyCondition getCondition() {
+        return condition;
+    }
+
+    // TODO: 17.11.2019 set condition partially spoiled, set condition normal 
+    public void setCondition(SupplyCondition condition) {
+        this.condition = condition;
+    }
 
     public Supply() {
     }

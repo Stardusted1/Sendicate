@@ -21,13 +21,6 @@ public class Provider extends BusinessCustomer{
 
     public Provider(String name, String login, String password) {
         super(name, login, password);
-
-        this.supplyHistory = (LinkedList<Supply>) supplyrepo.findAllByProviderIdEquals(this.id);
-        for(Supply supply: supplyHistory){
-            if(supply.getStatus().equals(SupplyStatus.DELIVERING)){
-                currentSupllies.add(supply);
-            }
-        }
     }
 
     public Supply InitiateSupply(Deliveryman deliveryman, Receiver receiver, List<Package> packages,String name){

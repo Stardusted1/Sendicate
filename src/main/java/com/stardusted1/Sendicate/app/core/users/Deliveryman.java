@@ -2,9 +2,12 @@ package com.stardusted1.Sendicate.app.core.users;
 
 
 import com.stardusted1.Sendicate.app.core.cargo.Supply;
+import com.stardusted1.Sendicate.app.core.cargo.SupplyStatus;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.util.LinkedList;
+
 //
 @Entity
 @Table(name="Deliverymans")
@@ -20,7 +23,14 @@ public class Deliveryman extends BusinessCustomer{
     }
 
     public boolean ChangeSupplyStatus(Supply supply){
-        return false;
+
+        if(supply.getStatus() == SupplyStatus.DELIVERING){
+            supply.setStatus();
+        }
 //        TODO
+    }
+
+    protected void updateSupplyHistory(){
+        this.supplyHistory = (LinkedList<Supply>) supplyRepository.findAllByDeliverymanIdEquals(this.id);
     }
 }
