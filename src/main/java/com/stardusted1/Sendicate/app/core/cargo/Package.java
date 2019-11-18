@@ -1,7 +1,8 @@
 package com.stardusted1.Sendicate.app.core.cargo;
 
 import com.stardusted1.Sendicate.app.core.cargo.condition.Condition;
-import org.springframework.data.annotation.Transient;
+import com.stardusted1.Sendicate.app.core.repositories.SupplyRepository;
+import javax.persistence.Transient;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,9 +10,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.util.ArrayList;
 import java.util.EventListener;
+import java.util.Optional;
 
 @Entity
 public class Package {
+	@Transient
+	SupplyRepository supplyRepository;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected long id;
@@ -31,6 +35,13 @@ public class Package {
 
     public void setStatusSpoiled() {
         this.status = PackageStatus.SPOILED;
+		Optional<Supply> Osupply = supplyRepository.findById(supplyId);
+		Supply supply;
+		if(Osupply.isPresent()){
+			supply = Osupply.get();
+			supply.setConditionPartiallySpoiled();
+			return;
+		}
         // TODO: 17.11.2019 set Supply status = spoiled
     }
     public void setStatusNormal() {
@@ -87,9 +98,26 @@ public class Package {
         this.transmitters = transmitters;
     }
 
-    public ArrayList<Condition> getConditions() {
-        return conditions;
-    }
+	public boolean addCondition(Condition condition) {
+		if(conditions.size() == 0){
+			conditions.add(condition);
+			return true;
+		}else{
+			for(Condition c: conditions){
+				if(c.getClass().equals(condition.getClass())){
+					return false;
+				}
+			}
+			conditions.add(condition);
+			return true;
+		}
+	}
+
+
+
+	public ArrayList<Condition> getConditions() {
+		return conditions;
+	}
 
     // TODO: 17.11.2019 add, delete condition
 

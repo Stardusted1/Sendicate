@@ -25,7 +25,10 @@ public class Deliveryman extends BusinessCustomer{
     public boolean ChangeSupplyStatus(Supply supply){
 
         if(supply.getStatus() == SupplyStatus.DELIVERING){
-            supply.setStatus();
+            supply.setStatus(SupplyStatus.DELIVERED);
+            return true;
+        }else{
+            return false;
         }
 //        TODO
     }

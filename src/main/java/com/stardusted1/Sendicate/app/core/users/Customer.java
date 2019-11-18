@@ -43,7 +43,7 @@ public class Customer extends User {
 		return currentSupplies;
 	}
 
-	protected void updateCurrentSupplies() {
+	public void updateCurrentSupplies() {
 		for (Supply supply : supplyHistory) {
             if(supply.getStatus().equals(SupplyStatus.DELIVERING)){
                 currentSupplies.add(supply);
@@ -56,4 +56,9 @@ public class Customer extends User {
             }
         }
 	}
+	public void SupplySpoiledAlert(Supply supply){
+
+	}
+
+
 }

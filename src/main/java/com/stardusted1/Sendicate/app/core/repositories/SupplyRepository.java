@@ -3,7 +3,7 @@ package com.stardusted1.Sendicate.app.core.repositories;
 import com.stardusted1.Sendicate.app.core.cargo.Supply;
 import org.springframework.data.repository.CrudRepository;
 
-public interface SupplyRepository extends CrudRepository<Supply, Integer> {
+public interface SupplyRepository extends CrudRepository<Supply, Long> {
 
 
 	public Iterable<Supply> findAllByDeliverymanIdEquals(long Id);

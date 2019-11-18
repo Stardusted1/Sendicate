@@ -1,13 +1,34 @@
 package com.stardusted1.Sendicate.app.core.cargo;
 
+import com.stardusted1.Sendicate.app.core.repositories.DeliverymanRepository;
+import com.stardusted1.Sendicate.app.core.repositories.ProviderRepository;
+import com.stardusted1.Sendicate.app.core.repositories.ReceiverRepository;
+import com.stardusted1.Sendicate.app.core.users.Deliveryman;
+import com.stardusted1.Sendicate.app.core.users.Provider;
+import com.stardusted1.Sendicate.app.core.users.Receiver;
+import com.stardusted1.Sendicate.app.service.EmailNotifier;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
+import javax.persistence.Transient;
 import java.util.LinkedList;
+import java.util.Optional;
 
 @Entity
 @Table(name = "Administrators")
 public class Supply{
+	@Transient
+	DeliverymanRepository deliverymanRepository;
+	@Transient
+	ProviderRepository providerRepository;
+	@Transient
+	ReceiverRepository receiverRepository;
+	@Transient
+	@Autowired
+	EmailNotifier emailNotifier;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected int id;
@@ -25,10 +46,18 @@ public class Supply{
         return condition;
     }
 
-    // TODO: 17.11.2019 set condition partially spoiled, set condition normal 
-    public void setCondition(SupplyCondition condition) {
-        this.condition = condition;
+    // TODO: 17.11.2019 set condition partially spoiled, set condition normal
+    public void setConditionPartiallySpoiled() {
+        this.condition = SupplyCondition.PARTIALLY_SPOILED;
+        Provider provider = providerRepository.findById(providerId).get();
+		Receiver receiver = receiverRepository.findById(receiverId).get();
+		Deliveryman deliveryman = deliverymanRepository.findById(deliverymanId).get();
+		emailNotifier.NotifyUsers(deliveryman,provider,receiver,this);
     }
+
+	public void setConditionNormal() {
+		this.condition = SupplyCondition.NORMAL;
+	}
 
     public Supply() {
     }

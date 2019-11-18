@@ -7,10 +7,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("api/user")
 public class CustomersController {
 
-
-
-
-
     @PostMapping
     public String CreateUsers(@RequestParam(
             value = "number",
