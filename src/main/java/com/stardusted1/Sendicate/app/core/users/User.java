@@ -4,8 +4,6 @@ import com.stardusted1.Sendicate.app.service.Variables;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.LinkedList;
-import java.util.Locale;
 
 @MappedSuperclass
 public class User {
@@ -17,12 +15,10 @@ public class User {
     protected String token;
     @Column(name = "isBanned")
     protected boolean isBanned;
-    @Column(name = "name")
+    @Column(name = "name", unique = true)
     protected String name;
     @Column(name = "dateOfRegistration")
     protected Date dateOfRegistration;
-    @Column(name = "login")
-    protected String login;
     @Column(name = "password")
     protected String password;
 	@Column(name = "locale")
@@ -31,18 +27,6 @@ public class User {
 	public User() {
 
 	}
-
-    public User(String name, String login, String password) {
-        this.id = Variables.AddNewUser();
-        this.name = name;
-        this.login = login;
-        this.password = password;
-        this.dateOfRegistration = new Date();
-        this.token = "";
-        this.isBanned = false;
-        this.locale = UserLocale.ENG;
-
-    }
 
 	public UserLocale getLocale() {
 		return locale;
@@ -94,14 +78,6 @@ public class User {
 
     public void setDateOfRegistration(Date dateOfRegistration) {
         this.dateOfRegistration = dateOfRegistration;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
     }
 
     public String getPassword() {

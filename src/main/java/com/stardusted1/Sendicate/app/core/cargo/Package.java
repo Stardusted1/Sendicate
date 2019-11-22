@@ -2,6 +2,8 @@ package com.stardusted1.Sendicate.app.core.cargo;
 
 import com.stardusted1.Sendicate.app.core.cargo.condition.Condition;
 import com.stardusted1.Sendicate.app.core.repositories.SupplyRepository;
+import com.stardusted1.Sendicate.app.service.TokenGenerator;
+
 import javax.persistence.Transient;
 
 import javax.persistence.Entity;
@@ -40,10 +42,10 @@ public class Package {
 		if(Osupply.isPresent()){
 			supply = Osupply.get();
 			supply.setConditionPartiallySpoiled();
-			return;
 		}
-        // TODO: 17.11.2019 set Supply status = spoiled
+
     }
+
     public void setStatusNormal() {
         this.status = PackageStatus.NORMAL;
     }
@@ -85,13 +87,21 @@ public class Package {
     }
 
     public boolean addTransmitter(Transmitter transmitter) {
-        return false;
-        // TODO: 17.11.2019
+        for(Transmitter t: transmitters){
+        	if(t.equals(transmitter)){
+        		return false;
+			}
+		}
+        transmitters.add(transmitter);
+        transmitter.setCurrentPackageId(this.id);
+        transmitter.setCurrentSupplyId(this.supplyId);
+        transmitter.setToken(TokenGenerator.generateToken(transmitter.getClass().getTypeName().toLowerCase()));
+        return true;
     }
 
     public boolean removeTransmitter(Transmitter transmitter) {
-        return false;
-        // TODO: 17.11.2019
+        transmitters.remove(transmitter);
+        return true;
     }
 
     public void setTransmitters(ArrayList<Transmitter> transmitters) {
@@ -113,13 +123,13 @@ public class Package {
 		}
 	}
 
-
-
+	public boolean deleteCondition(Condition condition){
+    	conditions.remove(condition);
+    	return true;
+	}
 	public ArrayList<Condition> getConditions() {
 		return conditions;
 	}
-
-    // TODO: 17.11.2019 add, delete condition
 
     public void setConditions(ArrayList<Condition> conditions) {
         this.conditions = conditions;

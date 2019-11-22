@@ -2,37 +2,21 @@ package com.stardusted1.Sendicate.app.core.users;
 
 
 import com.stardusted1.Sendicate.app.core.cargo.Supply;
+import com.stardusted1.Sendicate.app.core.cargo.SupplyStatus;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import java.util.LinkedList;
 
 @Entity
 @Table(name = "Receivers")
 public class Receiver extends Customer {
-    @Column(name = "email")
+    @Column(name = "email",unique = true)
     protected String email;
-    @Column(name = "phone")
+    @Column(name = "phone",unique = true)
     protected String phone;
-    @Column(name = "surname")
-    protected String surname;
     public Receiver(){
         super();
-    }
-
-    public Receiver(String name, String login, String password) {
-        super(name, login, password);
-        this.email = "";
-        this.phone = "";
-        this.surname = "";
-    }
-
-    public Receiver(String name, String login, String password, String email, String phone, String surname) {
-        super(name, login, password);
-        this.email = email;
-        this.phone = phone;
-        this.surname = surname;
     }
 
     public String getEmail() {
@@ -51,22 +35,16 @@ public class Receiver extends Customer {
         this.phone = phone;
     }
 
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
 
     public boolean ReceiveSupply(Supply supply) {
+    	supply.setStatus(SupplyStatus.DELIVERED);
         return false;
 //        TODO
     }
 
     public boolean AcceptSupply(Supply supply) {
+    	supply.setStatus(SupplyStatus.DELIVERED);
         return false;
-//        TODO
     }
 
     public boolean ChangeSupplyStatus(Supply supply) {

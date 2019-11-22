@@ -1,31 +1,31 @@
 package com.stardusted1.Sendicate.app.rest;
 
-import com.stardusted1.Sendicate.app.core.users.Customer;
+import com.stardusted1.Sendicate.app.core.repositories.ProviderRepository;
+import com.stardusted1.Sendicate.app.core.users.Provider;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+
 @RestController
-@RequestMapping("api/user")
-public class CustomersController {
+@RequestMapping("api/provider")
+public class ProviderController {
+
+	@Autowired
+	ProviderRepository providerRepository;
 
     @PostMapping
     public String CreateUsers(@RequestParam(
             value = "number",
             defaultValue = "1"
     ) String number) {
-        Customer user = new Customer("First", "login", "password");
-        int n = Integer.getInteger(number);
-        if (n > 1) {
-            for (int i = 1; i < n; i++) {
-                user = new Customer("User" + i, "login", "password");
-            }
-        }
-        return "Created "+number+" users";
+        return "Ok";
     }
 
 
     @GetMapping()
-    public String GetUsers() {
-        return "Get method";
+    public ArrayList<Provider> GetUsers() {
+		return (ArrayList<Provider>) providerRepository.findAll();
     }
 
     @GetMapping("{id}")

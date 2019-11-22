@@ -10,9 +10,6 @@ import java.util.LinkedList;
 @Entity
 @Table(name="Administrators")
 public class Administrator extends User {
-    public Administrator(String name, String login, String password) {
-        super(name, login, password);
-    }
 
     protected String email;
     protected String surname;

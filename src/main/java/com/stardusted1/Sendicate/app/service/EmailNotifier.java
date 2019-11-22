@@ -46,7 +46,6 @@ public class EmailNotifier {
 		mailMessage.setText(message);
 
 		javaMailSender.send(mailMessage);
-		// TODO: 18.11.2019 mail all users
 	}
 	public void NotifyUsers(Deliveryman deliveryman, Provider provider, Receiver receiver, Supply supply){
 		String deliverymanMessage = String.format(GetMessageByLocale(
@@ -97,5 +96,9 @@ public class EmailNotifier {
 			return emailMessageTopicUA;
 		}
 		return "";
+	}
+
+	private void ResendPassword(String email){
+
 	}
 }

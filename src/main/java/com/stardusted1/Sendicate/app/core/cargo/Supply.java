@@ -36,17 +36,55 @@ public class Supply{
 	protected SupplyStatus status;
     protected Date dateBegins;
     protected Date dateEnds;
-    protected long receiverId;
-    protected long deliverymanId;
-    protected long providerId;
-    protected ArrayList<Package> packages;
-    protected SupplyCondition condition;
+    protected boolean receiverApproved;
+    protected boolean deliverymanApproved;
 
-    public SupplyCondition getCondition() {
+	protected long receiverId;
+
+	protected long deliverymanId;
+	protected long providerId;
+	protected ArrayList<Package> packages;
+	protected SupplyCondition condition;
+
+	public Supply(String name,
+				  Date dateBegins,
+				  Date dateEnds,
+				  long receiverId,
+				  long deliverymanId,
+				  long providerId,
+				  ArrayList<Package> packages) {
+
+		this.name = name;
+		this.dateBegins = dateBegins;
+		this.dateEnds = dateEnds;
+		this.receiverId = receiverId;
+		this.deliverymanId = deliverymanId;
+		this.providerId = providerId;
+		this.packages = packages;
+		this.receiverApproved = false;
+		this.deliverymanApproved = false;
+	}
+
+	public SupplyCondition getCondition() {
         return condition;
     }
 
-    // TODO: 17.11.2019 set condition partially spoiled, set condition normal
+	public boolean isReceiverApproved() {
+		return receiverApproved;
+	}
+
+	public void receiverApprove() {
+		this.receiverApproved = true;
+	}
+
+	public boolean isDeliverymanApproved() {
+		return deliverymanApproved;
+	}
+
+	public void deliverymanApprove() {
+		this.deliverymanApproved = true;
+	}
+
     public void setConditionPartiallySpoiled() {
         this.condition = SupplyCondition.PARTIALLY_SPOILED;
         Provider provider = providerRepository.findById(providerId).get();
