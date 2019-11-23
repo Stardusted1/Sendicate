@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @MappedSuperclass
-public class User {
+public abstract class User {
     @Id
     protected String id;
     @Column(name = "token")
