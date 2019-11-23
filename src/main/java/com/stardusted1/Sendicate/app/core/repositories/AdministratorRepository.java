@@ -6,6 +6,6 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.util.Optional;
 
-public interface AdministratorRepository extends CrudRepository<Administrator,Long> {
+public interface AdministratorRepository extends CrudRepository<Administrator,String> {
 	public Optional<Administrator> findFirstByName(String name);
 }

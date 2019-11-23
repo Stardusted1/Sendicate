@@ -47,7 +47,7 @@ public class EmailNotifier {
 
 		javaMailSender.send(mailMessage);
 	}
-	public void NotifyUsers(Deliveryman deliveryman, Provider provider, Receiver receiver, Supply supply){
+	public void notifyUsersSupplyBadCondition(Deliveryman deliveryman, Provider provider, Receiver receiver, Supply supply){
 		String deliverymanMessage = String.format(GetMessageByLocale(
 				deliveryman.getLocale()),
 				deliveryman.getName(),
@@ -76,6 +76,16 @@ public class EmailNotifier {
 
 	}
 
+	public void notifyUsersAboutNewSupply(Deliveryman deliveryman, Receiver receiver){
+		sendMail(deliveryman.getEmails().getFirst(),
+				// TODO: 22.11.2019 message locale in resources
+				"You got new supply tp deliver",
+				"Check your active supplies");
+		sendMail(receiver.getEmail(),
+				"You got new supply to receive",
+				"Check your active supplies");
+	}
+
 	private String GetMessageByLocale(UserLocale locale){
 		if(locale.equals(UserLocale.ENG)){
 			return emailMessageTemplateENG;
@@ -98,7 +108,5 @@ public class EmailNotifier {
 		return "";
 	}
 
-	private void ResendPassword(String email){
 
-	}
 }

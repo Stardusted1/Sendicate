@@ -1,6 +1,7 @@
 package com.stardusted1.Sendicate.app.core.users;
 
 import com.stardusted1.Sendicate.app.service.Variables;
+import org.stringtemplate.v4.ST;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -8,9 +9,7 @@ import java.util.Date;
 @MappedSuperclass
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    protected long id;
+    protected String id;
     @Column(name = "token")
     protected String token;
     @Column(name = "isBanned")
@@ -23,6 +22,17 @@ public class User {
     protected String password;
 	@Column(name = "locale")
 	protected UserLocale locale;
+    @Column(name = "pictureUrl")
+    protected String pictureUrl;
+
+
+    public String getPictureUrl() {
+        return pictureUrl;
+    }
+
+    public void setPictureUrl(String pictureUrl) {
+        this.pictureUrl = pictureUrl;
+    }
 
 	public User() {
 
@@ -56,11 +66,11 @@ public class User {
         isBanned = false;
     }
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

@@ -13,7 +13,7 @@ import javax.persistence.Table;
 public class Receiver extends Customer {
     @Column(name = "email",unique = true)
     protected String email;
-    @Column(name = "phone",unique = true)
+    @Column(name = "phone")
     protected String phone;
     public Receiver(){
         super();
@@ -38,18 +38,20 @@ public class Receiver extends Customer {
 
     public boolean ReceiveSupply(Supply supply) {
     	supply.setStatus(SupplyStatus.DELIVERED);
-        return false;
-//        TODO
+        return true;
     }
 
     public boolean AcceptSupply(Supply supply) {
-    	supply.setStatus(SupplyStatus.DELIVERED);
-        return false;
+    	supply.receiverApprove();
+    	if(supply.isDeliverymanApproved()){
+    	    supply.setStatus(SupplyStatus.DELIVERING);
+        }
+        return true;
     }
 
     public boolean ChangeSupplyStatus(Supply supply) {
+        supply.setStatus(SupplyStatus.DELIVERED);
         return false;
-//        TODO
     }
 
 

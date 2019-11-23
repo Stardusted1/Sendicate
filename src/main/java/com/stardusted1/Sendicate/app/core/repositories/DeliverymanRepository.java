@@ -5,6 +5,6 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.util.Optional;
 
-public interface DeliverymanRepository extends CrudRepository<Deliveryman, Long> {
+public interface DeliverymanRepository extends CrudRepository<Deliveryman, String> {
 	public Optional<Deliveryman> findFirstByName(String name);
 }

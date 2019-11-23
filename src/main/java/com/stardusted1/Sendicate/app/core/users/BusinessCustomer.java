@@ -32,6 +32,11 @@ public class BusinessCustomer extends Customer {
 	}
 
 	public void AddEmail(String email) {
+		for(String e:emails){
+			if(e.equals(email)){
+				return;
+			}
+		}
 		this.emails.add(email);
 	}
 
@@ -44,6 +49,11 @@ public class BusinessCustomer extends Customer {
 	}
 
 	public void AddPhone(String phone) {
+		for(String p:phones){
+			if(p.equals(phone)){
+				return;
+			}
+		}
 		this.emails.add(phone);
 	}
 
@@ -56,8 +66,13 @@ public class BusinessCustomer extends Customer {
 		return address;
 	}
 
-	public void AddAddress(String address) {
-		this.emails.add(address);
+	public void AddAddress(String addres) {
+		for(String p:address){
+			if(p.equals(addres)){
+				return;
+			}
+		}
+		this.address.add(addres);
 	}
 
 	public void DeleteAddress(String address) {

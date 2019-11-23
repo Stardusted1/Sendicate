@@ -1,33 +1,27 @@
 package com.stardusted1.Sendicate.app.core.users;
 
 
+import com.stardusted1.Sendicate.app.core.cargo.Package;
 import com.stardusted1.Sendicate.app.core.cargo.Supply;
 import com.stardusted1.Sendicate.app.core.cargo.SupplyStatus;
-import com.stardusted1.Sendicate.app.core.repositories.DeliverymanRepository;
-import com.stardusted1.Sendicate.app.core.repositories.ReceiverRepository;
-import com.stardusted1.Sendicate.app.core.repositories.SupplyRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.stardusted1.Sendicate.app.service.System;
 
 import javax.persistence.Transient;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.ArrayList;
 
 @Entity
 @Table(name="Providers")
 public class Provider extends BusinessCustomer{
-    @Transient
-    @Autowired
-    private SupplyRepository supplyrepo;
-    @Transient
-    private ReceiverRepository receiverRepository;
-    @Transient
-    private DeliverymanRepository deliverymanRepository;
+   @Transient
 
 
-    public Supply InitiateSupply(Deliveryman deliveryman, Receiver receiver, List<Package> packages,String name){
+
+    public Supply InitiateSupply(Deliveryman deliveryman, Receiver receiver, ArrayList<Package> packages, String name){
+        System system = new System();
         Supply nSupply = new Supply();
+        nSupply.setName(name);
         deliveryman.getSupplyHistory().add(nSupply);
         deliveryman.updateCurrentSupplies();
         receiver.getSupplyHistory().add(nSupply);
@@ -37,7 +31,10 @@ public class Provider extends BusinessCustomer{
         nSupply.setProviderId(receiver.id);
         nSupply.setReceiverId(receiver.id);
         nSupply.setDeliverymanId(deliveryman.id);
-        supplyrepo.save(nSupply);
+        nSupply.setStatus(SupplyStatus.PENDING);
+        nSupply.setPackages(packages);
+        system.supplyRepository.save(nSupply);
+        system.emailNotifier.notifyUsersAboutNewSupply(deliveryman,receiver);
         return nSupply;
         // TODO: 15.11.2019 supply
     }

@@ -14,8 +14,11 @@ import java.util.LinkedList;
 public class Deliveryman extends BusinessCustomer{
 
     public boolean AcceptSupply(Supply supply){
-        return false;
-//        TODO
+        supply.deliverymanApprove();
+        if(supply.isReceiverApproved()){
+            supply.setStatus(SupplyStatus.DELIVERING);
+        }
+        return true;
     }
 
     public boolean ChangeSupplyStatus(Supply supply){

@@ -4,7 +4,7 @@ target/
 !**/src/main/**
 !**/src/test/**
 src/main/resources/application.properties
-D:\GitHubRepos\Sendicate\src\main\resources\application.properties
+Sendicate\src\main\resources\application.properties
 
 ### STS ###
 .apt_generated
@@ -33,3 +33,5 @@ build/
 .vscode/
 src/main/resources/application.properties
 src/main/resources/application.properties
+.idea/misc.xml
+.idea/encodings.xml

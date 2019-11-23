@@ -4,20 +4,12 @@ import com.stardusted1.Sendicate.app.core.cargo.condition.Condition;
 import com.stardusted1.Sendicate.app.core.repositories.SupplyRepository;
 import com.stardusted1.Sendicate.app.service.TokenGenerator;
 
-import javax.persistence.Transient;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.EventListener;
 import java.util.Optional;
 
 @Entity
 public class Package {
-	@Transient
-	SupplyRepository supplyRepository;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected long id;
@@ -26,10 +18,13 @@ public class Package {
     protected ArrayList<Frame> history;
     @Transient
     protected ArrayList<Transmitter> transmitters;
-
     protected ArrayList<Condition> conditions;
-
     protected PackageStatus status;
+    @Transient
+    SupplyRepository supplyRepository;
+
+    public Package() {
+    }
 
     public PackageStatus getStatus() {
         return status;
@@ -37,21 +32,17 @@ public class Package {
 
     public void setStatusSpoiled() {
         this.status = PackageStatus.SPOILED;
-		Optional<Supply> Osupply = supplyRepository.findById(supplyId);
-		Supply supply;
-		if(Osupply.isPresent()){
-			supply = Osupply.get();
-			supply.setConditionPartiallySpoiled();
-		}
+        Optional<Supply> Osupply = supplyRepository.findById(supplyId);
+        Supply supply;
+        if (Osupply.isPresent()) {
+            supply = Osupply.get();
+            supply.setConditionPartiallySpoiled();
+        }
 
     }
 
     public void setStatusNormal() {
         this.status = PackageStatus.NORMAL;
-    }
-
-
-    public Package() {
     }
 
     public long getId() {
@@ -86,12 +77,16 @@ public class Package {
         return transmitters;
     }
 
+    public void setTransmitters(ArrayList<Transmitter> transmitters) {
+        this.transmitters = transmitters;
+    }
+
     public boolean addTransmitter(Transmitter transmitter) {
-        for(Transmitter t: transmitters){
-        	if(t.equals(transmitter)){
-        		return false;
-			}
-		}
+        for (Transmitter t : transmitters) {
+            if (t.equals(transmitter)) {
+                return false;
+            }
+        }
         transmitters.add(transmitter);
         transmitter.setCurrentPackageId(this.id);
         transmitter.setCurrentSupplyId(this.supplyId);
@@ -104,32 +99,29 @@ public class Package {
         return true;
     }
 
-    public void setTransmitters(ArrayList<Transmitter> transmitters) {
-        this.transmitters = transmitters;
+    public boolean addCondition(Condition condition) {
+        if (conditions.size() == 0) {
+            conditions.add(condition);
+            return true;
+        } else {
+            for (Condition c : conditions) {
+                if (c.getClass().equals(condition.getClass())) {
+                    return false;
+                }
+            }
+            conditions.add(condition);
+            return true;
+        }
     }
 
-	public boolean addCondition(Condition condition) {
-		if(conditions.size() == 0){
-			conditions.add(condition);
-			return true;
-		}else{
-			for(Condition c: conditions){
-				if(c.getClass().equals(condition.getClass())){
-					return false;
-				}
-			}
-			conditions.add(condition);
-			return true;
-		}
-	}
+    public boolean deleteCondition(Condition condition) {
+        conditions.remove(condition);
+        return true;
+    }
 
-	public boolean deleteCondition(Condition condition){
-    	conditions.remove(condition);
-    	return true;
-	}
-	public ArrayList<Condition> getConditions() {
-		return conditions;
-	}
+    public ArrayList<Condition> getConditions() {
+        return conditions;
+    }
 
     public void setConditions(ArrayList<Condition> conditions) {
         this.conditions = conditions;

@@ -1,117 +1,141 @@
 package com.stardusted1.Sendicate.app.core.cargo;
 
-import com.stardusted1.Sendicate.app.core.repositories.DeliverymanRepository;
-import com.stardusted1.Sendicate.app.core.repositories.ProviderRepository;
-import com.stardusted1.Sendicate.app.core.repositories.ReceiverRepository;
 import com.stardusted1.Sendicate.app.core.users.Deliveryman;
 import com.stardusted1.Sendicate.app.core.users.Provider;
 import com.stardusted1.Sendicate.app.core.users.Receiver;
-import com.stardusted1.Sendicate.app.service.EmailNotifier;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.stardusted1.Sendicate.app.service.System;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
-import javax.persistence.Transient;
-import java.util.LinkedList;
-import java.util.Optional;
 
 @Entity
 @Table(name = "Administrators")
-public class Supply{
-	@Transient
-	DeliverymanRepository deliverymanRepository;
-	@Transient
-	ProviderRepository providerRepository;
-	@Transient
-	ReceiverRepository receiverRepository;
-	@Transient
-	@Autowired
-	EmailNotifier emailNotifier;
+public class Supply {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected int id;
     protected String name;
-	protected SupplyStatus status;
+    protected SupplyStatus status;
     protected Date dateBegins;
     protected Date dateEnds;
     protected boolean receiverApproved;
     protected boolean deliverymanApproved;
 
-	protected long receiverId;
+    protected String receiverId;
+    protected String deliverymanId;
+    protected String providerId;
+    @Transient
+    protected ArrayList<Package> packages;
+    protected SupplyCondition condition;
 
-	protected long deliverymanId;
-	protected long providerId;
-	protected ArrayList<Package> packages;
-	protected SupplyCondition condition;
-
-	public Supply(String name,
-				  Date dateBegins,
-				  Date dateEnds,
-				  long receiverId,
-				  long deliverymanId,
-				  long providerId,
-				  ArrayList<Package> packages) {
-
-		this.name = name;
-		this.dateBegins = dateBegins;
-		this.dateEnds = dateEnds;
-		this.receiverId = receiverId;
-		this.deliverymanId = deliverymanId;
-		this.providerId = providerId;
-		this.packages = packages;
-		this.receiverApproved = false;
-		this.deliverymanApproved = false;
-	}
-
-	public SupplyCondition getCondition() {
-        return condition;
-    }
-
-	public boolean isReceiverApproved() {
-		return receiverApproved;
-	}
-
-	public void receiverApprove() {
-		this.receiverApproved = true;
-	}
-
-	public boolean isDeliverymanApproved() {
-		return deliverymanApproved;
-	}
-
-	public void deliverymanApprove() {
-		this.deliverymanApproved = true;
-	}
-
-    public void setConditionPartiallySpoiled() {
-        this.condition = SupplyCondition.PARTIALLY_SPOILED;
-        Provider provider = providerRepository.findById(providerId).get();
-		Receiver receiver = receiverRepository.findById(receiverId).get();
-		Deliveryman deliveryman = deliverymanRepository.findById(deliverymanId).get();
-		emailNotifier.NotifyUsers(deliveryman,provider,receiver,this);
-    }
-
-	public void setConditionNormal() {
-		this.condition = SupplyCondition.NORMAL;
-	}
+    @Transient
+    System system = new System();
 
     public Supply() {
     }
-	public SupplyStatus getStatus() {
-		return status;
-	}
 
-	public void setStatus(SupplyStatus status) {
-		this.status = status;
-	}
+    public Supply(String name,
+                  Date dateBegins,
+                  Date dateEnds,
+                  String receiverId,
+                  String deliverymanId,
+                  String providerId,
+                  ArrayList<Package> packages) {
 
+        this.name = name;
+        this.dateBegins = dateBegins;
+        this.dateEnds = dateEnds;
+        this.receiverId = receiverId;
+        this.deliverymanId = deliverymanId;
+        this.providerId = providerId;
+        this.packages = packages;
+        this.receiverApproved = false;
+        this.deliverymanApproved = false;
+    }
 
-	public Supply(Date dateBegins, Date dateEnds, long providerId) {
+    public Supply(Date dateBegins, Date dateEnds, String providerId) {
         this.dateBegins = dateBegins;
         this.dateEnds = dateEnds;
         this.providerId = providerId;
+    }
+
+    public SupplyCondition getCondition() {
+        return condition;
+    }
+
+    public boolean isReceiverApproved() {
+        return receiverApproved;
+    }
+
+    public void receiverApprove() {
+        this.receiverApproved = true;
+    }
+
+    public boolean isDeliverymanApproved() {
+        return deliverymanApproved;
+    }
+
+    public void deliverymanApprove() {
+        this.deliverymanApproved = true;
+    }
+
+    public void setConditionPartiallySpoiled() {
+        System system = new System();
+        this.condition = SupplyCondition.PARTIALLY_SPOILED;
+        Provider provider = system.providerRepository.findById(providerId).get();
+        Receiver receiver = system.receiverRepository.findById(receiverId).get();
+        Deliveryman deliveryman = system.deliverymanRepository.findById(deliverymanId).get();
+        system.emailNotifier.notifyUsersSupplyBadCondition(deliveryman, provider, receiver, this);
+    }
+
+    public void setConditionNormal() {
+        this.condition = SupplyCondition.NORMAL;
+    }
+
+    public SupplyStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(SupplyStatus status) {
+        Deliveryman deliveryman = system.deliverymanRepository.findById(deliverymanId).get();
+        Provider provider = system.providerRepository.findById(providerId).get();
+        Receiver receiver = system.receiverRepository.findById(receiverId).get();
+        if (status.equals(SupplyStatus.UNDELIVERED)) {
+            system.emailNotifier.sendMail(deliveryman.getEmails().getFirst(),
+                    "Supply is out of date",
+                    "Supply " + name + " might be delivered at" + dateEnds + "but it wasn't");
+            system.emailNotifier.sendMail(provider.getEmails().getFirst(),
+                    "Supply is out of date",
+                    "Supply " + name + " might be delivered at" + dateEnds + "but it wasn't");
+            system.emailNotifier.sendMail(provider.getEmails().getFirst(),
+                    "Supply is out of date",
+                    "Supply " + name + " might be delivered at" + dateEnds + "but it wasn't");
+        }
+        if(status.equals(SupplyStatus.DELIVERING)){
+            system.emailNotifier.sendMail(deliveryman.getEmails().getFirst(),
+                    "Supply " +name +" is now delivering",
+                    "Supply " + name + " might be delivered at" + dateEnds);
+            system.emailNotifier.sendMail(provider.getEmails().getFirst(),
+                    "Supply " +name +" is now delivering",
+                    "Supply " + name + " might be delivered at" + dateEnds);
+            system.emailNotifier.sendMail(provider.getEmails().getFirst(),
+                    "Supply " +name +" is now delivering",
+                    "Supply " + name + " might be delivered at" + dateEnds);
+        }
+        if(status.equals(SupplyStatus.DELIVERED)){
+            system.emailNotifier.sendMail(deliveryman.getEmails().getFirst(),
+                    "Supply " +name +" is now delivered",
+                    "Supply " + name + " might be delivered at" + new Date());
+            system.emailNotifier.sendMail(provider.getEmails().getFirst(),
+                    "Supply " +name +" is now delivered",
+                    "Supply " + name + " might be delivered at" + new Date());
+            system.emailNotifier.sendMail(provider.getEmails().getFirst(),
+                    "Supply " +name +" is now delivered",
+                    "Supply " + name + " might be delivered at" + new Date());
+        }
+        this.status = status;
     }
 
     public int getId() {
@@ -142,27 +166,27 @@ public class Supply{
         this.dateEnds = dateEnds;
     }
 
-    public long getReceiverId() {
+    public String getReceiverId() {
         return receiverId;
     }
 
-    public void setReceiverId(long receiverId) {
+    public void setReceiverId(String receiverId) {
         this.receiverId = receiverId;
     }
 
-    public long getDeliverymanId() {
+    public String getDeliverymanId() {
         return deliverymanId;
     }
 
-    public void setDeliverymanId(long deliverymanId) {
+    public void setDeliverymanId(String deliverymanId) {
         this.deliverymanId = deliverymanId;
     }
 
-    public long getProviderId() {
+    public String getProviderId() {
         return providerId;
     }
 
-    public void setProviderId(long providerId) {
+    public void setProviderId(String providerId) {
         this.providerId = providerId;
     }
 
@@ -174,7 +198,7 @@ public class Supply{
         this.packages = packages;
     }
 
-    public void addPackage(Package aPackage){
+    public void addPackage(Package aPackage) {
         packages.add(aPackage);
     }
 }

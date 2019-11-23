@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface ReceiverRepository extends CrudRepository<Receiver, Long> {
+public interface ReceiverRepository extends CrudRepository<Receiver, String> {
 	public Optional<Receiver> findFirstByName(String name);
 }

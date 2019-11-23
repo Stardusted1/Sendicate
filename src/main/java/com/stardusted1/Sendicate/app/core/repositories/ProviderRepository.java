@@ -5,6 +5,6 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.util.Optional;
 
-public interface ProviderRepository extends CrudRepository<Provider, Long> {
+public interface ProviderRepository extends CrudRepository<Provider, String> {
 	public Optional<Provider> findFirstByName(String name);
 }
