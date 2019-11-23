@@ -3,9 +3,11 @@ package com.stardusted1.Sendicate.app.core.users;
 
 import com.stardusted1.Sendicate.app.core.cargo.Supply;
 import com.stardusted1.Sendicate.app.core.cargo.SupplyStatus;
+import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.util.Collection;
 import java.util.LinkedList;
 
 //
@@ -34,5 +36,19 @@ public class Deliveryman extends BusinessCustomer{
 
     protected void updateSupplyHistory(){
         this.supplyHistory = (LinkedList<Supply>) supplyRepository.findAllByDeliverymanIdEquals(this.id);
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        GrantedAuthority authority = new GrantedAuthority() {
+            @Override
+            public String getAuthority() {
+                return "CUSTOMER";
+            }
+        };
+        if(authorities.isEmpty()){
+            authorities.add(authority);
+        }
+        return authorities;
     }
 }

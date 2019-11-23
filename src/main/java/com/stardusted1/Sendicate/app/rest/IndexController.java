@@ -10,6 +10,16 @@ public class IndexController {
     public String  Index(Model model) {
         return "index";
     }
+
+    @GetMapping("/user")
+    public String  user(Model model) {
+        return "user";
+    }
+
+    @GetMapping("/api")
+    public String  api(Model model) {
+        return "api";
+    }
 //    @GetMapping("/index")
 //    public String  index(Model model) {
 //        return "index";

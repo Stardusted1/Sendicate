@@ -3,10 +3,13 @@ package com.stardusted1.Sendicate.app.core.users;
 
 import com.stardusted1.Sendicate.app.core.cargo.Supply;
 import com.stardusted1.Sendicate.app.core.cargo.SupplyStatus;
+import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.util.Collection;
+import java.util.LinkedList;
 
 @Entity
 @Table(name = "Receivers")
@@ -52,6 +55,15 @@ public class Receiver extends Customer {
     public boolean ChangeSupplyStatus(Supply supply) {
         supply.setStatus(SupplyStatus.DELIVERED);
         return false;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        GrantedAuthority authority = (GrantedAuthority) () -> "CUSTOMER";
+        if(authorities.isEmpty()){
+            authorities.add(authority);
+        }
+        return authorities;
     }
 
 

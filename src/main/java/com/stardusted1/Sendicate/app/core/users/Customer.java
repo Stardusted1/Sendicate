@@ -9,7 +9,7 @@ import javax.persistence.Transient;
 import java.util.LinkedList;
 
 @MappedSuperclass
-public class Customer extends User {
+public abstract class  Customer extends User {
 	@Transient
 	protected LinkedList<Supply> supplyHistory;
 	@Transient

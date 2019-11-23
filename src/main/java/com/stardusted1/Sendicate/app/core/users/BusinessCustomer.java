@@ -5,7 +5,7 @@ import javax.persistence.MappedSuperclass;
 import java.util.LinkedList;
 
 @MappedSuperclass
-public class BusinessCustomer extends Customer {
+public abstract class BusinessCustomer extends Customer {
 
 	@Column(name = "description")
 	protected String description;

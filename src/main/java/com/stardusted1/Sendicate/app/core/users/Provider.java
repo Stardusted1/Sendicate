@@ -5,11 +5,14 @@ import com.stardusted1.Sendicate.app.core.cargo.Package;
 import com.stardusted1.Sendicate.app.core.cargo.Supply;
 import com.stardusted1.Sendicate.app.core.cargo.SupplyStatus;
 import com.stardusted1.Sendicate.app.service.System;
+import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.Transient;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedList;
 
 @Entity
 @Table(name="Providers")
@@ -39,4 +42,17 @@ public class Provider extends BusinessCustomer{
         // TODO: 15.11.2019 supply
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        GrantedAuthority authority = new GrantedAuthority() {
+            @Override
+            public String getAuthority() {
+                return "CUSTOMER";
+            }
+        };
+        if(authorities.isEmpty()){
+            authorities.add(authority);
+        }
+        return authorities;
+    }
 }
