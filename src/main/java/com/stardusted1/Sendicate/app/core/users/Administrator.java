@@ -16,6 +16,7 @@ public class Administrator extends User {
     protected String address;
     protected String phoneNumber;
 
+
     public String getEmail() {
         return email;
     }
@@ -79,8 +80,8 @@ public class Administrator extends User {
         return false;
     }
 
-
-
-
-
+    @Override
+    public String getRole() {
+        return "ADMIN";
+    }
 }

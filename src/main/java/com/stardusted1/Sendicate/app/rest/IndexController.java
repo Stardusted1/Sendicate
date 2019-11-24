@@ -10,6 +10,11 @@ public class IndexController {
     public String  Index(Model model) {
         return "index";
     }
+
+    @GetMapping("/hello")
+    public String  hello(Model model) {
+        return "hello";
+    }
 //    @GetMapping("/index")
 //    public String  index(Model model) {
 //        return "index";

@@ -11,10 +11,16 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "Receivers")
 public class Receiver extends Customer {
-    @Column(name = "email",unique = true)
+    @Column(name = "email")
     protected String email;
     @Column(name = "phone")
     protected String phone;
+
+    @Override
+    public String getRole() {
+        return "CUSTOMER";
+    }
+
     public Receiver(){
         super();
     }

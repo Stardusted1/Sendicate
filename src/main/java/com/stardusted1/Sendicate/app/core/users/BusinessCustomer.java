@@ -54,11 +54,11 @@ public abstract class BusinessCustomer extends Customer {
 				return;
 			}
 		}
-		this.emails.add(phone);
+		this.phones.add(phone);
 	}
 
 	public void DeletePhone(String phone) {
-		this.emails.remove(phone);
+		this.phones.remove(phone);
 	}
 
 
@@ -76,7 +76,7 @@ public abstract class BusinessCustomer extends Customer {
 	}
 
 	public void DeleteAddress(String address) {
-		this.emails.remove(address);
+		this.address.remove(address);
 	}
 
 	public String getSiteAddress() {

@@ -14,9 +14,6 @@ import java.util.ArrayList;
 @Entity
 @Table(name="Providers")
 public class Provider extends BusinessCustomer{
-   @Transient
-
-
 
     public Supply InitiateSupply(Deliveryman deliveryman, Receiver receiver, ArrayList<Package> packages, String name){
         System system = new System();
@@ -39,4 +36,8 @@ public class Provider extends BusinessCustomer{
         // TODO: 15.11.2019 supply
     }
 
+    @Override
+    public String getRole() {
+        return "CUSTOMER";
+    }
 }

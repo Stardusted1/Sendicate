@@ -35,4 +35,10 @@ public class Deliveryman extends BusinessCustomer{
     protected void updateSupplyHistory(){
         this.supplyHistory = (LinkedList<Supply>) supplyRepository.findAllByDeliverymanIdEquals(this.id);
     }
+
+    @Override
+    public String getRole() {
+
+        return "CUSTOMER";
+    }
 }

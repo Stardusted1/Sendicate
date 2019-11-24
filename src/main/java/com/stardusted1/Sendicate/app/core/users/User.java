@@ -25,6 +25,7 @@ public abstract class User {
     @Column(name = "pictureUrl")
     protected String pictureUrl;
 
+    public abstract String getRole();
 
     public String getPictureUrl() {
         return pictureUrl;

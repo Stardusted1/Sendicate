@@ -15,4 +15,9 @@ public class NewUser extends Customer {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    @Override
+    public String getRole() {
+        return "USER";
+    }
 }
