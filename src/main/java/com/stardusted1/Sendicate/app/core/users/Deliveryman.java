@@ -3,9 +3,12 @@ package com.stardusted1.Sendicate.app.core.users;
 
 import com.stardusted1.Sendicate.app.core.cargo.Supply;
 import com.stardusted1.Sendicate.app.core.cargo.SupplyStatus;
+import com.stardusted1.Sendicate.app.service.Authority;
+import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.util.Collection;
 import java.util.LinkedList;
 
 //
@@ -37,8 +40,10 @@ public class Deliveryman extends BusinessCustomer{
     }
 
     @Override
-    public String getRole() {
-
-        return "CUSTOMER";
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if(authorities.isEmpty()){
+            authorities.add(new Authority("CUSTOMER"));
+        }
+        return authorities;
     }
 }

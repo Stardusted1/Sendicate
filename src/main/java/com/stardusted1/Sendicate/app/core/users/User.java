@@ -1,13 +1,19 @@
 package com.stardusted1.Sendicate.app.core.users;
 
+import com.stardusted1.Sendicate.app.service.Authority;
 import com.stardusted1.Sendicate.app.service.Variables;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.stringtemplate.v4.ST;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.LinkedList;
 
 @MappedSuperclass
-public abstract class User {
+public abstract class User implements UserDetails {
     @Id
     protected String id;
     @Column(name = "token")
@@ -24,6 +30,8 @@ public abstract class User {
 	protected UserLocale locale;
     @Column(name = "pictureUrl")
     protected String pictureUrl;
+    @Column(name = "authorities")
+    protected ArrayList<GrantedAuthority> authorities = new ArrayList<>();
 
     public abstract String getRole();
 
@@ -91,8 +99,56 @@ public abstract class User {
         this.dateOfRegistration = dateOfRegistration;
     }
 
+    @Override
+    public abstract Collection<? extends GrantedAuthority> getAuthorities();
+
+    public  Collection<? extends GrantedAuthority> setAdminAuthority(){
+        authorities.clear();
+        authorities.add(new Authority("ADMIN"));
+        return authorities;
+    }
+
+    public  Collection<? extends GrantedAuthority> setCustomerAuthority(){
+        authorities.clear();
+        authorities.add(new Authority("CUSTOMER"));
+        return authorities;
+    }
+
+    public  Collection<? extends GrantedAuthority> setUserAuthority(){
+        authorities.clear();
+        authorities.add(new Authority("USER"));
+        return authorities;
+    }
+
+
+
     public String getPassword() {
         return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return name;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return isBanned;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 
     public void setPassword(String password) {

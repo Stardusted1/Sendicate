@@ -2,9 +2,12 @@ package com.stardusted1.Sendicate.app.core.users;
 
 import com.stardusted1.Sendicate.app.core.cargo.Supply;
 import com.stardusted1.Sendicate.app.core.cargo.Transmitter;
+import com.stardusted1.Sendicate.app.service.Authority;
+import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.util.Collection;
 import java.util.LinkedList;
 //
 @Entity
@@ -80,8 +83,12 @@ public class Administrator extends User {
         return false;
     }
 
+
     @Override
-    public String getRole() {
-        return "ADMIN";
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if(authorities.isEmpty()){
+            authorities.add(new Authority("ADMIN"));
+        }
+        return authorities;
     }
 }

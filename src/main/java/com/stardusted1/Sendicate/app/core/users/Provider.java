@@ -4,12 +4,16 @@ package com.stardusted1.Sendicate.app.core.users;
 import com.stardusted1.Sendicate.app.core.cargo.Package;
 import com.stardusted1.Sendicate.app.core.cargo.Supply;
 import com.stardusted1.Sendicate.app.core.cargo.SupplyStatus;
+import com.stardusted1.Sendicate.app.service.Authority;
 import com.stardusted1.Sendicate.app.service.System;
+import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.Transient;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedList;
 
 @Entity
 @Table(name="Providers")
@@ -37,7 +41,10 @@ public class Provider extends BusinessCustomer{
     }
 
     @Override
-    public String getRole() {
-        return "CUSTOMER";
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if(authorities.isEmpty()){
+            authorities.add(new Authority("CUSTOMER"));
+        }
+        return authorities;
     }
 }
