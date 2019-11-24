@@ -1,5 +1,6 @@
 package com.stardusted1.Sendicate.app.core.users;
 
+import com.stardusted1.Sendicate.app.service.Authority;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.Column;
@@ -22,14 +23,8 @@ public class NewUser extends Customer {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        GrantedAuthority authority = new GrantedAuthority() {
-            @Override
-            public String getAuthority() {
-                return "USER";
-            }
-        };
         if(authorities.isEmpty()){
-            authorities.add(authority);
+            authorities.add(new Authority("CUSTOMER"));
         }
         return authorities;
     }

@@ -3,6 +3,7 @@ package com.stardusted1.Sendicate.app.core.users;
 
 import com.stardusted1.Sendicate.app.core.cargo.Supply;
 import com.stardusted1.Sendicate.app.core.cargo.SupplyStatus;
+import com.stardusted1.Sendicate.app.service.Authority;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.Entity;
@@ -40,14 +41,8 @@ public class Deliveryman extends BusinessCustomer{
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        GrantedAuthority authority = new GrantedAuthority() {
-            @Override
-            public String getAuthority() {
-                return "CUSTOMER";
-            }
-        };
         if(authorities.isEmpty()){
-            authorities.add(authority);
+            authorities.add(new Authority("CUSTOMER"));
         }
         return authorities;
     }

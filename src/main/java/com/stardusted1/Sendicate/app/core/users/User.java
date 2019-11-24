@@ -1,5 +1,6 @@
 package com.stardusted1.Sendicate.app.core.users;
 
+import com.stardusted1.Sendicate.app.service.Authority;
 import com.stardusted1.Sendicate.app.service.Variables;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -102,19 +103,19 @@ public abstract class User implements UserDetails {
 
     public  Collection<? extends GrantedAuthority> setAdminAuthority(){
         authorities.clear();
-        authorities.add((GrantedAuthority) () -> "ADMIN");
+        authorities.add(new Authority("ADMIN"));
         return authorities;
     }
 
     public  Collection<? extends GrantedAuthority> setCustomerAuthority(){
         authorities.clear();
-        authorities.add((GrantedAuthority) () -> "CUSTOMER");
+        authorities.add(new Authority("CUSTOMER"));
         return authorities;
     }
 
     public  Collection<? extends GrantedAuthority> setUserAuthority(){
         authorities.clear();
-        authorities.add((GrantedAuthority) () -> "USER");
+        authorities.add(new Authority("USER"));
         return authorities;
     }
 

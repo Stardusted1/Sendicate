@@ -3,17 +3,17 @@ package com.stardusted1.Sendicate.app.rest;
 import com.stardusted1.Sendicate.app.core.repositories.DeliverymanRepository;
 import com.stardusted1.Sendicate.app.core.repositories.ProviderRepository;
 import com.stardusted1.Sendicate.app.core.repositories.ReceiverRepository;
-import com.stardusted1.Sendicate.app.core.users.Deliveryman;
-import com.stardusted1.Sendicate.app.core.users.Provider;
-import com.stardusted1.Sendicate.app.core.users.Receiver;
-import com.stardusted1.Sendicate.app.core.users.User;
+import com.stardusted1.Sendicate.app.core.users.*;
 import com.stardusted1.Sendicate.app.service.System;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 
 @RestController
+
 @RequestMapping("api/login")
 public class AuthenticationController {
 	@Autowired // This means to get the bean called userRepository

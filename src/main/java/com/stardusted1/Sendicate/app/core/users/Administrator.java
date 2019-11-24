@@ -2,6 +2,7 @@ package com.stardusted1.Sendicate.app.core.users;
 
 import com.stardusted1.Sendicate.app.core.cargo.Supply;
 import com.stardusted1.Sendicate.app.core.cargo.Transmitter;
+import com.stardusted1.Sendicate.app.service.Authority;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.Entity;
@@ -84,14 +85,8 @@ public class Administrator extends User {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        GrantedAuthority authority = new GrantedAuthority() {
-            @Override
-            public String getAuthority() {
-                return "ADMIN";
-            }
-        };
         if(authorities.isEmpty()){
-            authorities.add(authority);
+            authorities.add(new Authority("ADMIN"));
         }
         return authorities;
     }

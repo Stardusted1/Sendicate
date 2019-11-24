@@ -52,11 +52,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
                 newUser.setEmail((String) map.get("email"));
                 newUser.setPictureUrl((String) map.get("picture"));
                 newUser.setLocale(system.getUserLocale((String) map.get("locale")));
-                newUser.setAdminAuthority();
                 system.newUserRepository.save(newUser);
                 return newUser;
             }));
-            newuser.get().setAdminAuthority();
+            newuser.get().setUserAuthority();
             return newuser;
         };
     }
