@@ -11,13 +11,14 @@ import org.springframework.security.core.GrantedAuthority;
 import javax.persistence.Transient;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 
 @Entity
 @Table(name="Providers")
-public class Provider extends BusinessCustomer{
+public class Provider extends BusinessCustomer implements Serializable{
 
     public Supply InitiateSupply(Deliveryman deliveryman, Receiver receiver, ArrayList<Package> packages, String name){
         System system = new System();
@@ -38,6 +39,11 @@ public class Provider extends BusinessCustomer{
         system.emailNotifier.notifyUsersAboutNewSupply(deliveryman,receiver);
         return nSupply;
         // TODO: 15.11.2019 supply
+    }
+
+    @Override
+    public String getRole() {
+        return "CUSTOMER";
     }
 
     @Override

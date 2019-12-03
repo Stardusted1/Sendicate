@@ -16,6 +16,24 @@ public class Frame {
 	protected float illumination;
 	protected float acceleration;
 	protected long transmitterId;
+	protected long packageId;
+	protected Date datetime;
+
+	public long getPackageId() {
+		return packageId;
+	}
+
+	public void setPackageId(long packageId) {
+		this.packageId = packageId;
+	}
+
+	public Date getDatetime() {
+		return datetime;
+	}
+
+	public void setDatetime(Date datetime) {
+		this.datetime = datetime;
+	}
 
 	public Frame() {
 	}

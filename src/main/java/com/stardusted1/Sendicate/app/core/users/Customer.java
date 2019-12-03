@@ -6,10 +6,11 @@ import com.stardusted1.Sendicate.app.core.repositories.SupplyRepository;
 
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
+import java.io.Serializable;
 import java.util.LinkedList;
 
 @MappedSuperclass
-public abstract class  Customer extends User {
+public abstract class  Customer extends User implements Serializable {
 	@Transient
 	protected LinkedList<Supply> supplyHistory;
 	@Transient

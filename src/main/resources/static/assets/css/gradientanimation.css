@@ -1,0 +1,10 @@
+.header-blue {
+  background: linear-gradient(270deg, #b76300, #0748b4) !important;
+  background-size: 400% 400% !important;
+  -webkit-animation: AnimationName 7s ease infinite !important;
+  -moz-animation: AnimationName 7s ease infinite !important;
+  -o-animation: AnimationName 7s ease infinite !important;
+  animation: AnimationName 7s ease infinite !important;
+  @-webkit-keyframes AnimationName {    0%{background-position: 26% 0%}    50%{background-position:75% 100%}    100%{background-position:26% 0%}}@-moz-keyframes AnimationName {    0%{background-position:26% 0%}    50%{background-position:75% 100%}    100%{background-position:26% 0%}}@-o-keyframes AnimationName {    0%{background-position:26% 0%}    50%{background-position:75% 100%}    100%{background-position:26% 0%}}@keyframes AnimationName {    0%{background-position:26% 0%}    50%{background-position:75% 100%}    100%{background-position:26% 0%}};
+}
+

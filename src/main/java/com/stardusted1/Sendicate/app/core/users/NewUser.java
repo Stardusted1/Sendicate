@@ -5,11 +5,12 @@ import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.LinkedList;
 
 @Entity
-public class NewUser extends Customer {
+public class NewUser extends Customer implements Serializable {
     @Column(name = "email",unique = true)
     protected String email;
 
@@ -22,9 +23,14 @@ public class NewUser extends Customer {
     }
 
     @Override
+    public String getRole() {
+        return "USER";
+    }
+
+    @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if(authorities.isEmpty()){
-            authorities.add(new Authority("CUSTOMER"));
+            authorities.add(new Authority("USER"));
         }
         return authorities;
     }

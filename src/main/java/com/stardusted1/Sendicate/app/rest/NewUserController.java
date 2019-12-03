@@ -17,4 +17,6 @@ public class NewUserController {
 //        System system = new System();
         return system.newUserRepository.findAll();
     }
+
+
 }

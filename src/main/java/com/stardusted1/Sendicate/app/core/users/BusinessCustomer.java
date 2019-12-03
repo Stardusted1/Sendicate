@@ -2,10 +2,11 @@ package com.stardusted1.Sendicate.app.core.users;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
+import java.io.Serializable;
 import java.util.LinkedList;
 
 @MappedSuperclass
-public abstract class BusinessCustomer extends Customer {
+public abstract class BusinessCustomer extends Customer implements Serializable {
 
 	@Column(name = "description")
 	protected String description;

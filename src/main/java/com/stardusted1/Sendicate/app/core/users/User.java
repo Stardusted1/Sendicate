@@ -7,13 +7,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.stringtemplate.v4.ST;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedList;
 
 @MappedSuperclass
-public abstract class User implements UserDetails {
+public abstract class User implements UserDetails, Serializable {
     @Id
     protected String id;
     @Column(name = "token")

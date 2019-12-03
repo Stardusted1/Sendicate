@@ -7,12 +7,13 @@ import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.LinkedList;
 //
 @Entity
 @Table(name="Administrators")
-public class Administrator extends User {
+public class Administrator extends User implements Serializable {
 
     protected String email;
     protected String surname;
@@ -83,6 +84,11 @@ public class Administrator extends User {
         return false;
     }
 
+
+    @Override
+    public String getRole() {
+        return "ADMIN";
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

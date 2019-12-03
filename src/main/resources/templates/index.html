@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Sendicate</title>
+    <link rel="shortcut icon" href="/assets/img/logo.png">
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Bitter:400,700">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700">
@@ -16,93 +17,82 @@
     <link rel="stylesheet" href="assets/css/Login-Form-Clean.css">
     <link rel="stylesheet" href="assets/css/Login-Form-Dark.css">
     <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/gradientanimation.css">
 </head>
 
 <body>
-<div>
-    <div class="header-blue">
-        <nav class="navbar navbar-light navbar-expand-md navigation-clean-search">
-            <div class="container-fluid"><a class="navbar-brand" href="#">Sendicate</a>
-                <button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span
-                        class="navbar-toggler-icon"></span></button>
-                <div class="collapse navbar-collapse"
-                     id="navcol-1">
-                    <ul class="nav navbar-nav">
-                        <li class="nav-item" role="presentation"><a class="nav-link" href="#">Link</a></li>
-                        <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" data-toggle="dropdown"
-                                                         aria-expanded="false" href="#">Dropdown </a>
-                            <div class="dropdown-menu" role="menu"><a class="dropdown-item" role="presentation"
-                                                                      href="#">First Item</a><a class="dropdown-item"
-                                                                                                role="presentation"
-                                                                                                href="#">Second Item</a><a
-                                    class="dropdown-item" role="presentation" href="#">Third Item</a></div>
-                        </li>
-                    </ul>
-                    <form class="form-inline mr-auto" target="_self">
-                        <div class="form-group"><label for="search-field"><i class="fa fa-search"></i></label><input
-                                class="form-control search-field" type="search" id="search-field" name="search"></div>
-                    </form>
-                    <form action="/logout" method="post">
-                        <input type="submit" value="Sign Out"/>
-                    </form>
-                    <span class="navbar-text"> <a class="login" href="/login">Log In</a></span><a
-                        class="btn btn-light action-button" role="button" href='/register'>Sign Up</a></div>
-            </div>
-        </nav>
-        <div class="container hero">
-            <div class="row">
-                <div class="col-12 col-lg-6 col-xl-5 offset-xl-1">
-                    <h1>The revolution is here.</h1>
-                    <p>Mauris egestas tellus non ex condimentum, ac ullamcorper sapien dictum. Nam consequat neque quis
-                        sapien viverra convallis. In non tempus lorem. </p>
-                    <button class="btn btn-light btn-lg action-button" type="button">Learn More</button>
+    <div>
+        <div class="header-blue">
+            <nav class="navbar navbar-light navbar-expand-md navigation-clean-search">
+                <div class="container-fluid"><a class="navbar-brand" href="#">Sendicate</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+                    <div class="collapse navbar-collapse"
+                        id="navcol-1">
+                        <ul class="nav navbar-nav">
+                            <li th:if="${anon == false}" class="nav-item" role="presentation"><a class="nav-link" href="/main">Workbench</a></li>
+<!--                            <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">Dropdown </a>-->
+<!--                                <div class="dropdown-menu" role="menu"><a class="dropdown-item" role="presentation" href="#">First Item</a><a class="dropdown-item" role="presentation" href="#">Second Item</a><a class="dropdown-item" role="presentation" href="#">Third Item</a></div>-->
+<!--                            </li>-->
+                        </ul>
+                        <form class="form-inline mr-auto" target="_self">
+                            <div class="form-group"><label for="search-field"><i class="fa fa-search"></i></label><input class="form-control search-field" type="search" id="search-field" name="search"></div>
+                        </form>
+                        <div th:switch="${anon}">
+                            <div id="Unautorized" th:case="${true}"><a class="btn btn-light action-button" role="button" href="/login">Log In</a></div>
+                            <div class="border rounded" th:case="${false}" id="Autorized" style="border-radius: 30px !important;"><a class="btn btn-light action-button" role="button" id="logout" href="/logout" style="border-radius: 0px;border-color: transparent;">Log Out</a><img class="rounded-circle" style="width: 40px;height: 40px;" th:src="${pictureUrl}" /></div>
+                        </div>
+                    </div>
                 </div>
-                <div
-                        class="col-md-5 col-lg-5 offset-lg-1 offset-xl-0 d-none d-lg-block phone-holder"><img
-                        src="assets/img/shipping-icon-330.png"></div>
+            </nav>
+            <div class="container hero">
+                <div class="row">
+                    <div class="col-12 col-lg-6 col-xl-5 offset-xl-1">
+                        <h1>The revolution is here.</h1>
+                        <p>Mauris egestas tellus non ex condimentum, ac ullamcorper sapien dictum. Nam consequat neque quis sapien viverra convallis. In non tempus lorem. </p><button class="btn btn-light btn-lg action-button" type="button">Learn More</button></div>
+                    <div
+                        class="col-md-5 col-lg-5 offset-lg-1 offset-xl-0 d-none d-lg-block phone-holder"><img src="assets/img/shipping-icon-330.png"></div>
             </div>
         </div>
     </div>
-</div>
-<div class="footer-clean">
-    <footer>
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-sm-4 col-md-3 item">
-                    <h3>Services</h3>
-                    <ul>
-                        <li><a href="#">Web design</a></li>
-                        <li><a href="#">Development</a></li>
-                        <li><a href="#">Hosting</a></li>
-                    </ul>
-                </div>
-                <div class="col-sm-4 col-md-3 item">
-                    <h3>About</h3>
-                    <ul>
-                        <li><a href="#">Company</a></li>
-                        <li><a href="#">Team</a></li>
-                        <li><a href="#">Legacy</a></li>
-                    </ul>
-                </div>
-                <div class="col-sm-4 col-md-3 item">
-                    <h3>Careers</h3>
-                    <ul>
-                        <li><a href="#">Job openings</a></li>
-                        <li><a href="#">Employee success</a></li>
-                        <li><a href="#">Benefits</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-3 item social"><a href="#"><i class="icon ion-social-facebook"></i></a><a href="#"><i
-                        class="icon ion-social-twitter"></i></a><a href="#"><i class="icon ion-social-snapchat"></i></a><a
-                        href="#"><i class="icon ion-social-instagram"></i></a>
-                    <p class="copyright">Sendicate © 2019</p>
+    </div>
+    <div class="footer-clean">
+        <footer>
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-sm-4 col-md-3 item">
+                        <h3>Services</h3>
+                        <ul>
+                            <li><a href="#">Web design</a></li>
+                            <li><a href="#">Development</a></li>
+                            <li><a href="#">Hosting</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-4 col-md-3 item">
+                        <h3>About</h3>
+                        <ul>
+                            <li><a href="#">Company</a></li>
+                            <li><a href="#">Team</a></li>
+                            <li><a href="#">Legacy</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-4 col-md-3 item">
+                        <h3>Careers</h3>
+                        <ul>
+                            <li><a href="#">Job openings</a></li>
+                            <li><a href="#">Employee success</a></li>
+                            <li><a href="#">Benefits</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-3 item social"><a href="#"><i class="icon ion-social-facebook"></i></a><a href="#"><i class="icon ion-social-twitter"></i></a><a href="#"><i class="icon ion-social-snapchat"></i></a><a href="#"><i class="icon ion-social-instagram"></i></a>
+                        <p class="copyright">Sendicate © 2019</p>
+                    </div>
                 </div>
             </div>
-        </div>
-    </footer>
-</div>
-<script src="assets/js/jquery.min.js"></script>
-<script src="assets/bootstrap/js/bootstrap.min.js"></script>
+        </footer>
+    </div>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
+    <script src="assets/js/theme.js"></script>
 </body>
 
 </html>

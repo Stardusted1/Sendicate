@@ -14,17 +14,37 @@ import java.util.Optional;
 @Controller
 public class PageController {
 //    Optional user= (Optional) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    Optional optional= (Optional) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
 
     @GetMapping("/")
     public String  Index(Model model) {
+        var usr = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		 if(usr.getClass().getName().equals("java.lang.String")){
+		     if(usr.equals("anonymousUser")){
+		         model.addAttribute("usr",usr);
+		         model.addAttribute("anon",true);
+             }else{
+                 model.addAttribute("usr",usr);
+             }
+         }else{
+			 Optional optional= (Optional) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			 User user= (User) optional.get();
+			 model.addAttribute("anon",false);
+			 model.addAttribute("pictureUrl",user.getPictureUrl());
+		 }
         return "index";
     }
 
-    @GetMapping("/user")
+    @GetMapping("/main")
     public String  user(Model model) {
+        Optional optional= (Optional) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user= (User) optional.get();
-        return "user";
+        if(user.getRole().equals("USER")){
+            model.addAttribute("customer",user);
+            return "register";
+        }
+
+        return "main";
     }
 
     @GetMapping("/login")

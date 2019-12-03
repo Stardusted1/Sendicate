@@ -9,12 +9,13 @@ import org.springframework.security.core.GrantedAuthority;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.LinkedList;
 
 @Entity
 @Table(name = "Receivers")
-public class Receiver extends Customer {
+public class Receiver extends Customer implements Serializable {
     @Column(name = "email")
     protected String email;
     @Column(name = "phone")

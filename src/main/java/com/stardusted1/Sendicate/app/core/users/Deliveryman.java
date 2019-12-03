@@ -8,13 +8,14 @@ import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.LinkedList;
 
 //
 @Entity
 @Table(name="Deliverymans")
-public class Deliveryman extends BusinessCustomer{
+public class Deliveryman extends BusinessCustomer implements Serializable {
 
     public boolean AcceptSupply(Supply supply){
         supply.deliverymanApprove();
@@ -37,6 +38,11 @@ public class Deliveryman extends BusinessCustomer{
 
     protected void updateSupplyHistory(){
         this.supplyHistory = (LinkedList<Supply>) supplyRepository.findAllByDeliverymanIdEquals(this.id);
+    }
+
+    @Override
+    public String getRole() {
+        return "CUSTOMER";
     }
 
     @Override
