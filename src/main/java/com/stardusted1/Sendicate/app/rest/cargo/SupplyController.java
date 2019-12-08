@@ -1,4 +1,4 @@
-package com.stardusted1.Sendicate.app.rest;
+package com.stardusted1.Sendicate.app.rest.cargo;
 
 import com.stardusted1.Sendicate.app.core.cargo.Supply;
 import com.stardusted1.Sendicate.app.core.repositories.SupplyRepository;

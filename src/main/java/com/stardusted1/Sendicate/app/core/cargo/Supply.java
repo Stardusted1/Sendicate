@@ -103,35 +103,35 @@ public class Supply {
         Provider provider = system.providerRepository.findById(providerId).get();
         Receiver receiver = system.receiverRepository.findById(receiverId).get();
         if (status.equals(SupplyStatus.UNDELIVERED)) {
-            system.emailNotifier.sendMail(deliveryman.getEmails().getFirst(),
+            system.emailNotifier.sendMail(deliveryman.getEmail(),
                     "Supply is out of date",
                     "Supply " + name + " might be delivered at" + dateEnds + "but it wasn't");
-            system.emailNotifier.sendMail(provider.getEmails().getFirst(),
+            system.emailNotifier.sendMail(provider.getEmail(),
                     "Supply is out of date",
                     "Supply " + name + " might be delivered at" + dateEnds + "but it wasn't");
-            system.emailNotifier.sendMail(provider.getEmails().getFirst(),
+            system.emailNotifier.sendMail(provider.getEmail(),
                     "Supply is out of date",
                     "Supply " + name + " might be delivered at" + dateEnds + "but it wasn't");
         }
         if(status.equals(SupplyStatus.DELIVERING)){
-            system.emailNotifier.sendMail(deliveryman.getEmails().getFirst(),
+            system.emailNotifier.sendMail(deliveryman.getEmail(),
                     "Supply " +name +" is now delivering",
                     "Supply " + name + " might be delivered at" + dateEnds);
-            system.emailNotifier.sendMail(provider.getEmails().getFirst(),
+            system.emailNotifier.sendMail(provider.getEmail(),
                     "Supply " +name +" is now delivering",
                     "Supply " + name + " might be delivered at" + dateEnds);
-            system.emailNotifier.sendMail(provider.getEmails().getFirst(),
+            system.emailNotifier.sendMail(provider.getEmail(),
                     "Supply " +name +" is now delivering",
                     "Supply " + name + " might be delivered at" + dateEnds);
         }
         if(status.equals(SupplyStatus.DELIVERED)){
-            system.emailNotifier.sendMail(deliveryman.getEmails().getFirst(),
+            system.emailNotifier.sendMail(deliveryman.getEmail(),
                     "Supply " +name +" is now delivered",
                     "Supply " + name + " might be delivered at" + new Date());
-            system.emailNotifier.sendMail(provider.getEmails().getFirst(),
+            system.emailNotifier.sendMail(provider.getEmail(),
                     "Supply " +name +" is now delivered",
                     "Supply " + name + " might be delivered at" + new Date());
-            system.emailNotifier.sendMail(provider.getEmails().getFirst(),
+            system.emailNotifier.sendMail(provider.getEmail(),
                     "Supply " +name +" is now delivered",
                     "Supply " + name + " might be delivered at" + new Date());
         }

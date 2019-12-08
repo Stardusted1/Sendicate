@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<head>
+<head ng-app="profile">
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Sendicate</title>
@@ -18,6 +19,7 @@
     <link rel="stylesheet" href="assets/css/Login-Form-Dark.css">
     <link rel="stylesheet" href="assets/css/styles.css">
     <link rel="stylesheet" href="assets/css/gradientanimation.css">
+    <link rel="stylesheet" href="assets/css/customCSS.css">
 </head>
 
 <body>
@@ -28,7 +30,15 @@
                     <div class="collapse navbar-collapse"
                         id="navcol-1">
                         <ul class="nav navbar-nav">
-                            <li th:if="${anon == false}" class="nav-item" role="presentation"><a class="nav-link" href="/main">Workbench</a></li>
+                            <li th:if="${anon == false}" class="nav-item" role="presentation">
+                                <a class="nav-link" href="/main">Workbench</a>
+                            </li>
+                            <li th:if="${newUser == false}" class="nav-item" role="presentation">
+                                <a class="nav-link" href="/profile">Profile</a>
+                            </li>
+                            <li th:if="${newUser == true}" class="nav-item" role="presentation">
+                                <a id="register" class="nav-link" href="/register">Register</a>
+                            </li>
 <!--                            <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">Dropdown </a>-->
 <!--                                <div class="dropdown-menu" role="menu"><a class="dropdown-item" role="presentation" href="#">First Item</a><a class="dropdown-item" role="presentation" href="#">Second Item</a><a class="dropdown-item" role="presentation" href="#">Third Item</a></div>-->
 <!--                            </li>-->
@@ -45,7 +55,7 @@
             </nav>
             <div class="container hero">
                 <div class="row">
-                    <div class="col-12 col-lg-6 col-xl-5 offset-xl-1">
+                    <div class="col-12 col-lg-6 col-xl-5 offset-xl-1" id="promotext">
                         <h1>The revolution is here.</h1>
                         <p>Mauris egestas tellus non ex condimentum, ac ullamcorper sapien dictum. Nam consequat neque quis sapien viverra convallis. In non tempus lorem. </p><button class="btn btn-light btn-lg action-button" type="button">Learn More</button></div>
                     <div

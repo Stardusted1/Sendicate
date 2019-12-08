@@ -46,18 +46,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
             if(receiver.isPresent()){
                 return receiver;
             }
-            Optional<NewUser> newuser = Optional.of(system.newUserRepository.findById(id).orElseGet(() -> {
-                NewUser newUser = new NewUser();
-                newUser.setId(id);
-                newUser.setName((String) map.get("name"));
-                newUser.setEmail((String) map.get("email"));
-                newUser.setPictureUrl((String) map.get("picture"));
-                newUser.setLocale(system.getUserLocale((String) map.get("locale")));
-                system.newUserRepository.save(newUser);
-                return newUser;
-            }));
-            newuser.get().setUserAuthority();
-            return newuser;
+			return Optional.of(system.newUserRepository.findById(id).orElseGet(() -> {
+				NewUser newUser = new NewUser();
+				newUser.setId(id);
+				newUser.setName((String) map.get("name"));
+				newUser.addEmail((String) map.get("email"));
+				newUser.setPictureUrl((String) map.get("picture"));
+				newUser.setLocale(system.getUserLocale((String) map.get("locale")));
+				system.newUserRepository.save(newUser);
+				return newUser;
+			}));
         };
     }
 }

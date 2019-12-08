@@ -3,6 +3,7 @@ package com.stardusted1.Sendicate.app.core.users;
 import com.stardusted1.Sendicate.app.core.cargo.Supply;
 import com.stardusted1.Sendicate.app.core.cargo.Transmitter;
 import com.stardusted1.Sendicate.app.service.Authority;
+import com.stardusted1.Sendicate.app.service.System;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.Entity;
@@ -97,4 +98,9 @@ public class Administrator extends User implements Serializable {
         }
         return authorities;
     }
+
+	@Override
+	public void newToken() {
+		 this.token = System.generateToken(this.getClass().getName());
+	}
 }

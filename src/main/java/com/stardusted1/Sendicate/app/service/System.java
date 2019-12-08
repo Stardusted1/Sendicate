@@ -50,6 +50,18 @@ public class System {
         return Long.toString(longToken, 8);
     }
 
+    public static Map<String, String> parseBody(String bodyStr) {
+        Map<String, String> body = new HashMap<>();
+        String[] values = bodyStr.split("&");
+        for (String value : values) {
+            String[] pair = value.split("=");
+            if (pair.length == 2) {
+                body.put(pair[0], pair[1]);
+            }
+        }
+        return body;
+    }
+
     public Locale getLocale(UserLocale userLocale) {
         if (userLocale.equals(UserLocale.RUS)) {
             return Locale.forLanguageTag("Ru");
@@ -88,7 +100,7 @@ public class System {
             Provider nProvider = provider.get();
             ResourceBundle rb = ResourceBundle.getBundle("Messages", getLocale(nProvider.getLocale()));
             emailNotifier.sendMail(
-                    nProvider.getEmails().getFirst(),
+                    nProvider.getEmail(),
                     rb.getString("System.newpassword.topic"),
                     String.format(rb.getString("System.newpassword.message"), generatePassword()));
             return true;
@@ -98,7 +110,7 @@ public class System {
             Deliveryman nProvider = deliveryman.get();
             ResourceBundle rb = ResourceBundle.getBundle("Messages", getLocale(nProvider.getLocale()));
             emailNotifier.sendMail(
-                    nProvider.getEmails().getFirst(),
+                    nProvider.getEmail(),
                     rb.getString("System.newpassword.topic"),
                     String.format(rb.getString("System.newpassword.message"), generatePassword()));
             return true;

@@ -4,6 +4,7 @@ package com.stardusted1.Sendicate.app.core.users;
 import com.stardusted1.Sendicate.app.core.cargo.Supply;
 import com.stardusted1.Sendicate.app.core.cargo.SupplyStatus;
 import com.stardusted1.Sendicate.app.service.Authority;
+import com.stardusted1.Sendicate.app.service.System;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.Entity;
@@ -42,7 +43,7 @@ public class Deliveryman extends BusinessCustomer implements Serializable {
 
     @Override
     public String getRole() {
-        return "CUSTOMER";
+        return "BCUSTOMER";
     }
 
     @Override
@@ -51,5 +52,10 @@ public class Deliveryman extends BusinessCustomer implements Serializable {
             authorities.add(new Authority("CUSTOMER"));
         }
         return authorities;
+    }
+
+    @Override
+    public void newToken() {
+    	this.token = System.generateToken(this.getClass().getName());
     }
 }

@@ -1,4 +1,4 @@
-package com.stardusted1.Sendicate.app.rest;
+package com.stardusted1.Sendicate.app.rest.users;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

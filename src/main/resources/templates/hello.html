@@ -3,13 +3,13 @@
 <head>
     <title>Hello AngularJS</title>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
-    <script src="hello.js"></script>
+    <script src="core.js"></script>
 </head>
 
 <body>
 <div ng-controller="Hello">
-    {{for(usr in user)}}
-        <img src="{{usr.pictureUrl}}">
+    {{for(var usror in user)}}
+        <img src="{{usror.pictureUrl}}">
     </div>
 
 

@@ -1,9 +1,6 @@
 package com.stardusted1.Sendicate.app.rest;
 
-import com.stardusted1.Sendicate.app.core.users.NewUser;
-import com.stardusted1.Sendicate.app.core.users.User;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import com.stardusted1.Sendicate.app.core.users.*;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,54 +13,95 @@ public class PageController {
 //    Optional user= (Optional) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
 
-    @GetMapping("/")
-    public String  Index(Model model) {
-        var usr = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		 if(usr.getClass().getName().equals("java.lang.String")){
-		     if(usr.equals("anonymousUser")){
-		         model.addAttribute("usr",usr);
-		         model.addAttribute("anon",true);
-             }else{
-                 model.addAttribute("usr",usr);
-             }
-         }else{
-			 Optional optional= (Optional) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			 User user= (User) optional.get();
-			 model.addAttribute("anon",false);
-			 model.addAttribute("pictureUrl",user.getPictureUrl());
-		 }
-        return "index";
-    }
+	@GetMapping("/")
+	public String Index(Model model) {
+		var usr = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		if (usr.getClass().getName().equals("java.lang.String")) {
+			if (usr.equals("anonymousUser")) {
+				model.addAttribute("usr", usr);
+				model.addAttribute("anon", true);
+			} else {
+				model.addAttribute("usr", usr);
+			}
+		} else {
+			if(SecurityContextHolder.getContext().getAuthentication().getPrincipal().getClass().getSimpleName().equals("Optional")){
+				Optional optional = (Optional) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+				User user = (User) optional.get();
+				if (user.getRole().equals("USER")) {
+					model.addAttribute("newUser", true);
+				} else {
+					model.addAttribute("newUser", false);
+				}
+				model.addAttribute("anon", false);
+				model.addAttribute("pictureUrl", user.getPictureUrl());
+			}else if(SecurityContextHolder.getContext().getAuthentication().getPrincipal().getClass().getSimpleName().equals("Provider")){
+				Provider provider = (Provider) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+				model.addAttribute("newUser", false);
+				model.addAttribute("anon", false);
+				model.addAttribute("pictureUrl", provider.getPictureUrl());
+			}else if(SecurityContextHolder.getContext().getAuthentication().getPrincipal().getClass().getSimpleName().equals("Deliveryman")){
+				Deliveryman deliveryman = (Deliveryman) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+				model.addAttribute("newUser", false);
+				model.addAttribute("anon", false);
+				model.addAttribute("pictureUrl", deliveryman.getPictureUrl());
+			}
 
-    @GetMapping("/main")
-    public String  user(Model model) {
-        Optional optional= (Optional) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user= (User) optional.get();
-        if(user.getRole().equals("USER")){
-            model.addAttribute("customer",user);
-            return "register";
-        }
+		}
+		return "index";
+	}
 
-        return "main";
-    }
+	@GetMapping("/main")
+	public String user(Model model) {
+		Optional optional = (Optional) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		User user = (User) optional.get();
+		if (user.getRole().equals("USER")) {
+			model.addAttribute("usr", user);
+			return "register";
+		}
 
-    @GetMapping("/login")
-    public String  login(Model model) {
-        return "login";
-    }
+		return "main";
+	}
 
-    @GetMapping("/register")
-    public String  register(Model model) {
-        return "register";
-    }
-    // TODO: 21.11.2019 404 страница
+	@GetMapping("/profile")
+	public String profile(Model model) {
+		try {
+			Optional optional = (Optional) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			Customer user = (Customer) optional.get();
+		} catch (Exception e){ }
+		User user = (Customer)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-    @GetMapping("/forgot_pass")
-    public String  forgot(Model model) {
-        return "forgot_pass";
-    }
+		if (user.getRole().equals("USER")) {
+			model.addAttribute("usr", user);
+			return "register";
+		}
+		if (user.getRole().equals("BCUSTOMER")) {
+			model.addAttribute("BCUSTOMER", true);
+			model.addAttribute("address", ((BusinessCustomer) user).getAddress().getFirst());
+			model.addAttribute("addressWeb", ((BusinessCustomer) user).getSiteAddress());
+			model.addAttribute("desc", ((BusinessCustomer) user).getDescription());
+			model.addAttribute("usr", (BusinessCustomer) user);
+		} else if (user.getRole().equals("CUSTOMER")) {
+			model.addAttribute("BCUSTOMER", false);
 
+			model.addAttribute("usr", (Customer) user);
+		}
+		model.addAttribute("type", user.getClass().getSimpleName().toLowerCase() + "s");
+		return "profile";
+	}
 
+	@GetMapping("/login")
+	public String login(Model model) {
+		return "login";
+	}
+
+	@GetMapping("/register")
+	public String register(Model model) {
+		Optional optional = (Optional) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		User user = (User) optional.get();
+		model.addAttribute("usr", user);
+		return "register";
+	}
+	// TODO: 21.11.2019 404 страница
 
 
 }

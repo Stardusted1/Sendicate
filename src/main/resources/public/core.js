@@ -7,3 +7,8 @@ angular.module('demo', [])
         });
 
     });
+
+angular.module("profile",[])
+    .controller('prof',function updateProfile($scope, $http) {
+
+    })

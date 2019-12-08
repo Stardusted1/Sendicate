@@ -10,10 +10,6 @@ public abstract class BusinessCustomer extends Customer implements Serializable 
 
 	@Column(name = "description")
 	protected String description;
-	@Column(name = "email")
-	protected LinkedList<String> emails;
-	@Column(name = "phones")
-	protected LinkedList<String> phones;
 	@Column(name = "address")
 	protected LinkedList<String> address;
 	@Column(name = "siteAddress")
@@ -28,55 +24,64 @@ public abstract class BusinessCustomer extends Customer implements Serializable 
 		this.description = description;
 	}
 
-	public LinkedList<String> getEmails() {
-		return emails;
-	}
-
-	public void AddEmail(String email) {
-		for(String e:emails){
-			if(e.equals(email)){
-				return;
+	@Override
+	public void addPhone(String phone) {
+		if (phones != null) {
+			if (!phones.contains(phone)) {
+				this.phones.add(phone);
 			}
+		}else {
+			phones = new LinkedList<>();
+			phones.add(phone);
 		}
-		this.emails.add(email);
 	}
 
-	public void DeleteEmail(String email) {
-		this.emails.remove(email);
-	}
-
-	public LinkedList<String> getPhones() {
-		return phones;
-	}
-
-	public void AddPhone(String phone) {
-		for(String p:phones){
-			if(p.equals(phone)){
-				return;
-			}
-		}
-		this.phones.add(phone);
-	}
-
-	public void DeletePhone(String phone) {
+	@Override
+	public void deletePhone(String phone) {
 		this.phones.remove(phone);
+	}
+
+	@Override
+	public void addEmail(String email) {
+		if (emails != null) {
+			if (!emails.contains(email)) {
+				emails.add(email);
+			}
+		}else {
+			emails = new LinkedList<>();
+			emails.add(email);
+		}
+	}
+
+	@Override
+	public void deleteEmail(String email) {
+		emails.remove(email);
 	}
 
 
 	public LinkedList<String> getAddress() {
-		return address;
-	}
-
-	public void AddAddress(String addres) {
-		for(String p:address){
-			if(p.equals(addres)){
-				return;
-			}
+		if(address!=null){
+			return address;
+		}else {
+			address = new LinkedList<>();
+			return address;
 		}
-		this.address.add(addres);
+
 	}
 
-	public void DeleteAddress(String address) {
+	public void addAddress(String address) {
+		if(this.address!=null){
+			if(!this.address.contains(address)){
+				this.address.add(address);
+			}
+		}else{
+			this.address = new LinkedList<>();
+			this.address.add(address);
+		}
+
+	}
+
+	public void deleteAddress(String address) {
 		this.address.remove(address);
 	}
 

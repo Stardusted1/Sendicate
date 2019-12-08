@@ -1,4 +1,4 @@
-package com.stardusted1.Sendicate.app.rest;
+package com.stardusted1.Sendicate.app.rest.users;
 
 import com.stardusted1.Sendicate.app.core.users.NewUser;
 import com.stardusted1.Sendicate.app.service.System;
@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("api/new_user")
+@RequestMapping("api/newusers")
 public class NewUserController {
     @Autowired
     System system;

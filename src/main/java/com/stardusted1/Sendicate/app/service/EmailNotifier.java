@@ -70,14 +70,14 @@ public class EmailNotifier {
 		String providerTopic = GetTopicByLocale(provider.getLocale());
 		String receiverTopic = GetTopicByLocale(receiver.getLocale());
 
-		sendMail(provider.getEmails().getFirst(),providerTopic,providerMessage);
-		sendMail(deliveryman.getEmails().getFirst(),deliverymanTopic,deliverymanMessage);
+		sendMail(provider.getEmail(),providerTopic,providerMessage);
+		sendMail(deliveryman.getEmail(),deliverymanTopic,deliverymanMessage);
 		sendMail(receiver.getEmail(),receiverTopic,receiverMessage);
 
 	}
 
 	public void notifyUsersAboutNewSupply(Deliveryman deliveryman, Receiver receiver){
-		sendMail(deliveryman.getEmails().getFirst(),
+		sendMail(deliveryman.getEmail(),
 				// TODO: 22.11.2019 message locale in resources
 				"You got new supply tp deliver",
 				"Check your active supplies");

@@ -37,3 +37,4 @@ src/main/resources/application.properties
 .idea/encodings.xml
 .idea/misc.xml
 .idea/misc.xml
+src/main/resources/templates/debug.log

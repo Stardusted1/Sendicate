@@ -1,16 +1,19 @@
 package com.stardusted1.Sendicate.app.rest;
 
 import com.stardusted1.Sendicate.app.core.repositories.DeliverymanRepository;
+import com.stardusted1.Sendicate.app.core.repositories.NewUserRepository;
 import com.stardusted1.Sendicate.app.core.repositories.ProviderRepository;
 import com.stardusted1.Sendicate.app.core.repositories.ReceiverRepository;
 import com.stardusted1.Sendicate.app.core.users.*;
 import com.stardusted1.Sendicate.app.service.System;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/login")
@@ -21,16 +24,18 @@ public class AuthenticationController {
 	private DeliverymanRepository deliverymanRepository;
 	@Autowired
 	private ProviderRepository providerRepository;
+	@Autowired
+	private NewUserRepository newUserRepository;
 
-	private System system= new System();
+	private System system = new System();
 
-	@PostMapping(path="/forgot_password")
+	@PostMapping(path = "/forgot_password")
 	String forgot_password(
 			@RequestParam String name) {
-		try{
+		try {
 			system.renewPassword(name);
 			return "Ok";
-		}catch (Exception e){
+		} catch (Exception e) {
 			return "Something went wrong";
 		}
 	}
@@ -38,49 +43,66 @@ public class AuthenticationController {
 	@PostMapping()
 	String login(@RequestParam String login,
 				 @RequestParam String pass) {
-		try{
-			return system.AuthenticateUser(login,pass);
-		}catch (Exception e){
+		try {
+			return system.AuthenticateUser(login, pass);
+		} catch (Exception e) {
 			return "Something went wrong";
 		}
 	}
 
 	@PostMapping("register")
-	User register(@RequestParam String name,
-				  @RequestParam String pass,
-				  @RequestParam String email,
-				  @RequestParam String type,
-				  @RequestParam String phone) {
-		if(Integer.valueOf(type)==1){
-			Provider provider = new Provider();
-			provider.setPassword(pass);
-			provider.setName(name);
-			provider.getEmails().add(email);
-			provider.getPhones().add(phone);
-			provider.setDateOfRegistration(new Date());
-			providerRepository.save(provider);
-			return provider;
-		}
-		if(Integer.valueOf(type)==2){
-			Deliveryman deliveryman = new Deliveryman();
-			deliveryman.setPassword(pass);
-			deliveryman.setName(name);
-			deliveryman.getEmails().add(email);
-			deliveryman.getPhones().add(phone);
-			deliveryman.setDateOfRegistration(new Date());
-			deliverymanRepository.save(deliveryman);
-			return deliveryman;
-		}if(Integer.valueOf(type)==3){
-			Receiver receiver = new Receiver();
-			receiver.setPassword(pass);
-			receiver.setName(name);
-			receiver.setEmail(email);
-			receiver.setPhone(phone);
-			receiver.setDateOfRegistration(new Date());
-			receiverRepository.save(receiver);
-			return receiver;
-		}
-		return null;
-	}
+	String register(@RequestBody String body) {
+		var usr = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		if (usr.getClass().getName().equals("java.lang.String")) {
+			if (usr.equals("anonymousUser")) {
+				return "index";
+			}
+		} else {
+			Optional optional = (Optional) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			User user = (User) optional.get();
+			if (user.getRole().equals("USER")) {
+				Map<String, String> request = System.parseBody(body);
 
+				String role = request.get("role");
+				String name = request.get("username");
+
+				if (Integer.parseInt(role) == 1) {
+					Provider provider = new Provider();
+					provider.setId(user.getId());
+					provider.setPassword(user.getPassword());
+					provider.setName(name);
+					provider.addEmail(((NewUser) user).getEmail());
+					provider.setDateOfRegistration(new Date());
+					provider.setPictureUrl(user.getPictureUrl());
+					provider.newToken();
+					providerRepository.save(provider);
+					newUserRepository.delete((NewUser) user);
+				} else if (Integer.parseInt(role) == 2) {
+					Deliveryman deliveryman = new Deliveryman();
+					deliveryman.setId(user.getId());
+					deliveryman.setPassword(user.getPassword());
+					deliveryman.setName(name);
+					deliveryman.addEmail(((NewUser) user).getEmail());
+					deliveryman.setDateOfRegistration(new Date());
+					deliveryman.setPictureUrl(user.getPictureUrl());
+					deliveryman.newToken();
+					deliverymanRepository.save(deliveryman);
+					newUserRepository.delete((NewUser) user);
+				} else if (Integer.parseInt(role) == 3) {
+					Receiver receiver = new Receiver();
+					receiver.setId(user.getId());
+					receiver.setPassword(user.getPassword());
+					receiver.setName(name);
+					receiver.addEmail(((NewUser) user).getEmail());
+					receiver.setDateOfRegistration(new Date());
+					receiver.setPictureUrl(user.getPictureUrl());
+					receiver.newToken();
+					receiverRepository.save(receiver);
+					newUserRepository.delete((NewUser) user);
+				}
+				SecurityContextHolder.clearContext();
+			}
+		}
+		return "index";
+	}
 }
