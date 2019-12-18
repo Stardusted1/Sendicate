@@ -30,7 +30,7 @@ public class NewUser extends Customer implements Serializable {
 
 	@Override
 	public void newToken() {
-		System.generateToken(this.getClass().getName());
+		System.generateToken(this.getClass().getSimpleName());
 	}
 
 	@Override

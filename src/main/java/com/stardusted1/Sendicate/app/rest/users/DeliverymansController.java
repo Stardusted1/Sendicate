@@ -5,9 +5,13 @@ import com.stardusted1.Sendicate.app.core.users.Deliveryman;
 import com.stardusted1.Sendicate.app.core.users.Provider;
 import com.stardusted1.Sendicate.app.service.System;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.json.BasicJsonParser;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
+import java.net.HttpCookie;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.util.Map;
@@ -20,30 +24,58 @@ public class DeliverymansController {
 	DeliverymanRepository deliverymanRepository;
 
 	@PostMapping("{id}")
-	String updateUser(@PathVariable("id") String id,
-					  @RequestBody String body){
+	Map<String, Object> updateUser(@PathVariable("id") String id,
+								   @RequestBody String body){
 		var user = deliverymanRepository.findById(id);
+		Map<String, Object> request = new BasicJsonParser().parseMap(body);
 		if(user.isEmpty()){
-			return "no";
+			return null;
 		}else {
+			boolean isChanged = false;
 			Deliveryman deliveryman = user.get();
-			Map<String,String> request = System.parseBody(body);
-			deliveryman.getEmails().clear();
-			deliveryman.addEmail(URLDecoder.decode(request.get("emailaddr"), Charset.defaultCharset()));
-			// TODO: 08.12.2019 IMPLEMENT:add multiple mail
-			deliveryman.getPhones().clear();
-			deliveryman.addPhone(request.get("phone"));
-			// TODO: 08.12.2019  IMPLEMENT: add multiple phone
-			deliveryman.setName(request.get("username"));
-			deliveryman.getAddress().clear();
-			deliveryman.addAddress(URLDecoder.decode(request.get("addressWeb"),Charset.defaultCharset()));
-			// TODO: 08.12.2019 implement: multiple address
-			deliveryman.setSiteAddress(URLDecoder.decode(request.get("addressWeb"),Charset.defaultCharset()));
-			deliveryman.setDescription(request.get("description"));
-			deliverymanRepository.save(deliveryman);
+			Deliveryman deliveryman1 = (Deliveryman) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+			if (request.get("address") != null) {
+				deliveryman.addAddress(URLDecoder.decode((String) request.get("address"),Charset.defaultCharset()));
+				deliveryman1.addAddress(URLDecoder.decode((String) request.get("address"),Charset.defaultCharset()));
+				isChanged = true;
+			}
+			if (request.get("description") != null) {
+				deliveryman.addEmail((String) request.get("emailaddr"));
+				deliveryman1.addEmail((String) request.get("emailaddr"));
+				deliveryman.setDescription((String) request.get("description"));
+
+				isChanged = true;
+			}
+			if (request.get("addressWeb") != null) {
+				deliveryman.setSiteAddress(URLDecoder.decode((String) request.get("addressWeb"),Charset.defaultCharset()));
+				deliveryman1.setSiteAddress(URLDecoder.decode((String) request.get("addressWeb"),Charset.defaultCharset()));
+
+				isChanged = true;
+			}
+			if (request.get("emailaddr") != null) {
+				deliveryman.addEmail((String) request.get("emailaddr"));
+				deliveryman1.addEmail((String) request.get("emailaddr"));
+
+				isChanged = true;
+			}
+			if (request.get("phone") != null) {
+				deliveryman.addPhone((String) request.get("phone"));
+				deliveryman1.addPhone((String) request.get("phone"));
+				isChanged = true;
+			}
+			if (request.get("name") != null) {
+				isChanged = true;
+				deliveryman.setName((String) request.get("name"));
+				deliveryman1.setName((String) request.get("name"));
+			}
+			if (isChanged)
+				deliverymanRepository.save(deliveryman);
 		}
-		return "ok";
+
+		return request;
 	}
+
 	@PostMapping(path = "{id}/delete/{token}")
 	String deleteReceiver(@PathVariable("id") String id,
 						  @PathVariable("token") String token){

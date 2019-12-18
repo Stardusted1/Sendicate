@@ -64,7 +64,17 @@ public abstract class BusinessCustomer extends Customer implements Serializable 
 			return address;
 		}else {
 			address = new LinkedList<>();
+			address.add("");
 			return address;
+		}
+
+	}
+
+	public String getAddres() {
+		if(address!=null){
+			return address.getFirst();
+		}else {
+			return null;
 		}
 
 	}

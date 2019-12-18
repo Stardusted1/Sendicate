@@ -5,14 +5,19 @@ import com.stardusted1.Sendicate.app.core.users.Provider;
 import com.stardusted1.Sendicate.app.core.users.Receiver;
 import com.stardusted1.Sendicate.app.service.System;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.json.BasicJsonParser;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.net.URI;
 import java.net.URLDecoder;
+import java.net.http.HttpClient;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/users/providers")
@@ -22,29 +27,56 @@ public class ProviderController {
 	ProviderRepository providerRepository;
 
 	@PostMapping("{id}")
-	String updateUser(@PathVariable("id") String id,
+	Map<String,Object> updateUser(@PathVariable("id") String id,
 					  @RequestBody String body){
 		var user = providerRepository.findById(id);
+		Map<String, Object> request = new BasicJsonParser().parseMap(body);
 		if(user.isEmpty()){
-			return "no";
+			return null;
 		}else {
+			boolean isChanged = false;
 			Provider provider = user.get();
-			Map<String,String> request = System.parseBody(body);
-			provider.getEmails().clear();
-			provider.addEmail(URLDecoder.decode(request.get("emailaddr"), Charset.defaultCharset()));
-			// TODO: 08.12.2019 IMPLEMENT:add multiple mail
-			provider.getPhones().clear();
-			provider.addPhone(request.get("phone"));
-			// TODO: 08.12.2019  IMPLEMENT: add multiple phone
-			provider.setName(request.get("username"));
-			provider.getAddress().clear();
-			provider.addAddress(URLDecoder.decode(request.get("addressWeb"),Charset.defaultCharset()));
-			// TODO: 08.12.2019 implement: multiple address
-			provider.setSiteAddress(URLDecoder.decode(request.get("addressWeb"),Charset.defaultCharset()));
-			provider.setDescription(request.get("description"));
-			providerRepository.save(provider);
+			Provider provider1 = (Provider) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+			if (request.get("address") != null) {
+				provider.addAddress(URLDecoder.decode((String) request.get("address"),Charset.defaultCharset()));
+				provider1.addAddress(URLDecoder.decode((String) request.get("address"),Charset.defaultCharset()));
+				isChanged = true;
+			}
+			if (request.get("description") != null) {
+				provider.addEmail((String) request.get("emailaddr"));
+				provider1.addEmail((String) request.get("emailaddr"));
+				provider.setDescription((String) request.get("description"));
+
+				isChanged = true;
+			}
+			if (request.get("addressWeb") != null) {
+				provider.setSiteAddress(URLDecoder.decode((String) request.get("addressWeb"),Charset.defaultCharset()));
+				provider1.setSiteAddress(URLDecoder.decode((String) request.get("addressWeb"),Charset.defaultCharset()));
+
+				isChanged = true;
+			}
+			if (request.get("emailaddr") != null) {
+				provider.addEmail((String) request.get("emailaddr"));
+				provider1.addEmail((String) request.get("emailaddr"));
+
+				isChanged = true;
+			}
+			if (request.get("phone") != null) {
+				provider.addPhone((String) request.get("phone"));
+				provider1.addPhone((String) request.get("phone"));
+				isChanged = true;
+			}
+			if (request.get("name") != null) {
+				isChanged = true;
+				provider.setName((String) request.get("name"));
+				provider1.setName((String) request.get("name"));
+			}
+			if (isChanged)
+				providerRepository.save(provider);
 		}
-		return "ok";
+
+		return request;
 	}
 	@PostMapping(path = "{id}/delete/{token}")
 	String deleteReceiver(@PathVariable("id") String id,
@@ -55,10 +87,11 @@ public class ProviderController {
 		}else {
 			Provider provider = user.get();
 			if(provider.getToken().equals(token)){
-				//receiverRepository.delete(receiver);
+				SecurityContextHolder.clearContext();
+				//providerRepository.delete(provider);
 			}
 		}
-		SecurityContextHolder.clearContext();
+
 		return "deleted";
 	}
 

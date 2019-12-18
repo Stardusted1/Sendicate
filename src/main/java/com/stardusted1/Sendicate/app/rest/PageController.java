@@ -1,6 +1,7 @@
 package com.stardusted1.Sendicate.app.rest;
 
 import com.stardusted1.Sendicate.app.core.users.*;
+import com.stardusted1.Sendicate.app.service.System;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -52,37 +53,35 @@ public class PageController {
 
 	@GetMapping("/main")
 	public String user(Model model) {
-		Optional optional = (Optional) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		User user = (User) optional.get();
-		if (user.getRole().equals("USER")) {
-			model.addAttribute("usr", user);
+		if(System.recognizeUser()==null){
 			return "register";
 		}
-
 		return "main";
 	}
 
 	@GetMapping("/profile")
 	public String profile(Model model) {
-		try {
-			Optional optional = (Optional) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			Customer user = (Customer) optional.get();
-		} catch (Exception e){ }
-		User user = (Customer)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
+		var sContext = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Customer user = null;
+		if(sContext.getClass().getSimpleName().equals("Optional")){
+			user = (Customer) ((Optional)sContext).get();
+		}else{
+			user = (Customer)sContext;
+		}
 		if (user.getRole().equals("USER")) {
 			model.addAttribute("usr", user);
 			return "register";
 		}
 		if (user.getRole().equals("BCUSTOMER")) {
+
 			model.addAttribute("BCUSTOMER", true);
 			model.addAttribute("address", ((BusinessCustomer) user).getAddress().getFirst());
 			model.addAttribute("addressWeb", ((BusinessCustomer) user).getSiteAddress());
 			model.addAttribute("desc", ((BusinessCustomer) user).getDescription());
 			model.addAttribute("usr", (BusinessCustomer) user);
 		} else if (user.getRole().equals("CUSTOMER")) {
-			model.addAttribute("BCUSTOMER", false);
 
+			model.addAttribute("BCUSTOMER", false);
 			model.addAttribute("usr", (Customer) user);
 		}
 		model.addAttribute("type", user.getClass().getSimpleName().toLowerCase() + "s");

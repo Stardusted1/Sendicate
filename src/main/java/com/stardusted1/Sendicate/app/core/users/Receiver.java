@@ -89,7 +89,7 @@ public class Receiver extends Customer implements Serializable {
 
 	@Override
 	public void newToken() {
-		this.token = System.generateToken(this.getClass().getName());
+		this.token = System.generateToken(this.getClass().getSimpleName());
 	}
 
 

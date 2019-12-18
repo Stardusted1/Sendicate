@@ -19,10 +19,11 @@
     <link rel="stylesheet" href="assets/css/styles.css">
     <link rel="stylesheet" href="assets/css/untitled.css">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
+<!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>-->
     <script src="core.js"></script>
 </head>
 
-<body style="background: linear-gradient(135deg, #172a74, #21a9af);background-color: #184e8e;padding-bottom: 80px;font-family: 'Source Sans Pro', sans-serif;">
+<body style="background: linear-gradient(135deg, #172a74, #21a9af);background-color: #184e8e;padding-bottom: 80px;font-family: 'Source Sans Pro', sans-serif;" ng-app="profile">
 <div>
     <div class="header-blue" style="padding-bottom: 0px;">
         <nav class="navbar navbar-light navbar-expand-md navigation-clean-search">
@@ -35,10 +36,12 @@
                         <li class="nav-item" role="presentation"><a class="nav-link" href="/main">Workbench</a></li>
                     </ul>
                     <form class="form-inline mr-auto" target="_self">
-                        <div class="form-group"><label for="search-field"><i class="fa fa-search"></i></label><input
-                                class="form-control search-field" type="search" id="search-field" name="search"></div>
+                        <div class="form-group">
+
+                        </div>
                     </form>
-                    <div class="border rounded" id="Autorized" style="border-radius: 30px !important;"><a
+
+                    <div class="border rounded " id="Autorized" style="border-radius: 30px !important;"><a
                             class="btn btn-light action-button" role="button" id="logout" href="/logout"
                             style="border-radius: 0px;border-color: transparent;">Log Out</a><img class="rounded-circle"
                                                                                                   style="width: 40px;height: 40px;"
@@ -56,39 +59,57 @@
                                                style="box-shadow: 2px 2px 20px 0px rgba(117,117,117,1) !important;border-radius: 20px;max-width: 250px;max-height: 250px;margin-top: 48px; margin-bottom: 30px">
         </div>
         <div class="col-xl-5 offset-xl-1">
-            <h1 style="margin-left: 50px;" th:text="${usr.getUsername()+' • '+type}"></h1>
-            <form style="margin-top: 0;" th:action="${'/api/users/'+type+'/'+usr.getId()}" method="post">
+            <h1 style="margin-left: 50px;" th:text="${usr.getName()+' • '+type}"
+            ng-model="displayedName"
+            name="displayedName"></h1>
+<!--            th:action="${'/api/users/'+type+'/'+usr.getId()}"-->
+            <form style="margin-top: 0;"
+
+                 ng-submit="submit()" ng-controller="profileController">
+                <input type="hidden"
+                       th:value="${'/api/users/'+type+'/'+usr.getId()}"
+                       name="urlRequest"
+                       ng-model="urlRequest">
                 <div class="form-group" style="border-radius: 10px !important;"><input
                         name="username"
+                        ng-model="username"
                         class="form-control profile-input" type="text"
-                        th:placeholder="${usr.getUsername() + '| Username'}"></div>
+                        th:placeholder="${usr.getName() + '| Username'}"></div>
                 <div class="form-group profile-input" style="border-radius: 10px !important;"><input
                         class="form-control profile-input" type="email" data-toggle="tooltip"
+                        ng-model="emailaddr"
                         name="emailaddr"
                         th:placeholder="${usr.getEmail() + '| Email'}"
                         title="Split your addresses by space"
                         required=""></div>
                 <div class="form-group"><input class="form-control profile-input" type="tel" data-toggle="tooltip"
-
+                                                ng-model="phone"
                                                name="phone"
                                                th:placeholder="${usr.getPhone() + '| Phone'}"
                                                title="Split your addresses by space"></div>
                 <div class="form-group th" th:if="${BCUSTOMER==true}"><input class="form-control profile-input"
                                                                              type="text"
-                                                                             name="adddress"
+                                                                             name="address"
+                                                                             ng-model="address"
                                                                              th:placeholder="${ address + ' | Address'} ">
                 </div>
                 <div class="form-group" th:if="${BCUSTOMER==true}"><input class="form-control profile-input" type="url"
                                                                           name="addressWeb"
+                                                                          ng-model="addressWeb"
                                                                           th:placeholder="${ addressWeb + '| Web-site address'}">
                 </div>
                 <div class="form-group" th:if="${BCUSTOMER==true}"><textarea class="form-control profile-input"
                                                                              style="min-height: 40px;"
+                                                                             ng-model="description"
                                                                              name="description"
                                                                              th:placeholder="${ desc + '| Description'}"></textarea>
+
                 </div>
                 <div class="form-group">
-                    <button class="btn btn-success d-block" type="submit" style="margin: auto;">Save</button>
+                    <input id="submit" class="btn btn-success d-block" type="submit"
+                           ng-model="submitButton"
+                           name="submitButton"
+                           ng-click="submitProfile()" style="margin: auto;" value="Save">
                 </div>
             </form>
         </div>
@@ -106,6 +127,10 @@
             </div>
         </div>
     </div>
+</div>
+<div id="messages" class="hide" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <div id="messages_content"></div>
 </div>
 <script src="assets/js/jquery.min.js"></script>
 <script src="assets/bootstrap/js/bootstrap.min.js"></script>

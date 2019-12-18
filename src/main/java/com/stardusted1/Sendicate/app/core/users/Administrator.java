@@ -101,6 +101,6 @@ public class Administrator extends User implements Serializable {
 
 	@Override
 	public void newToken() {
-		 this.token = System.generateToken(this.getClass().getName());
+		 this.token = System.generateToken(this.getClass().getSimpleName());
 	}
 }
