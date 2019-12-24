@@ -25,7 +25,7 @@ public class PageController {
 				model.addAttribute("usr", usr);
 			}
 		} else {
-			if(SecurityContextHolder.getContext().getAuthentication().getPrincipal().getClass().getSimpleName().equals("Optional")){
+			if (SecurityContextHolder.getContext().getAuthentication().getPrincipal().getClass().getSimpleName().equals("Optional")) {
 				Optional optional = (Optional) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 				User user = (User) optional.get();
 				if (user.getRole().equals("USER")) {
@@ -35,12 +35,12 @@ public class PageController {
 				}
 				model.addAttribute("anon", false);
 				model.addAttribute("pictureUrl", user.getPictureUrl());
-			}else if(SecurityContextHolder.getContext().getAuthentication().getPrincipal().getClass().getSimpleName().equals("Provider")){
+			} else if (SecurityContextHolder.getContext().getAuthentication().getPrincipal().getClass().getSimpleName().equals("Provider")) {
 				Provider provider = (Provider) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 				model.addAttribute("newUser", false);
 				model.addAttribute("anon", false);
 				model.addAttribute("pictureUrl", provider.getPictureUrl());
-			}else if(SecurityContextHolder.getContext().getAuthentication().getPrincipal().getClass().getSimpleName().equals("Deliveryman")){
+			} else if (SecurityContextHolder.getContext().getAuthentication().getPrincipal().getClass().getSimpleName().equals("Deliveryman")) {
 				Deliveryman deliveryman = (Deliveryman) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 				model.addAttribute("newUser", false);
 				model.addAttribute("anon", false);
@@ -53,9 +53,11 @@ public class PageController {
 
 	@GetMapping("/main")
 	public String user(Model model) {
-		if(System.recognizeUser()==null){
+		var customer = System.recognizeUser();
+		if (customer == null) {
 			return "register";
 		}
+		model.addAttribute("customer",customer);
 		return "main";
 	}
 
@@ -63,10 +65,10 @@ public class PageController {
 	public String profile(Model model) {
 		var sContext = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Customer user = null;
-		if(sContext.getClass().getSimpleName().equals("Optional")){
-			user = (Customer) ((Optional)sContext).get();
-		}else{
-			user = (Customer)sContext;
+		if (sContext.getClass().getSimpleName().equals("Optional")) {
+			user = (Customer) ((Optional) sContext).get();
+		} else {
+			user = (Customer) sContext;
 		}
 		if (user.getRole().equals("USER")) {
 			model.addAttribute("usr", user);

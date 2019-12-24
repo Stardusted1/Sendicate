@@ -47,3 +47,64 @@ var profile = angular.module("profile", [])
 
         }
     });
+
+var main = angular.module("main",[])
+    .controller("workbenchCurrentController", function ($scope, $http) {
+
+        const token = document.getElementsByName("userToken")[0].value;
+        const id = document.getElementsByName("userId")[0].value;
+
+        $scope.getCurrentSupplies = function(){
+            var supplyList = document.getElementById("List-Of-supplies-current");
+            $http.get("api/supply/"+id+"/get")
+                .success(function (data) {
+                    supplyList.innerHTML = null;
+                    for(supply of data){
+                        var div = document.createElement("div");
+                        div.className+="list-element";
+                        div.style.marginTop = "2px";
+                        div.style.marginBottom = "2px"
+
+                        var form = document.createElement("form");
+                        
+                        var div_form_group = document.createElement("div");
+                        div_form_group.className += "form-group";
+
+                        var button = document.createElement("button");
+                        button.className += "btn btn-primary btn-sm text-left";
+                        button.type = "submit";
+                        button.style.width = "100%";
+                        button.innerText += supply.name;
+                        button.value += supply.id;
+                        button.setAttribute("ng-controller", "workbenchCurrentController");
+                        button.setAttribute("ng-click", "clicked()");
+                        button.setAttribute("compile","html")
+                        div_form_group.appendChild(button);
+                        form.appendChild(div_form_group);
+                        div.appendChild(form);
+                        $compile(div);
+                        supplyList.appendChild(div);
+
+                        //< div class="list-element" style = "margin-top: 2px;margin-bottom: 2px;" >
+                        //    <form>
+                        //       <div class="form-group" style="margin-bottom: 0px;">
+                        //           <button class="btn btn-primary btn-sm text-left" type="submit"
+                        //               style="width: 100%;margin-top: 2px;margin-bottom: 2px;">Button
+                        //               </button>
+                        //       </div>
+                        //    </form>
+                        //</div >
+                    }
+
+                })
+                .error(function (error) {
+                    alert("failure, reload page")
+            });
+        };
+        $scope.init = function ($scope, $http) {
+            alert("init");
+        },
+        $scope.clicked = function () {
+            alert("clicked");
+        }
+    });

@@ -10,12 +10,12 @@ import java.util.ArrayList;
 import java.util.Date;
 
 @Entity
-@Table(name = "Administrators")
+@Table(name = "Supplies")
 public class Supply {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected int id;
+    protected long id;
     protected String name;
     protected SupplyStatus status;
     protected Date dateBegins;
@@ -138,7 +138,7 @@ public class Supply {
         this.status = status;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 

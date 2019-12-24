@@ -1,327 +1,1221 @@
 <!DOCTYPE html>
-<html  xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Dashboard - Brand</title>
-    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
-    <link rel="stylesheet" href="assets/fonts/fontawesome-all.min.css">
-    <link rel="stylesheet" href="assets/fonts/line-awesome.min.css">
+    <link rel="stylesheet" href="assets/main/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
+    <link rel="stylesheet" href="assets/main/fonts/fontawesome-all.min.css">
+    <link rel="stylesheet" href="assets/main/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="assets/main/fonts/ionicons.min.css">
+    <link rel="stylesheet" href="assets/main/fonts/line-awesome.min.css">
+    <link rel="stylesheet" href="assets/main/fonts/fontawesome5-overrides.min.css">
+    <link rel="stylesheet" href="assets/main/css/untitled.css">
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
+    <!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.7.8/angular-sanitize.min.js" integrity="sha256-rkC3YaCKtbLotg8lQpxqYki+DDOVXjcA5wTSxjRlI0E=" crossorigin="anonymous"></script>-->
+    <script src="core.js"></script>
+    <script src="misc.js"></script>
 </head>
 
-<body id="page-top">
-    <div id="wrapper">
-        <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0">
-            <div class="container-fluid d-flex flex-column p-0">
-                <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
-                    <div class="sidebar-brand-icon"><i class="la la-ship"></i></div>
-                    <div class="sidebar-brand-text mx-3"><span>Sendicate</span></div>
-                </a>
-                <hr class="sidebar-divider my-0">
-                <ul class="nav navbar-nav text-light" id="accordionSidebar">
-                    <li class="nav-item" role="presentation"><a class="nav-link active" href="main.html"><i class="fas fa-suitcase-rolling"></i><span>Supplies</span></a></li>
-                </ul>
-                <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>
+<body id="page-top" ng-app="main">
+<input type="hidden" th:value="${customer.getId()}"
+       name="userId"
+       ng-model="userId">
+<input type="hidden" th:value="${customer.getToken()}"
+       name="userToken"
+       ng-model="userToken">
+<div id="wrapper">
+    <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0">
+        <div class="container-fluid d-flex flex-column p-0">
+            <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
+                <div class="sidebar-brand-icon"><i class="la la-ship"></i></div>
+                <div class="sidebar-brand-text mx-3"><span>Sendicate</span></div>
+            </a>
+            <hr class="sidebar-divider my-0">
+            <ul class="nav navbar-nav text-light" id="accordionSidebar">
+                <li id="curSupplBut" class="nav-item current-button" role="presentation"
+                    onclick="currentSupplyChosen(this)" style="cursor: pointer">
+                    <div class="nav-link active">
+                        <i class="fas fa-play"></i>
+                        <span>Current Supplies</span>
+                    </div>
+                </li>
+                <li id="hisSupplBut" class="nav-item" role="presentation" onclick="historyChosen(this)"
+                    style="cursor: pointer">
+                    <div class="nav-link active">
+                        <i class="fas fa-history"></i>
+                        <span>Supply History</span>
+                    </div>
+                </li>
+                <li id="newSupplBut" class="nav-item" role="presentation" onclick="addNewSupplyChosen(this)"
+                    style="cursor: pointer">
+                    <div class="nav-link active">
+                        <i class="fas fa-plus-circle"></i>
+                        <span>New Supply</span>
+                    </div>
+                </li>
+            </ul>
+            <div class="text-center d-none d-md-inline">
+                <button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button>
             </div>
-        </nav>
-        <div class="d-flex flex-column" id="content-wrapper">
-            <div id="content">
-                <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
-                    <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle mr-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button>
-                        <form class="form-inline d-none d-sm-inline-block mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                            <div class="input-group"><input class="bg-light form-control border-0 small" type="text" placeholder="Search for ...">
-                                <div class="input-group-append"><button class="btn btn-primary py-0" type="button"><i class="fas fa-search"></i></button></div>
+        </div>
+    </nav>
+    <div class="d-flex flex-column" id="content-wrapper">
+        <div id="content">
+
+
+            <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
+                <div class="container-fluid">
+                    <button class="btn btn-link d-md-none rounded-circle mr-3" id="sidebarToggleTop" type="button"><i
+                            class="fas fa-bars"></i></button>
+                    <form class="form-inline d-none d-sm-inline-block mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                        <div class="input-group"><input class="bg-light form-control border-0 small" type="text"
+                                                        placeholder="Search for ...">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary py-0" type="button"><i class="fas fa-search"></i>
+                                </button>
                             </div>
-                        </form>
-                        <ul class="nav navbar-nav flex-nowrap ml-auto">
-                            <li class="nav-item dropdown d-sm-none no-arrow"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#"><i class="fas fa-search"></i></a>
-                                <div class="dropdown-menu dropdown-menu-right p-3 animated--grow-in" role="menu" aria-labelledby="searchDropdown">
-                                    <form class="form-inline mr-auto navbar-search w-100">
-                                        <div class="input-group"><input class="bg-light form-control border-0 small" type="text" placeholder="Search for ...">
-                                            <div class="input-group-append"><button class="btn btn-primary py-0" type="button"><i class="fas fa-search"></i></button></div>
+                        </div>
+                    </form>
+                    <ul class="nav navbar-nav flex-nowrap ml-auto">
+                        <li class="nav-item dropdown d-sm-none no-arrow"><a class="dropdown-toggle nav-link"
+                                                                            data-toggle="dropdown" aria-expanded="false"
+                                                                            href="#"><i class="fas fa-search"></i></a>
+                            <div class="dropdown-menu dropdown-menu-right p-3 animated--grow-in" role="menu"
+                                 aria-labelledby="searchDropdown">
+                                <form class="form-inline mr-auto navbar-search w-100">
+                                    <div class="input-group"><input class="bg-light form-control border-0 small"
+                                                                    type="text" placeholder="Search for ...">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary py-0" type="button"><i
+                                                    class="fas fa-search"></i></button>
                                         </div>
-                                    </form>
-                                </div>
-                            </li>
-                            <li class="nav-item dropdown no-arrow mx-1" role="presentation">
-                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#"><span class="badge badge-danger badge-counter">3+</span><i class="fas fa-bell fa-fw"></i></a>
-                                    <div class="dropdown-menu dropdown-menu-right dropdown-list dropdown-menu-right animated--grow-in"
-                                        role="menu">
-                                        <h6 class="dropdown-header">alerts center</h6>
-                                        <a class="d-flex align-items-center dropdown-item" href="#">
-                                            <div class="mr-3">
-                                                <div class="bg-primary icon-circle"><i class="fas fa-file-alt text-white"></i></div>
+                                    </div>
+                                </form>
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown no-arrow mx-1" role="presentation">
+                            <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link"
+                                                                       data-toggle="dropdown" aria-expanded="false"
+                                                                       href="#"><span
+                                    class="badge badge-danger badge-counter">3+</span><i class="fas fa-bell fa-fw"></i></a>
+                                <div class="dropdown-menu dropdown-menu-right dropdown-list dropdown-menu-right animated--grow-in"
+                                     role="menu">
+                                    <h6 class="dropdown-header">alerts center</h6>
+                                    <a class="d-flex align-items-center dropdown-item" href="#">
+                                        <div class="mr-3">
+                                            <div class="bg-primary icon-circle"><i
+                                                    class="fas fa-file-alt text-white"></i></div>
+                                        </div>
+                                        <div><span class="small text-gray-500">December 12, 2019</span>
+                                            <p>A new monthly report is ready to download!</p>
+                                        </div>
+                                    </a>
+                                    <a class="d-flex align-items-center dropdown-item" href="#">
+                                        <div class="mr-3">
+                                            <div class="bg-success icon-circle"><i class="fas fa-donate text-white"></i>
                                             </div>
-                                            <div><span class="small text-gray-500">December 12, 2019</span>
-                                                <p>A new monthly report is ready to download!</p>
-                                            </div>
-                                        </a>
-                                        <a class="d-flex align-items-center dropdown-item" href="#">
-                                            <div class="mr-3">
-                                                <div class="bg-success icon-circle"><i class="fas fa-donate text-white"></i></div>
-                                            </div>
-                                            <div><span class="small text-gray-500">December 7, 2019</span>
-                                                <p>$290.29 has been deposited into your account!</p>
-                                            </div>
-                                        </a>
-                                        <a class="d-flex align-items-center dropdown-item" href="#">
-                                            <div class="mr-3">
-                                                <div class="bg-warning icon-circle"><i class="fas fa-exclamation-triangle text-white"></i></div>
-                                            </div>
-                                            <div><span class="small text-gray-500">December 2, 2019</span>
-                                                <p>Spending Alert: We've noticed unusually high spending for your account.</p>
-                                            </div>
-                                        </a><a class="text-center dropdown-item small text-gray-500" href="#">Show All Alerts</a></div>
-                                </div>
-                            </li>
-                            <div class="d-none d-sm-block topbar-divider"></div>
-                            <li class="nav-item dropdown no-arrow" role="presentation">
-                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#"><span class="d-none d-lg-inline mr-2 text-gray-600 small">PROFILE NAME</span><img class="border rounded-circle img-profile" src="assets/img/avatars/avatar5.jpeg"></a>
+                                        </div>
+                                        <div><span class="small text-gray-500">December 7, 2019</span>
+                                            <p>$290.29 has been deposited into your account!</p>
+                                        </div>
+                                    </a>
+                                    <a class="d-flex align-items-center dropdown-item" href="#">
+                                        <div class="mr-3">
+                                            <div class="bg-warning icon-circle"><i
+                                                    class="fas fa-exclamation-triangle text-white"></i></div>
+                                        </div>
+                                        <div><span class="small text-gray-500">December 2, 2019</span>
+                                            <p>Spending Alert: We've noticed unusually high spending for your
+                                                account.</p>
+                                        </div>
+                                    </a><a class="text-center dropdown-item small text-gray-500" href="#">Show All
+                                    Alerts</a></div>
+                            </div>
+                        </li>
+                        <div class="d-none d-sm-block topbar-divider"></div>
+                        <li class="nav-item dropdown no-arrow" role="presentation">
+                            <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link"
+                                                                       data-toggle="dropdown" aria-expanded="false"
+                                                                       href="#"><span
+                                    class="d-none d-lg-inline mr-2 text-gray-600 small"
+                                    th:text="${customer.getName()}"></span><img
+                                    class="border rounded-circle img-profile" th:src="${customer.getPictureUrl()}"></a>
+                                <div
+                                        class="dropdown-menu shadow dropdown-menu-right animated--grow-in" role="menu">
+                                    <a class="dropdown-item" role="presentation" href="/profile"><i
+                                            class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Profile</a><a
+                                        class="dropdown-item" role="presentation" href="#"><i
+                                        class="fas fa-language fa-sm fa-fw mr-2 text-gray-400"
+                                        style="font-size: 12px;"></i>&nbsp;Language</a>
                                     <div
-                                        class="dropdown-menu shadow dropdown-menu-right animated--grow-in" role="menu"><a class="dropdown-item" role="presentation" href="#"><i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Profile</a><a class="dropdown-item" role="presentation" href="#"><i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Settings</a>
-                                        <a
-                                            class="dropdown-item" role="presentation" href="#"><i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Activity log</a>
-                                            <div class="dropdown-divider"></div><a class="dropdown-item" role="presentation" href="#"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Logout</a></div>
-                    </div>
-                    </li>
+                                            class="dropdown-divider"></div>
+                                    <a class="dropdown-item" role="presentation" href="/logout"><i
+                                            class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Logout</a>
+                                </div>
+                            </div>
+                        </li>
                     </ul>
-            </div>
+                </div>
             </nav>
-            <div class="container-fluid">
+
+
+            <div class="container-fluid" id="supply-container" display="none">
                 <div class="d-sm-flex justify-content-between align-items-center mb-4">
-                    <h3 class="text-dark mb-0">Supplies</h3><a class="btn btn-primary btn-sm d-none d-sm-inline-block" role="button" href="#"><i class="fas fa-download fa-sm text-white-50"></i>&nbsp;Generate Report</a></div>
+                    <h3 class="text-dark mb-0">Current supplies</h3>
+                    <button class="btn btn-dark d-none d-sm-inline-block" type="button"
+                            ng-controller="workbenchCurrentController" ng-click="getCurrentSupplies()"><i
+                            class="fa fa-refresh fa-sm text-white-50" style="color: #ffffff;"></i>&nbsp;Refresh
+                    </button>
+                </div>
                 <div class="row">
-                    <div class="col-md-6 col-xl-3 mb-4">
-                        <div class="card shadow border-left-primary py-2">
-                            <div class="card-body">
-                                <div class="row align-items-center no-gutters">
-                                    <div class="col mr-2">
-                                        <div class="text-uppercase text-primary font-weight-bold text-xs mb-1"><span>Earnings (monthly)</span></div>
-                                        <div class="text-dark font-weight-bold h5 mb-0"><span>$40,000</span></div>
+                    <div class="col-xl-4">
+                        <h6>List of supplies&nbsp;</h6>
+                        <div class="border rounded shadow overflow-auto"
+                             style="height: 400px;padding-right: 10px;padding-left: 10px;margin-bottom: 24px;padding-top: 7px;padding-bottom: 7px;"
+                             ng-controller="workbenchCurrentController"
+                             ng-bind-html="list_of_supplies"
+                             id="List-Of-supplies-current"
+                             compile="html">
+
+
+                        <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;" ng-controller="workbenchCurrentController">
+                                <form>
+                                    <div class="form-group" style="margin-bottom: 0px;">
+                                        <button class="btn btn-primary btn-sm text-left" type="submit"
+                                                style="width: 100%;">Button
+                                        </button>
                                     </div>
-                                    <div class="col-auto"><i class="fas fa-calendar fa-2x text-gray-300"></i></div>
+                                </form>
+                            </div>
+                            <!--<div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                                <form>
+                                    <div class="form-group" style="margin-bottom: 0px;">
+                                        <button class="btn btn-primary btn-sm text-left" type="submit"
+                                                style="width: 100%;margin-top: 2px;margin-bottom: 2px;">Button
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                                <form>
+                                    <div class="form-group" style="margin-bottom: 0px;">
+                                        <button class="btn btn-primary btn-sm text-left" type="submit"
+                                                style="width: 100%;margin-top: 2px;margin-bottom: 2px;">Button
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                                <form>
+                                    <div class="form-group" style="margin-bottom: 0px;">
+                                        <button class="btn btn-primary btn-sm text-left" type="submit"
+                                                style="width: 100%;margin-top: 2px;margin-bottom: 2px;">Button
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                                <form>
+                                    <div class="form-group" style="margin-bottom: 0px;">
+                                        <button class="btn btn-primary btn-sm text-left" type="submit"
+                                                style="width: 100%;margin-top: 2px;margin-bottom: 2px;">Button
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                                <form>
+                                    <div class="form-group" style="margin-bottom: 0px;">
+                                        <button class="btn btn-primary btn-sm text-left" type="submit"
+                                                style="width: 100%;margin-top: 2px;margin-bottom: 2px;">Button
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                                <form>
+                                    <div class="form-group" style="margin-bottom: 0px;">
+                                        <button class="btn btn-primary btn-sm text-left" type="submit"
+                                                style="width: 100%;margin-top: 2px;margin-bottom: 2px;">Button
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                                <form>
+                                    <div class="form-group" style="margin-bottom: 0px;">
+                                        <button class="btn btn-primary btn-sm text-left" type="submit"
+                                                style="width: 100%;margin-top: 2px;margin-bottom: 2px;">Button
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                                <form>
+                                    <div class="form-group" style="margin-bottom: 0px;">
+                                        <button class="btn btn-primary btn-sm text-left" type="submit"
+                                                style="width: 100%;margin-top: 2px;margin-bottom: 2px;">Button
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                                <form>
+                                    <div class="form-group" style="margin-bottom: 0px;">
+                                        <button class="btn btn-primary btn-sm text-left" type="submit"
+                                                style="width: 100%;margin-top: 2px;margin-bottom: 2px;">Button
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                                <form>
+                                    <div class="form-group" style="margin-bottom: 0px;">
+                                        <button class="btn btn-primary btn-sm text-left" type="submit"
+                                                style="width: 100%;margin-top: 2px;margin-bottom: 2px;">Button
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                                <form>
+                                    <div class="form-group" style="margin-bottom: 0px;">
+                                        <button class="btn btn-primary btn-sm text-left" type="submit"
+                                                style="width: 100%;margin-top: 2px;margin-bottom: 2px;">Button
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                                <form>
+                                    <div class="form-group" style="margin-bottom: 0px;">
+                                        <button class="btn btn-primary btn-sm text-left" type="submit"
+                                                style="width: 100%;margin-top: 2px;margin-bottom: 2px;">Button
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>-->
+                        </div>
+                    </div>
+                    <div class="col-xl-4">
+                        <h6>Supply description</h6>
+                        <div class="border rounded shadow"
+                             style="padding-top: 10px;padding-bottom: 10px;padding-left: 15px;background-color: #ffffff;margin-bottom: 25px;">
+                            <div class="d-inline-flex" style="margin-bottom: 0px;">
+                                <h2 style="width: auto;">Name:&nbsp;</h2>
+                                <h2 style="width: auto;">Heading</h2>
+                            </div>
+                            <div class="d-flex">
+                                <h5 style="width: auto;">Date From:&nbsp;</h5>
+                                <h5 style="width: 120px;">Heading</h5>
+                            </div>
+                            <div class="d-flex">
+                                <h5 style="width: auto;">Date To:&nbsp;</h5>
+                                <h5 style="width: auto;">Heading</h5>
+                            </div>
+                            <div class="d-flex">
+                                <h5 style="width: auto;">Status:&nbsp;</h5>
+                                <h5 style="width: auto;">Status</h5>
+                            </div>
+                            <div class="d-flex">
+                                <h5 style="width: auto;">Deliveryman:&nbsp;</h5>
+                                <h5 style="width: auto;">Status</h5>
+                            </div>
+                            <div class="d-flex">
+                                <h5 style="width: auto;">Receiver:&nbsp;</h5>
+                                <h5 style="width: auto;">Status</h5>
+                            </div>
+                            <div class="d-flex">
+                                <h5 style="width: auto;">Provider:&nbsp;</h5>
+                                <h5 style="width: auto;">Status</h5>
+                            </div>
+                            <div class="d-flex">
+                                <h5 style="width: auto;">Number of packages:&nbsp;</h5>
+                                <h5 style="width: auto;">Status</h5>
+                            </div>
+                            <div>
+                                <div class="btn-toolbar">
+                                    <div class="btn-group" role="group">
+                                        <button class="btn btn-success" type="button">Delivered<i class="fa fa-check"
+                                                                                                  style="padding-left: 10px;"></i>
+                                        </button>
+                                        <button class="btn btn-warning" type="button">Taken<i class="fas fa-hands"
+                                                                                              style="padding-left: 10px;"></i>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6 col-xl-3 mb-4">
-                        <div class="card shadow border-left-success py-2">
-                            <div class="card-body">
-                                <div class="row align-items-center no-gutters">
-                                    <div class="col mr-2">
-                                        <div class="text-uppercase text-success font-weight-bold text-xs mb-1"><span>Earnings (annual)</span></div>
-                                        <div class="text-dark font-weight-bold h5 mb-0"><span>$215,000</span></div>
-                                    </div>
-                                    <div class="col-auto"><i class="fas fa-dollar-sign fa-2x text-gray-300"></i></div>
-                                </div>
+                    <div class="col">
+                        <h6>List of packages in chosen supply</h6>
+                        <div class="border rounded shadow overflow-auto" id="List-Of-packages-in-supply"
+                             style="height: 400px;padding-right: 10px;padding-left: 10px;margin-bottom: 24px;padding-top: 7px;padding-bottom: 7px;">
+                            <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                                <form>
+                                    <div class="form-group" style="margin-bottom: 0px;"><a
+                                            class="btn btn-primary btn-sm text-left" role="button" style="width: 100%;"
+                                            href="#package-info">Package</a></div>
+                                </form>
                             </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-xl-3 mb-4">
-                        <div class="card shadow border-left-info py-2">
-                            <div class="card-body">
-                                <div class="row align-items-center no-gutters">
-                                    <div class="col mr-2">
-                                        <div class="text-uppercase text-info font-weight-bold text-xs mb-1"><span>Tasks</span></div>
-                                        <div class="row no-gutters align-items-center">
-                                            <div class="col-auto">
-                                                <div class="text-dark font-weight-bold h5 mb-0 mr-3"><span>50%</span></div>
-                                            </div>
-                                            <div class="col">
-                                                <div class="progress progress-sm">
-                                                    <div class="progress-bar bg-info" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;"><span class="sr-only">50%</span></div>
-                                                </div>
-                                            </div>
-                                        </div>
+                            <!--<div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                                <form>
+                                    <div class="form-group" style="margin-bottom: 0px;">
+                                        <button class="btn btn-primary btn-sm text-left" type="submit"
+                                                style="width: 100%;margin-top: 2px;margin-bottom: 2px;">Button
+                                        </button>
                                     </div>
-                                    <div class="col-auto"><i class="fas fa-clipboard-list fa-2x text-gray-300"></i></div>
-                                </div>
+                                </form>
                             </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-xl-3 mb-4">
-                        <div class="card shadow border-left-warning py-2">
-                            <div class="card-body">
-                                <div class="row align-items-center no-gutters">
-                                    <div class="col mr-2">
-                                        <div class="text-uppercase text-warning font-weight-bold text-xs mb-1"><span>Pending Requests</span></div>
-                                        <div class="text-dark font-weight-bold h5 mb-0"><span>18</span></div>
+                            <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                                <form>
+                                    <div class="form-group" style="margin-bottom: 0px;">
+                                        <button class="btn btn-primary btn-sm text-left" type="submit"
+                                                style="width: 100%;margin-top: 2px;margin-bottom: 2px;">Button
+                                        </button>
                                     </div>
-                                    <div class="col-auto"><i class="fas fa-comments fa-2x text-gray-300"></i></div>
-                                </div>
+                                </form>
                             </div>
+                            <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                                <form>
+                                    <div class="form-group" style="margin-bottom: 0px;">
+                                        <button class="btn btn-primary btn-sm text-left" type="submit"
+                                                style="width: 100%;margin-top: 2px;margin-bottom: 2px;">Button
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                                <form>
+                                    <div class="form-group" style="margin-bottom: 0px;">
+                                        <button class="btn btn-primary btn-sm text-left" type="submit"
+                                                style="width: 100%;margin-top: 2px;margin-bottom: 2px;">Button
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                                <form>
+                                    <div class="form-group" style="margin-bottom: 0px;">
+                                        <button class="btn btn-primary btn-sm text-left" type="submit"
+                                                style="width: 100%;margin-top: 2px;margin-bottom: 2px;">Button
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                                <form>
+                                    <div class="form-group" style="margin-bottom: 0px;">
+                                        <button class="btn btn-primary btn-sm text-left" type="submit"
+                                                style="width: 100%;margin-top: 2px;margin-bottom: 2px;">Button
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                                <form>
+                                    <div class="form-group" style="margin-bottom: 0px;">
+                                        <button class="btn btn-primary btn-sm text-left" type="submit"
+                                                style="width: 100%;margin-top: 2px;margin-bottom: 2px;">Button
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                                <form>
+                                    <div class="form-group" style="margin-bottom: 0px;">
+                                        <button class="btn btn-primary btn-sm text-left" type="submit"
+                                                style="width: 100%;margin-top: 2px;margin-bottom: 2px;">Button
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                                <form>
+                                    <div class="form-group" style="margin-bottom: 0px;">
+                                        <button class="btn btn-primary btn-sm text-left" type="submit"
+                                                style="width: 100%;margin-top: 2px;margin-bottom: 2px;">Button
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                                <form>
+                                    <div class="form-group" style="margin-bottom: 0px;">
+                                        <button class="btn btn-primary btn-sm text-left" type="submit"
+                                                style="width: 100%;margin-top: 2px;margin-bottom: 2px;">Button
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                                <form>
+                                    <div class="form-group" style="margin-bottom: 0px;">
+                                        <button class="btn btn-primary btn-sm text-left" type="submit"
+                                                style="width: 100%;margin-top: 2px;margin-bottom: 2px;">Button
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                                <form>
+                                    <div class="form-group" style="margin-bottom: 0px;">
+                                        <button class="btn btn-primary btn-sm text-left" type="submit"
+                                                style="width: 100%;margin-top: 2px;margin-bottom: 2px;">Button
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>-->
                         </div>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row" id="package-info-current">
                     <div class="col-lg-7 col-xl-8">
-                        <div class="card shadow mb-4">
+                        <div class="card shadow mb-4" style="height: auto;margin-bottom: 0px;">
                             <div class="card-header d-flex justify-content-between align-items-center">
-                                <h6 class="text-primary font-weight-bold m-0">Earnings Overview</h6>
-                                <div class="dropdown no-arrow"><button class="btn btn-link btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false" type="button"><i class="fas fa-ellipsis-v text-gray-400"></i></button>
-                                    <div class="dropdown-menu shadow dropdown-menu-right animated--fade-in"
-                                        role="menu">
-                                        <p class="text-center dropdown-header">dropdown header:</p><a class="dropdown-item" role="presentation" href="#">&nbsp;Action</a><a class="dropdown-item" role="presentation" href="#">&nbsp;Another action</a>
-                                        <div class="dropdown-divider"></div><a class="dropdown-item" role="presentation" href="#">&nbsp;Something else here</a></div>
+                                <h6 class="text-primary font-weight-bold m-0">Humidity History</h6>
+                                <div class="dropdown">
+                                    <button class="btn btn-primary dropdown-toggle float-left" data-toggle="dropdown"
+                                            aria-expanded="false" type="button">History type
+                                    </button>
+                                    <div class="dropdown-menu" role="menu"><a class="dropdown-item" role="presentation"
+                                                                              href="#">Humiditu history</a><a
+                                            class="dropdown-item" role="presentation" href="#">Temperature history</a><a
+                                            class="dropdown-item" role="presentation" href="#">Luminosity history</a>
+                                        <a
+                                                class="dropdown-item" role="presentation">Acceleration history</a>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="card-body">
-                                <div class="chart-area"><canvas data-bs-chart="{&quot;type&quot;:&quot;line&quot;,&quot;data&quot;:{&quot;labels&quot;:[&quot;Jan&quot;,&quot;Feb&quot;,&quot;Mar&quot;,&quot;Apr&quot;,&quot;May&quot;,&quot;Jun&quot;,&quot;Jul&quot;,&quot;Aug&quot;],&quot;datasets&quot;:[{&quot;label&quot;:&quot;Earnings&quot;,&quot;fill&quot;:true,&quot;data&quot;:[&quot;0&quot;,&quot;10000&quot;,&quot;5000&quot;,&quot;15000&quot;,&quot;10000&quot;,&quot;20000&quot;,&quot;15000&quot;,&quot;25000&quot;],&quot;backgroundColor&quot;:&quot;rgba(78, 115, 223, 0.05)&quot;,&quot;borderColor&quot;:&quot;rgba(78, 115, 223, 1)&quot;}]},&quot;options&quot;:{&quot;maintainAspectRatio&quot;:false,&quot;legend&quot;:{&quot;display&quot;:false},&quot;title&quot;:{},&quot;scales&quot;:{&quot;xAxes&quot;:[{&quot;gridLines&quot;:{&quot;color&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;zeroLineColor&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;drawBorder&quot;:false,&quot;drawTicks&quot;:false,&quot;borderDash&quot;:[&quot;2&quot;],&quot;zeroLineBorderDash&quot;:[&quot;2&quot;],&quot;drawOnChartArea&quot;:false},&quot;ticks&quot;:{&quot;fontColor&quot;:&quot;#858796&quot;,&quot;padding&quot;:20}}],&quot;yAxes&quot;:[{&quot;gridLines&quot;:{&quot;color&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;zeroLineColor&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;drawBorder&quot;:false,&quot;drawTicks&quot;:false,&quot;borderDash&quot;:[&quot;2&quot;],&quot;zeroLineBorderDash&quot;:[&quot;2&quot;]},&quot;ticks&quot;:{&quot;fontColor&quot;:&quot;#858796&quot;,&quot;padding&quot;:20}}]}}}"></canvas></div>
+                            <div class="card-body" style="overflow-x: scroll;overflow-y: hidden;height: 425px;">
+                                <div class="chart-area"
+                                     style="/*overflow-x: scroll;*/overflow-y: hidden;height: 100%;width: 1000px;padding-left: 0px;padding-right: 20px;">
+                                    <canvas data-bs-chart="{&quot;type&quot;:&quot;line&quot;,&quot;data&quot;:{&quot;labels&quot;:[&quot;Jan&quot;,&quot;Feb&quot;,&quot;Mar&quot;,&quot;Apr&quot;,&quot;May&quot;,&quot;Jun&quot;,&quot;Jul&quot;,&quot;Aug&quot;],&quot;datasets&quot;:[{&quot;label&quot;:&quot;Earnings&quot;,&quot;fill&quot;:true,&quot;data&quot;:[&quot;0&quot;,&quot;10000&quot;,&quot;5000&quot;,&quot;15000&quot;,&quot;10000&quot;,&quot;20000&quot;,&quot;15000&quot;,&quot;25000&quot;],&quot;backgroundColor&quot;:&quot;rgba(78, 115, 223, 0.05)&quot;,&quot;borderColor&quot;:&quot;rgba(78, 115, 223, 1)&quot;}]},&quot;options&quot;:{&quot;maintainAspectRatio&quot;:false,&quot;legend&quot;:{&quot;display&quot;:false},&quot;title&quot;:{&quot;display&quot;:false},&quot;scales&quot;:{&quot;xAxes&quot;:[{&quot;gridLines&quot;:{&quot;color&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;zeroLineColor&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;drawBorder&quot;:true,&quot;drawTicks&quot;:false,&quot;borderDash&quot;:[&quot;10&quot;],&quot;zeroLineBorderDash&quot;:[&quot;10&quot;],&quot;drawOnChartArea&quot;:true},&quot;ticks&quot;:{&quot;fontColor&quot;:&quot;#858796&quot;,&quot;beginAtZero&quot;:false,&quot;padding&quot;:5}}],&quot;yAxes&quot;:[{&quot;gridLines&quot;:{&quot;color&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;zeroLineColor&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;drawBorder&quot;:true,&quot;drawTicks&quot;:false,&quot;borderDash&quot;:[&quot;10&quot;],&quot;zeroLineBorderDash&quot;:[&quot;10&quot;]},&quot;ticks&quot;:{&quot;fontColor&quot;:&quot;#858796&quot;,&quot;beginAtZero&quot;:false,&quot;padding&quot;:5}}]}}}"></canvas>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-5 col-xl-4">
-                        <div class="card shadow mb-4" id="Package">
-                            <div class="card-header py-3">
-                                <h6 class="text-primary font-weight-bold m-0">Todo List</h6>
+                        <h6>Package description</h6>
+                        <div class="border rounded shadow"
+                             style="padding-top: 10px;padding-bottom: 10px;padding-left: 15px;background-color: #ffffff;margin-bottom: 25px;">
+                            <div class="d-inline-flex" style="margin-bottom: 0px;">
+                                <h3 style="width: auto;">Payload:&nbsp;</h3>
+                                <h3 style="width: auto;">Heading</h3>
                             </div>
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item">
-                                    <div class="row align-items-center no-gutters">
-                                        <div class="col mr-2">
-                                            <h6 class="mb-0"><strong>Lunch meeting</strong></h6><span class="text-xs">10:30 AM</span></div>
-                                        <div class="col-auto">
-                                            <div class="custom-control custom-checkbox"><input class="custom-control-input" type="checkbox" id="formCheck-1"><label class="custom-control-label" for="formCheck-1"></label></div>
-                                        </div>
+                            <div class="d-flex">
+                                <h6 style="width: auto;">Humidity condition:&nbsp;</h6>
+                                <h6 style="width: 120px;">Heading</h6>
+                            </div>
+                            <div class="d-flex">
+                                <h6 style="width: auto;">Temperature&nbsp;<br>condition:&nbsp;</h6>
+                                <h6 style="width: auto;margin-left: 5px;">Heading</h6>
+                            </div>
+                            <div class="d-flex">
+                                <h6 style="width: auto;">Luminosity&nbsp;<br>condition:&nbsp;</h6>
+                                <h6 style="width: auto;">Status</h6>
+                            </div>
+                            <div class="d-flex">
+                                <h6 style="width: auto;">Acceleration&nbsp;<br>condition:<br></h6>
+                                <h6 style="width: auto;">Status</h6>
+                            </div>
+                        </div>
+                        <h6>Package sensors</h6>
+                        <div class="border rounded shadow overflow-auto" id="List-Of-sensors-current"
+                             style="height: 165px;padding-right: 10px;padding-left: 10px;margin-bottom: 24px;padding-top: 7px;padding-bottom: 7px;">
+                            <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                                <form>
+                                    <div class="form-group" style="margin-bottom: 0px;">
+                                        <button class="btn btn-primary btn-sm text-left" type="submit"
+                                                style="width: 100%;">Button
+                                        </button>
                                     </div>
-                                </li>
-                                <li class="list-group-item">
-                                    <div class="row align-items-center no-gutters">
-                                        <div class="col mr-2">
-                                            <h6 class="mb-0"><strong>Lunch meeting</strong></h6><span class="text-xs">11:30 AM</span></div>
-                                        <div class="col-auto">
-                                            <div class="custom-control custom-checkbox"><input class="custom-control-input" type="checkbox" id="formCheck-2"><label class="custom-control-label" for="formCheck-2"></label></div>
-                                        </div>
+                                </form>
+                            </div>
+                            <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                                <form>
+                                    <div class="form-group" style="margin-bottom: 0px;">
+                                        <button class="btn btn-primary btn-sm text-left" type="submit"
+                                                style="width: 100%;margin-top: 2px;margin-bottom: 2px;">Button
+                                        </button>
                                     </div>
-                                </li>
-                                <li class="list-group-item">
-                                    <div class="row align-items-center no-gutters">
-                                        <div class="col mr-2">
-                                            <h6 class="mb-0"><strong>Lunch meeting</strong></h6><span class="text-xs">12:30 AM</span></div>
-                                        <div class="col-auto">
-                                            <div class="custom-control custom-checkbox"><input class="custom-control-input" type="checkbox" id="formCheck-3"><label class="custom-control-label" for="formCheck-3"></label></div>
-                                        </div>
+                                </form>
+                            </div>
+                            <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                                <form>
+                                    <div class="form-group" style="margin-bottom: 0px;">
+                                        <button class="btn btn-primary btn-sm text-left" type="submit"
+                                                style="width: 100%;margin-top: 2px;margin-bottom: 2px;">Button
+                                        </button>
                                     </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-6 mb-4">
-                        <div class="card shadow mb-4" id="CircleDiag">
-                            <div class="card-header d-flex justify-content-between align-items-center">
-                                <h6 class="text-primary font-weight-bold m-0">Revenue Sources</h6>
-                                <div class="dropdown no-arrow"><button class="btn btn-link btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false" type="button"><i class="fas fa-ellipsis-v text-gray-400"></i></button>
-                                    <div class="dropdown-menu shadow dropdown-menu-right animated--fade-in"
-                                        role="menu">
-                                        <p class="text-center dropdown-header">dropdown header:</p><a class="dropdown-item" role="presentation" href="#">&nbsp;Action</a><a class="dropdown-item" role="presentation" href="#">&nbsp;Another action</a>
-                                        <div class="dropdown-divider"></div><a class="dropdown-item" role="presentation" href="#">&nbsp;Something else here</a></div>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="chart-area"><canvas data-bs-chart="{&quot;type&quot;:&quot;doughnut&quot;,&quot;data&quot;:{&quot;labels&quot;:[&quot;Direct&quot;,&quot;Social&quot;,&quot;Referral&quot;],&quot;datasets&quot;:[{&quot;label&quot;:&quot;&quot;,&quot;backgroundColor&quot;:[&quot;#4e73df&quot;,&quot;#1cc88a&quot;,&quot;#36b9cc&quot;],&quot;borderColor&quot;:[&quot;#ffffff&quot;,&quot;#ffffff&quot;,&quot;#ffffff&quot;],&quot;data&quot;:[&quot;50&quot;,&quot;30&quot;,&quot;15&quot;]}]},&quot;options&quot;:{&quot;maintainAspectRatio&quot;:false,&quot;legend&quot;:{&quot;display&quot;:false},&quot;title&quot;:{}}}"></canvas></div>
-                                <div
-                                    class="text-center small mt-4"><span class="mr-2"><i class="fas fa-circle text-primary"></i>&nbsp;Direct</span><span class="mr-2"><i class="fas fa-circle text-success"></i>&nbsp;Social</span><span class="mr-2"><i class="fas fa-circle text-info"></i>&nbsp;Refferal</span></div>
-                        </div>
-                    </div>
-                    <div class="card shadow mb-4" id="packages">
-                        <div class="card-header py-3">
-                            <h6 class="text-primary font-weight-bold m-0">Projects</h6>
-                        </div>
-                        <div class="card-body">
-                            <h4 class="small font-weight-bold">Server migration<span class="float-right">20%</span></h4>
-                            <div class="progress mb-4">
-                                <div class="progress-bar bg-danger" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%;"><span class="sr-only">20%</span></div>
-                            </div>
-                            <h4 class="small font-weight-bold">Sales tracking<span class="float-right">40%</span></h4>
-                            <div class="progress mb-4">
-                                <div class="progress-bar bg-warning" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%;"><span class="sr-only">40%</span></div>
-                            </div>
-                            <h4 class="small font-weight-bold">Customer Database<span class="float-right">60%</span></h4>
-                            <div class="progress mb-4">
-                                <div class="progress-bar bg-primary" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;"><span class="sr-only">60%</span></div>
-                            </div>
-                            <h4 class="small font-weight-bold">Payout Details<span class="float-right">80%</span></h4>
-                            <div class="progress mb-4">
-                                <div class="progress-bar bg-info" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%;"><span class="sr-only">80%</span></div>
-                            </div>
-                            <h4 class="small font-weight-bold">Account setup<span class="float-right">Complete!</span></h4>
-                            <div class="progress mb-4">
-                                <div class="progress-bar bg-success" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%;"><span class="sr-only">100%</span></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="row">
-                        <div class="col-lg-6 mb-4">
-                            <div class="card text-white bg-primary shadow">
-                                <div class="card-body">
-                                    <p class="m-0">Primary</p>
-                                    <p class="text-white-50 small m-0">#4e73df</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 mb-4">
-                            <div class="card text-white bg-success shadow">
-                                <div class="card-body">
-                                    <p class="m-0">Success</p>
-                                    <p class="text-white-50 small m-0">#1cc88a</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 mb-4">
-                            <div class="card text-white bg-info shadow">
-                                <div class="card-body">
-                                    <p class="m-0">Info</p>
-                                    <p class="text-white-50 small m-0">#36b9cc</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 mb-4">
-                            <div class="card text-white bg-warning shadow">
-                                <div class="card-body">
-                                    <p class="m-0">Warning</p>
-                                    <p class="text-white-50 small m-0">#f6c23e</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 mb-4">
-                            <div class="card text-white bg-danger shadow">
-                                <div class="card-body">
-                                    <p class="m-0">Danger</p>
-                                    <p class="text-white-50 small m-0">#e74a3b</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 mb-4">
-                            <div class="card text-white bg-secondary shadow">
-                                <div class="card-body">
-                                    <p class="m-0">Secondary</p>
-                                    <p class="text-white-50 small m-0">#858796</p>
-                                </div>
+                                </form>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+
+            <div class="container-fluid d-none" id="supply-history-container" display="none">
+                <div class="d-sm-flex justify-content-between align-items-center mb-4">
+                    <h3 class="text-dark mb-0">Supply history</h3>
+                    <button class="btn btn-dark d-none d-sm-inline-block" type="button"><i
+                            class="fa fa-refresh fa-sm text-white-50" style="color: #ffffff;"></i>&nbsp;Refresh
+                    </button>
+                </div>
+                <div class="row">
+                    <div class="col-xl-4">
+                        <h6>List of supplies&nbsp;</h6>
+                        <div class="border rounded shadow overflow-auto" id="List-Of-supplies-history"
+                             style="height: 400px;padding-right: 10px;padding-left: 10px;margin-bottom: 24px;padding-top: 7px;padding-bottom: 7px;">
+                            <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                                <form>
+                                    <div class="form-group" style="margin-bottom: 0px;">
+                                        <button class="btn btn-primary btn-sm text-left" type="submit"
+                                                style="width: 100%;">Button
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                                <form>
+                                    <div class="form-group" style="margin-bottom: 0px;">
+                                        <button class="btn btn-primary btn-sm text-left" type="submit"
+                                                style="width: 100%;margin-top: 2px;margin-bottom: 2px;">Button
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                                <form>
+                                    <div class="form-group" style="margin-bottom: 0px;">
+                                        <button class="btn btn-primary btn-sm text-left" type="submit"
+                                                style="width: 100%;margin-top: 2px;margin-bottom: 2px;">Button
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                                <form>
+                                    <div class="form-group" style="margin-bottom: 0px;">
+                                        <button class="btn btn-primary btn-sm text-left" type="submit"
+                                                style="width: 100%;margin-top: 2px;margin-bottom: 2px;">Button
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                                <form>
+                                    <div class="form-group" style="margin-bottom: 0px;">
+                                        <button class="btn btn-primary btn-sm text-left" type="submit"
+                                                style="width: 100%;margin-top: 2px;margin-bottom: 2px;">Button
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                                <form>
+                                    <div class="form-group" style="margin-bottom: 0px;">
+                                        <button class="btn btn-primary btn-sm text-left" type="submit"
+                                                style="width: 100%;margin-top: 2px;margin-bottom: 2px;">Button
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                                <form>
+                                    <div class="form-group" style="margin-bottom: 0px;">
+                                        <button class="btn btn-primary btn-sm text-left" type="submit"
+                                                style="width: 100%;margin-top: 2px;margin-bottom: 2px;">Button
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                                <form>
+                                    <div class="form-group" style="margin-bottom: 0px;">
+                                        <button class="btn btn-primary btn-sm text-left" type="submit"
+                                                style="width: 100%;margin-top: 2px;margin-bottom: 2px;">Button
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                                <form>
+                                    <div class="form-group" style="margin-bottom: 0px;">
+                                        <button class="btn btn-primary btn-sm text-left" type="submit"
+                                                style="width: 100%;margin-top: 2px;margin-bottom: 2px;">Button
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                                <form>
+                                    <div class="form-group" style="margin-bottom: 0px;">
+                                        <button class="btn btn-primary btn-sm text-left" type="submit"
+                                                style="width: 100%;margin-top: 2px;margin-bottom: 2px;">Button
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                                <form>
+                                    <div class="form-group" style="margin-bottom: 0px;">
+                                        <button class="btn btn-primary btn-sm text-left" type="submit"
+                                                style="width: 100%;margin-top: 2px;margin-bottom: 2px;">Button
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                                <form>
+                                    <div class="form-group" style="margin-bottom: 0px;">
+                                        <button class="btn btn-primary btn-sm text-left" type="submit"
+                                                style="width: 100%;margin-top: 2px;margin-bottom: 2px;">Button
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                                <form>
+                                    <div class="form-group" style="margin-bottom: 0px;">
+                                        <button class="btn btn-primary btn-sm text-left" type="submit"
+                                                style="width: 100%;margin-top: 2px;margin-bottom: 2px;">Button
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-4">
+                        <h6>Supply description</h6>
+                        <div class="border rounded shadow"
+                             style="padding-top: 10px;padding-bottom: 10px;padding-left: 15px;background-color: #ffffff;margin-bottom: 25px;">
+                            <div class="d-inline-flex" style="margin-bottom: 0px;">
+                                <h2 style="width: auto;">Name:&nbsp;</h2>
+                                <h2 style="width: auto;">Heading</h2>
+                            </div>
+                            <div class="d-flex">
+                                <h5 style="width: auto;">Date From:&nbsp;</h5>
+                                <h5 style="width: 120px;">Heading</h5>
+                            </div>
+                            <div class="d-flex">
+                                <h5 style="width: auto;">Date To:&nbsp;</h5>
+                                <h5 style="width: auto;">Heading</h5>
+                            </div>
+                            <div class="d-flex">
+                                <h5 style="width: auto;">Status:&nbsp;</h5>
+                                <h5 style="width: auto;">Status</h5>
+                            </div>
+                            <div class="d-flex">
+                                <h5 style="width: auto;">Deliveryman:&nbsp;</h5>
+                                <h5 style="width: auto;">Status</h5>
+                            </div>
+                            <div class="d-flex">
+                                <h5 style="width: auto;">Receiver:&nbsp;</h5>
+                                <h5 style="width: auto;">Status</h5>
+                            </div>
+                            <div class="d-flex">
+                                <h5 style="width: auto;">Provider:&nbsp;</h5>
+                                <h5 style="width: auto;">Status</h5>
+                            </div>
+                            <div class="d-flex">
+                                <h5 style="width: auto;">Number of packages:&nbsp;</h5>
+                                <h5 style="width: auto;">Status</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <h6>List of packages in chosen supply</h6>
+                        <div class="border rounded shadow overflow-auto" id="List-Of-packages-history"
+                             style="height: 400px;padding-right: 10px;padding-left: 10px;margin-bottom: 24px;padding-top: 7px;padding-bottom: 7px;">
+                            <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                                <form>
+                                    <div class="form-group" style="margin-bottom: 0px;"><a
+                                            class="btn btn-primary btn-sm text-left" role="button" style="width: 100%;"
+                                            href="#package-info">Button</a></div>
+                                </form>
+                            </div>
+                            <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                                <form>
+                                    <div class="form-group" style="margin-bottom: 0px;">
+                                        <button class="btn btn-primary btn-sm text-left" type="submit"
+                                                style="width: 100%;margin-top: 2px;margin-bottom: 2px;">Button
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                                <form>
+                                    <div class="form-group" style="margin-bottom: 0px;">
+                                        <button class="btn btn-primary btn-sm text-left" type="submit"
+                                                style="width: 100%;margin-top: 2px;margin-bottom: 2px;">Button
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                                <form>
+                                    <div class="form-group" style="margin-bottom: 0px;">
+                                        <button class="btn btn-primary btn-sm text-left" type="submit"
+                                                style="width: 100%;margin-top: 2px;margin-bottom: 2px;">Button
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                                <form>
+                                    <div class="form-group" style="margin-bottom: 0px;">
+                                        <button class="btn btn-primary btn-sm text-left" type="submit"
+                                                style="width: 100%;margin-top: 2px;margin-bottom: 2px;">Button
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                                <form>
+                                    <div class="form-group" style="margin-bottom: 0px;">
+                                        <button class="btn btn-primary btn-sm text-left" type="submit"
+                                                style="width: 100%;margin-top: 2px;margin-bottom: 2px;">Button
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                                <form>
+                                    <div class="form-group" style="margin-bottom: 0px;">
+                                        <button class="btn btn-primary btn-sm text-left" type="submit"
+                                                style="width: 100%;margin-top: 2px;margin-bottom: 2px;">Button
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                                <form>
+                                    <div class="form-group" style="margin-bottom: 0px;">
+                                        <button class="btn btn-primary btn-sm text-left" type="submit"
+                                                style="width: 100%;margin-top: 2px;margin-bottom: 2px;">Button
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                                <form>
+                                    <div class="form-group" style="margin-bottom: 0px;">
+                                        <button class="btn btn-primary btn-sm text-left" type="submit"
+                                                style="width: 100%;margin-top: 2px;margin-bottom: 2px;">Button
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                                <form>
+                                    <div class="form-group" style="margin-bottom: 0px;">
+                                        <button class="btn btn-primary btn-sm text-left" type="submit"
+                                                style="width: 100%;margin-top: 2px;margin-bottom: 2px;">Button
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                                <form>
+                                    <div class="form-group" style="margin-bottom: 0px;">
+                                        <button class="btn btn-primary btn-sm text-left" type="submit"
+                                                style="width: 100%;margin-top: 2px;margin-bottom: 2px;">Button
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                                <form>
+                                    <div class="form-group" style="margin-bottom: 0px;">
+                                        <button class="btn btn-primary btn-sm text-left" type="submit"
+                                                style="width: 100%;margin-top: 2px;margin-bottom: 2px;">Button
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                                <form>
+                                    <div class="form-group" style="margin-bottom: 0px;">
+                                        <button class="btn btn-primary btn-sm text-left" type="submit"
+                                                style="width: 100%;margin-top: 2px;margin-bottom: 2px;">Button
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" id="package-info">
+                    <div class="col-lg-7 col-xl-8">
+                        <div class="card shadow mb-4" style="height: auto;margin-bottom: 0px;">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h6 class="text-primary font-weight-bold m-0">Humidity History</h6>
+                                <div class="dropdown">
+                                    <button class="btn btn-primary dropdown-toggle float-left" data-toggle="dropdown"
+                                            aria-expanded="false" type="button">History type
+                                    </button>
+                                    <div class="dropdown-menu" role="menu"><a class="dropdown-item" role="presentation"
+                                                                              href="#">Humiditu history</a><a
+                                            class="dropdown-item" role="presentation" href="#">Temperature history</a><a
+                                            class="dropdown-item" role="presentation" href="#">Luminosity history</a>
+                                        <a
+                                                class="dropdown-item" role="presentation">Acceleration history</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body" style="overflow-x: scroll;overflow-y: hidden;height: 425px;">
+                                <div class="chart-area"
+                                     style="/*overflow-x: scroll;*/overflow-y: hidden;height: 100%;width: 1000px;padding-left: 0px;padding-right: 20px;">
+                                    <canvas data-bs-chart="{&quot;type&quot;:&quot;line&quot;,&quot;data&quot;:{&quot;labels&quot;:[&quot;Jan&quot;,&quot;Feb&quot;,&quot;Mar&quot;,&quot;Apr&quot;,&quot;May&quot;,&quot;Jun&quot;,&quot;Jul&quot;,&quot;Aug&quot;],&quot;datasets&quot;:[{&quot;label&quot;:&quot;Earnings&quot;,&quot;fill&quot;:true,&quot;data&quot;:[&quot;0&quot;,&quot;10000&quot;,&quot;5000&quot;,&quot;15000&quot;,&quot;10000&quot;,&quot;20000&quot;,&quot;15000&quot;,&quot;25000&quot;],&quot;backgroundColor&quot;:&quot;rgba(78, 115, 223, 0.05)&quot;,&quot;borderColor&quot;:&quot;rgba(78, 115, 223, 1)&quot;}]},&quot;options&quot;:{&quot;maintainAspectRatio&quot;:false,&quot;legend&quot;:{&quot;display&quot;:false},&quot;title&quot;:{&quot;display&quot;:false},&quot;scales&quot;:{&quot;xAxes&quot;:[{&quot;gridLines&quot;:{&quot;color&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;zeroLineColor&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;drawBorder&quot;:true,&quot;drawTicks&quot;:false,&quot;borderDash&quot;:[&quot;10&quot;],&quot;zeroLineBorderDash&quot;:[&quot;10&quot;],&quot;drawOnChartArea&quot;:true},&quot;ticks&quot;:{&quot;fontColor&quot;:&quot;#858796&quot;,&quot;beginAtZero&quot;:false,&quot;padding&quot;:5}}],&quot;yAxes&quot;:[{&quot;gridLines&quot;:{&quot;color&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;zeroLineColor&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;drawBorder&quot;:true,&quot;drawTicks&quot;:false,&quot;borderDash&quot;:[&quot;10&quot;],&quot;zeroLineBorderDash&quot;:[&quot;10&quot;]},&quot;ticks&quot;:{&quot;fontColor&quot;:&quot;#858796&quot;,&quot;beginAtZero&quot;:false,&quot;padding&quot;:5}}]}}}"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-5 col-xl-4">
+                        <h6>Package description</h6>
+                        <div class="border rounded shadow"
+                             style="padding-top: 10px;padding-bottom: 10px;padding-left: 15px;background-color: #ffffff;margin-bottom: 25px;">
+                            <div class="d-inline-flex" style="margin-bottom: 0px;">
+                                <h3 style="width: auto;">Payload:&nbsp;</h3>
+                                <h3 style="width: auto;">Heading</h3>
+                            </div>
+                            <div class="d-flex">
+                                <h6 style="width: auto;">Humidity condition:&nbsp;</h6>
+                                <h6 style="width: 120px;">Heading</h6>
+                            </div>
+                            <div class="d-flex">
+                                <h6 style="width: auto;">Temperature&nbsp;<br>condition:&nbsp;</h6>
+                                <h6 style="width: auto;margin-left: 5px;">Heading</h6>
+                            </div>
+                            <div class="d-flex">
+                                <h6 style="width: auto;">Luminosity&nbsp;<br>condition:&nbsp;</h6>
+                                <h6 style="width: auto;">Status</h6>
+                            </div>
+                            <div class="d-flex">
+                                <h6 style="width: auto;">Acceleration&nbsp;<br>condition:<br></h6>
+                                <h6 style="width: auto;">Status</h6>
+                            </div>
+                        </div>
+                        <h6>Package sensors</h6>
+                        <div class="border rounded shadow overflow-auto" id="List-Of-sensors"
+                             style="height: 165px;padding-right: 10px;padding-left: 10px;margin-bottom: 24px;padding-top: 7px;padding-bottom: 7px;">
+                            <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                                <form>
+                                    <div class="form-group" style="margin-bottom: 0px;">
+                                        <button class="btn btn-primary btn-sm text-left" type="submit"
+                                                style="width: 100%;">Button
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                                <form>
+                                    <div class="form-group" style="margin-bottom: 0px;">
+                                        <button class="btn btn-primary btn-sm text-left" type="submit"
+                                                style="width: 100%;margin-top: 2px;margin-bottom: 2px;">Button
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                                <form>
+                                    <div class="form-group" style="margin-bottom: 0px;">
+                                        <button class="btn btn-primary btn-sm text-left" type="submit"
+                                                style="width: 100%;margin-top: 2px;margin-bottom: 2px;">Button
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="container d-none" id="new-supply-container">
+                <div class="row">
+                    <div class="col">
+                        <div class="border rounded shadow"
+                             style="padding-top: 10px;padding-right: 10px;padding-bottom: 10px;padding-left: 10px;">
+                            <h5>Supply overview</h5>
+                            <form>
+                                <div class="form-group">
+                                    <h6>New supply name:</h6><input class="border rounded form-control" type="text"
+                                                                    placeholder="Supply name" autofocus=""></div>
+                                <div class="form-group">
+                                    <h6>Date supply delivery begins:</h6><input class="form-control" type="date"></div>
+                                <div class="form-group">
+                                    <h6>Date supply delivery ends:</h6><input class="form-control" type="date"></div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="border rounded shadow"
+                             style="padding-top: 5px;padding-right: 10px;padding-bottom: 10px;padding-left: 10px;">
+                            <h5>Supply delivery options</h5>
+                            <form>
+                                <div class="form-group">
+                                    <h6>Deliveryman Id</h6><input class="form-control" type="text">
+                                    <div class="border rounded shadow profile-info" id="deliverymans-info"
+                                         style="background-color: #ffffff;padding-top: 0px;margin-top: 15px;"><img
+                                            class="border rounded d-inline-flex float-left" style="height: 60px;"
+                                            src="assets/img/photo_2019-02-22_22-57-56.jpg" loading="auto">
+                                        <div class="d-inline-flex">
+                                            <h6 class="d-inline-flex" style="padding-left: 0px;margin-left: 10px;">Name:&nbsp;</h6>
+                                            <h6 class="d-inline-flex" style="padding-left: 0px;margin-left: 10px;">Name
+                                                value&nbsp;</h6>
+                                        </div>
+                                        <div class="d-inline-flex">
+                                            <h6 class="justify-content-xl-start"
+                                                style="padding-left: 0px;margin-left: 10px;">Description:&nbsp;</h6>
+                                            <h6 style="padding-left: 0px;margin-left: 10px;">
+                                                Name&nbsp;asdasdasdsadasd<br>sadasdasdasd<br>ASDasdasdasdsa<br></h6>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <h6>Receiver Id</h6><input class="form-control" type="text">
+                                    <div class="border rounded shadow profile-info" id="receiver-info"
+                                         style="background-color: #ffffff;padding-top: 0px;margin-top: 15px;"><img
+                                            class="border rounded d-inline-flex float-left" style="height: 60px;"
+                                            src="assets/img/photo_2019-02-22_22-57-56.jpg" loading="auto">
+                                        <div class="d-inline-flex">
+                                            <h6 class="d-inline-flex" style="padding-left: 0px;margin-left: 10px;">Name:&nbsp;</h6>
+                                            <h6 class="d-inline-flex" style="padding-left: 0px;margin-left: 10px;">Name
+                                                value&nbsp;</h6>
+                                        </div>
+                                        <div class="d-inline-flex">
+                                            <h6 class="justify-content-xl-start"
+                                                style="padding-left: 0px;margin-left: 10px;">Description:&nbsp;</h6>
+                                            <h6 style="padding-left: 0px;margin-left: 10px;">
+                                                Name&nbsp;asdasdasdsadasd<br>sadasdasdasd<br>ASDasdasdasdsa</h6>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="padding-top: 30px;">
+                    <div class="col">
+                        <div class="border rounded shadow">
+                            <button class="btn btn-success d-block" type="button"
+                                    style="margin: auto;margin-top: 8px;margin-bottom: 10px;">Add package&nbsp;<i
+                                    class="fa fa-plus"></i></button>
+                            <div>
+                                <div class="border rounded overflow-auto" id="List-Of-packages"
+                                     style="height: 400px;padding-right: 10px;padding-left: 10px;padding-top: 10px;">
+                                    <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                                        <form>
+                                            <div class="form-group" style="margin-bottom: 0px;">
+                                                <button class="btn btn-primary btn-sm text-left" type="submit"
+                                                        style="width: 100%;">Button
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                                        <form>
+                                            <div class="form-group" style="margin-bottom: 0px;">
+                                                <button class="btn btn-primary btn-sm text-left" type="submit"
+                                                        style="width: 100%;margin-top: 2px;margin-bottom: 2px;">Button
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                                        <form>
+                                            <div class="form-group" style="margin-bottom: 0px;">
+                                                <button class="btn btn-primary btn-sm text-left" type="submit"
+                                                        style="width: 100%;margin-top: 2px;margin-bottom: 2px;">Button
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                                        <form>
+                                            <div class="form-group" style="margin-bottom: 0px;">
+                                                <button class="btn btn-primary btn-sm text-left" type="submit"
+                                                        style="width: 100%;margin-top: 2px;margin-bottom: 2px;">Button
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                                        <form>
+                                            <div class="form-group" style="margin-bottom: 0px;">
+                                                <button class="btn btn-primary btn-sm text-left" type="submit"
+                                                        style="width: 100%;margin-top: 2px;margin-bottom: 2px;">Button
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                                        <form>
+                                            <div class="form-group" style="margin-bottom: 0px;">
+                                                <button class="btn btn-primary btn-sm text-left" type="submit"
+                                                        style="width: 100%;margin-top: 2px;margin-bottom: 2px;">Button
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                                        <form>
+                                            <div class="form-group" style="margin-bottom: 0px;">
+                                                <button class="btn btn-primary btn-sm text-left" type="submit"
+                                                        style="width: 100%;margin-top: 2px;margin-bottom: 2px;">Button
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                                        <form>
+                                            <div class="form-group" style="margin-bottom: 0px;">
+                                                <button class="btn btn-primary btn-sm text-left" type="submit"
+                                                        style="width: 100%;margin-top: 2px;margin-bottom: 2px;">Button
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                                        <form>
+                                            <div class="form-group" style="margin-bottom: 0px;">
+                                                <button class="btn btn-primary btn-sm text-left" type="submit"
+                                                        style="width: 100%;margin-top: 2px;margin-bottom: 2px;">Button
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                                        <form>
+                                            <div class="form-group" style="margin-bottom: 0px;">
+                                                <button class="btn btn-primary btn-sm text-left" type="submit"
+                                                        style="width: 100%;margin-top: 2px;margin-bottom: 2px;">Button
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                                        <form>
+                                            <div class="form-group" style="margin-bottom: 0px;">
+                                                <button class="btn btn-primary btn-sm text-left" type="submit"
+                                                        style="width: 100%;margin-top: 2px;margin-bottom: 2px;">Button
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                                        <form>
+                                            <div class="form-group" style="margin-bottom: 0px;">
+                                                <button class="btn btn-primary btn-sm text-left" type="submit"
+                                                        style="width: 100%;margin-top: 2px;margin-bottom: 2px;">Button
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                                        <form>
+                                            <div class="form-group" style="margin-bottom: 0px;">
+                                                <button class="btn btn-primary btn-sm text-left" type="submit"
+                                                        style="width: 100%;margin-top: 2px;margin-bottom: 2px;">Button
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="border rounded shadow"
+                             style="padding-top: 10px;padding-right: 10px;padding-bottom: 10px;padding-left: 10px;">
+                            <h5>Package editing</h5>
+                            <form>
+                                <div class="form-group">
+                                    <h6>Package payload:</h6><input class="border rounded form-control" type="text"
+                                                                    placeholder="Payload" autofocus=""></div>
+                            </form>
+                            <form>
+                                <h6>Package transmitter:</h6>
+                                <div class="form-group d-inline-flex"><input class="border rounded form-control"
+                                                                             type="text" placeholder="Transmitter Id"
+                                                                             autofocus="">
+                                    <button class="btn btn-success" type="button"><i class="fas fa-plus"></i></button>
+                                </div>
+                                <div class="form-group d-inline-flex"><input class="border rounded form-control"
+                                                                             type="text" placeholder="Transmitter Id"
+                                                                             autofocus="">
+                                    <button class="btn btn-danger" type="button"><i class="fa fa-remove"></i></button>
+                                </div>
+                            </form>
+                            <div>
+                                <h6 style="margin-top: 15px;margin-bottom: -5px;">Package conditions:</h6>
+                                <div class="d-block d-xl-flex align-items-xl-center" style="margin-top: 10px;">
+                                    <button class="btn btn-primary" type="button"
+                                            style="width: 25%;height: 38px;padding-left: 0px;padding-right: 0px;padding-bottom: 0px;padding-top: 0px;">
+                                        &nbsp;<i class="icon ion-waterdrop" style="margin-left: -5px;"></i></button>
+                                    <button
+                                            class="btn btn-warning" type="button"
+                                            style="width: 25%;height: 38px;padding-left: 0px;padding-right: 0px;padding-bottom: 0px;padding-top: 0px;">
+                                        &nbsp;<i class="icon ion-thermometer" style="margin-left: -5px;"></i></button>
+                                    <button class="btn btn-light" type="button"
+                                            style="width: 25%;height: 38px;padding-left: 0px;padding-right: 0px;padding-bottom: 0px;padding-top: 0px;">
+                                        &nbsp;<i class="icon ion-ios-lightbulb" style="margin-left: -5px;"></i></button>
+                                    <button
+                                            class="btn btn-success" type="button"
+                                            style="width: 25%;height: 38px;padding-left: 0px;padding-right: 0px;padding-bottom: 0px;padding-top: 0px;">
+                                        &nbsp;<i class="icon ion-arrow-move" style="margin-left: -5px;"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="border rounded shadow"
+                             style="padding-top: 10px;padding-right: 10px;padding-bottom: 10px;padding-left: 10px;">
+                            <h5>Package condition</h5>
+                            <form>
+                                <div class="custom-control custom-control-inline custom-checkbox"
+                                     style="padding-bottom: 10px;"><input class="custom-control-input" type="checkbox"
+                                                                          id="formCheck-1"><label
+                                        class="custom-control-label" for="formCheck-1">Enabled</label></div>
+                                <div class="form-group">
+                                    <h6>Max value:</h6><input class="form-control" type="number" required=""></div>
+                                <div class="form-group">
+                                    <h6>Min value:</h6><input class="form-control" type="number" required=""></div>
+                                <div class="form-group">
+                                    <h6>Preffered value:</h6><input class="form-control" type="number" required="">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
         </div>
+        <footer class="bg-white sticky-footer">
+            <div class="container my-auto">
+                <div class="text-center my-auto copyright"><span>❤·Sendicate 2020</span></div>
+            </div>
+        </footer>
     </div>
-    <footer class="bg-white sticky-footer">
-        <div class="container my-auto">
-            <div class="text-center my-auto copyright"><span>Copyright © Brand 2019</span></div>
-        </div>
-    </footer>
-    </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a></div>
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
-    <script src="assets/js/chart.min.js"></script>
-    <script src="assets/js/bs-init.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
-    <script src="assets/js/theme.js"></script>
+    <a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a></div>
+<script src="assets/main/js/jquery.min.js"></script>
+<script src="assets/main/bootstrap/js/bootstrap.min.js"></script>
+<script src="assets/main/js/chart.min.js"></script>
+<script src="assets/main/js/bs-init.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
+<script src="assets/main/js/theme.js"></script>
+<script src="core.js"></script>
+<script src="misc.js"></script>
 </body>
 
 </html>

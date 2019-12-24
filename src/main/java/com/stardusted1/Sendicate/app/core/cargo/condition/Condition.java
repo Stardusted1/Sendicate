@@ -38,5 +38,4 @@ public abstract class Condition {
 
     public abstract boolean CheckCondition(Frame frame);
 
-
 }
