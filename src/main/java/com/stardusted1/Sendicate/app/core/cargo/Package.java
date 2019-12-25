@@ -1,27 +1,40 @@
 package com.stardusted1.Sendicate.app.core.cargo;
 
 import com.stardusted1.Sendicate.app.core.cargo.condition.Condition;
+import com.stardusted1.Sendicate.app.core.repositories.FramesRepository;
 import com.stardusted1.Sendicate.app.core.repositories.SupplyRepository;
+import com.stardusted1.Sendicate.app.core.repositories.TransmitterRepository;
 import com.stardusted1.Sendicate.app.service.TokenGenerator;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Entity
-public class Package {
+
+public class Package implements Serializable {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     protected long id;
     protected String payload;
     protected long supplyId;
     protected ArrayList<Frame> history;
-    @Transient
     protected ArrayList<Transmitter> transmitters;
     protected ArrayList<Condition> conditions;
     protected PackageStatus status;
     @Transient
+    @Autowired
     SupplyRepository supplyRepository;
+    @Transient
+    @Autowired
+    TransmitterRepository transmitterRepository;
+    @Transient
+    @Autowired
+    FramesRepository framesRepository;
 
     public Package() {
     }
@@ -49,6 +62,10 @@ public class Package {
         return id;
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public String getPayload() {
         return payload;
     }
@@ -66,6 +83,9 @@ public class Package {
     }
 
     public ArrayList<Frame> getHistory() {
+        if(history!=null)
+        return history;
+        history = new ArrayList<>();
         return history;
     }
 
@@ -82,10 +102,14 @@ public class Package {
     }
 
     public boolean addTransmitter(Transmitter transmitter) {
-        for (Transmitter t : transmitters) {
-            if (t.equals(transmitter)) {
-                return false;
+        if(transmitters!=null){
+            for (Transmitter t : transmitters) {
+                if (t.equals(transmitter)) {
+                    return false;
+                }
             }
+        }else {
+            transmitters = new ArrayList<>();
         }
         transmitters.add(transmitter);
         transmitter.setCurrentPackageId(this.id);
@@ -100,7 +124,8 @@ public class Package {
     }
 
     public boolean addCondition(Condition condition) {
-        if (conditions.size() == 0) {
+        if (conditions == null) {
+            conditions = new ArrayList<>();
             conditions.add(condition);
             return true;
         } else {

@@ -102,6 +102,11 @@ public class PageController {
 		model.addAttribute("usr", user);
 		return "register";
 	}
+
+	@GetMapping("compile")
+	public String compile(Model model){
+		return "compiler";
+	}
 	// TODO: 21.11.2019 404 страница
 
 

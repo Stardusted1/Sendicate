@@ -4,16 +4,17 @@ import com.stardusted1.Sendicate.app.core.repositories.*;
 import com.stardusted1.Sendicate.app.core.users.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
 import java.util.*;
 
-@Service
 //@Scope("singleton")
+@Component
 public class System {
 
-	// TODO: 22.11.2019 update supply status every dayy
+	// TODO: 22.11.2019 update supply status every day
 
 	protected static SecureRandom random = new SecureRandom();
 
@@ -90,7 +91,7 @@ public class System {
 		} else {
 			return (Customer) user;
 		}
-    }
+	}
 
 	public Locale getLocale(UserLocale userLocale) {
 		if (userLocale.equals(UserLocale.RUS)) {

@@ -2,16 +2,19 @@ package com.stardusted1.Sendicate.app.core.cargo;
 
 import com.stardusted1.Sendicate.app.core.cargo.condition.Condition;
 import com.stardusted1.Sendicate.app.core.repositories.PackageRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Optional;
 
 @Entity
-public class Transmitter {
+public class Transmitter implements Serializable {
 	@Transient
+	@Autowired
 	PackageRepository packageRepository;
 
 	@Id
@@ -63,20 +66,25 @@ public class Transmitter {
 	}
 
 	public void ReceiveDataFrame(Frame frame) throws Exception {
-		Optional<Package> OPackage = packageRepository.findById(currentPackageId);
-		Package aPackage;
-		if(OPackage.isPresent()){
-			aPackage = OPackage.get();
-		}else{
-			throw new Exception();
-		}
-		aPackage.getHistory().add(frame);
-		ArrayList<Condition> packageConditions = aPackage.getConditions();
-		for(Condition condition:packageConditions){
-			if(!condition.CheckCondition(frame)){
-				aPackage.setStatusSpoiled();
-			}
-		}
+//		Optional<Package> OPackage = packageRepository.findById(currentPackageId);
+//		Package aPackage;
+		frame.setDatetime(new Date());
+		frame.setTransmitterId(id);
+		frame.setPackageId(currentPackageId);
+		// TODO: 25.12.2019 uncomment
+//		if(OPackage.isPresent()){
+//			aPackage = OPackage.get();
+//		}else{
+//			throw new Exception();
+//		}
+//		aPackage.getHistory().add(frame);
+//		ArrayList<Condition> packageConditions = aPackage.getConditions();
+//		for(Condition condition:packageConditions){
+//			if(!condition.CheckCondition(frame)){
+////				aPackage.setStatusSpoiled();
+//				// TODO: 25.12.2019 uncomment
+//			}
+//		}
 	}
 
 

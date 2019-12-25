@@ -2,7 +2,9 @@ package com.stardusted1.Sendicate.app.core.cargo.condition;
 
 import com.stardusted1.Sendicate.app.core.cargo.Frame;
 
-public abstract class Condition {
+import java.io.Serializable;
+
+public abstract class Condition implements Serializable {
     protected int id;
     protected float max;
     protected float min;

@@ -35,3 +35,38 @@ function currentSupplyChosen(data) {
     newSupplyContainer.className += " d-none";
     supplyHistoryContainer.className += " d-none";
 }
+
+var HumidityChart = document.getElementById("HumidityChart");
+var TemperatureChart = document.getElementById("TemperatureChart");
+var LuminosityChart = document.getElementById("LuminosityChart");
+var AccelerationChart = document.getElementById("AccelerationChart");
+
+
+function selectAnother(id) {
+    switch (id) {
+        case 0: //Humidity history
+            HumidityChart.className = HumidityChart.className.split(" ")[0];
+            TemperatureChart.className+="d-none";
+            LuminosityChart.className+="d-none";
+            AccelerationChart.className+="d-none";
+            break;
+        case 1: //Temperature history
+            TemperatureChart.className = TemperatureChart.className.split(" ")[0];
+            HumidityChart.className+="d-none";
+            LuminosityChart.className+="d-none";
+            AccelerationChart.className+="d-none";
+            break;
+        case 2://Luminosity history
+            LuminosityChart.className = LuminosityChart.className.split(" ")[0];
+            TemperatureChart.className+="d-none";
+            HumidityChart.className+="d-none";
+            AccelerationChart.className+="d-none";
+            break;
+        case 3://Acceleration history
+            AccelerationChart.className = AccelerationChart.className.split(" ")[0];
+            TemperatureChart.className+="d-none";
+            LuminosityChart.className+="d-none";
+            HumidityChart.className+="d-none";
+            break;
+    }
+}

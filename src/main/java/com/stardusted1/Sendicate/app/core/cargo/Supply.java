@@ -1,17 +1,22 @@
 package com.stardusted1.Sendicate.app.core.cargo;
 
+import com.stardusted1.Sendicate.app.core.repositories.PackageRepository;
 import com.stardusted1.Sendicate.app.core.users.Deliveryman;
 import com.stardusted1.Sendicate.app.core.users.Provider;
 import com.stardusted1.Sendicate.app.core.users.Receiver;
 import com.stardusted1.Sendicate.app.service.System;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
 
 @Entity
-@Table(name = "Supplies")
+@Table(name = "supplies")
 public class Supply {
+    @Transient
+    @Autowired
+    PackageRepository packageRepository;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,12 +31,10 @@ public class Supply {
     protected String receiverId;
     protected String deliverymanId;
     protected String providerId;
-    @Transient
+//    @Transient
     protected ArrayList<Package> packages;
     protected SupplyCondition condition;
 
-    @Transient
-    System system = new System();
 
     public Supply() {
     }
@@ -59,6 +62,10 @@ public class Supply {
         this.dateBegins = dateBegins;
         this.dateEnds = dateEnds;
         this.providerId = providerId;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public SupplyCondition getCondition() {
@@ -99,10 +106,12 @@ public class Supply {
     }
 
     public void setStatus(SupplyStatus status) {
-        Deliveryman deliveryman = system.deliverymanRepository.findById(deliverymanId).get();
-        Provider provider = system.providerRepository.findById(providerId).get();
-        Receiver receiver = system.receiverRepository.findById(receiverId).get();
+
         if (status.equals(SupplyStatus.UNDELIVERED)) {
+            System system = new System();
+            Deliveryman deliveryman = system.deliverymanRepository.findById(deliverymanId).get();
+            Provider provider = system.providerRepository.findById(providerId).get();
+            Receiver receiver = system.receiverRepository.findById(receiverId).get();
             system.emailNotifier.sendMail(deliveryman.getEmail(),
                     "Supply is out of date",
                     "Supply " + name + " might be delivered at" + dateEnds + "but it wasn't");
@@ -114,6 +123,10 @@ public class Supply {
                     "Supply " + name + " might be delivered at" + dateEnds + "but it wasn't");
         }
         if(status.equals(SupplyStatus.DELIVERING)){
+            System system = new System();
+            Deliveryman deliveryman = system.deliverymanRepository.findById(deliverymanId).get();
+            Provider provider = system.providerRepository.findById(providerId).get();
+            Receiver receiver = system.receiverRepository.findById(receiverId).get();
             system.emailNotifier.sendMail(deliveryman.getEmail(),
                     "Supply " +name +" is now delivering",
                     "Supply " + name + " might be delivered at" + dateEnds);
@@ -125,6 +138,10 @@ public class Supply {
                     "Supply " + name + " might be delivered at" + dateEnds);
         }
         if(status.equals(SupplyStatus.DELIVERED)){
+            System system = new System();
+            Deliveryman deliveryman = system.deliverymanRepository.findById(deliverymanId).get();
+            Provider provider = system.providerRepository.findById(providerId).get();
+            Receiver receiver = system.receiverRepository.findById(receiverId).get();
             system.emailNotifier.sendMail(deliveryman.getEmail(),
                     "Supply " +name +" is now delivered",
                     "Supply " + name + " might be delivered at" + new Date());
@@ -199,6 +216,15 @@ public class Supply {
     }
 
     public void addPackage(Package aPackage) {
-        packages.add(aPackage);
+        if(packages!=null){
+//            packageRepository;
+            aPackage.setSupplyId(this.id);
+            packages.add(aPackage);
+
+        }else{
+            packages = new ArrayList<>();
+            aPackage.setSupplyId(this.id);
+            packages.add(aPackage);
+        }
     }
 }

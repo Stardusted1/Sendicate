@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="assets/main/css/untitled.css">
 
 
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.js"></script>
     <!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.7.8/angular-sanitize.min.js" integrity="sha256-rkC3YaCKtbLotg8lQpxqYki+DDOVXjcA5wTSxjRlI0E=" crossorigin="anonymous"></script>-->
     <script src="core.js"></script>
     <script src="misc.js"></script>
@@ -45,13 +45,13 @@
                         <span>Current Supplies</span>
                     </div>
                 </li>
-                <li id="hisSupplBut" class="nav-item" role="presentation" onclick="historyChosen(this)"
-                    style="cursor: pointer">
-                    <div class="nav-link active">
-                        <i class="fas fa-history"></i>
-                        <span>Supply History</span>
-                    </div>
-                </li>
+<!--                <li id="hisSupplBut" class="nav-item" role="presentation" onclick="historyChosen(this)"-->
+<!--                    style="cursor: pointer">-->
+<!--                    <div class="nav-link active">-->
+<!--                        <i class="fas fa-history"></i>-->
+<!--                        <span>Supply History</span>-->
+<!--                    </div>-->
+<!--                </li>-->
                 <li id="newSupplBut" class="nav-item" role="presentation" onclick="addNewSupplyChosen(this)"
                     style="cursor: pointer">
                     <div class="nav-link active">
@@ -184,15 +184,15 @@
                              compile="html">
 
 
-                        <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;" ng-controller="workbenchCurrentController">
-                                <form>
-                                    <div class="form-group" style="margin-bottom: 0px;">
-                                        <button class="btn btn-primary btn-sm text-left" type="submit"
-                                                style="width: 100%;">Button
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
+<!--                        <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;" ng-controller="workbenchCurrentController">-->
+<!--                                <form>-->
+<!--                                    <div class="form-group" style="margin-bottom: 0px;">-->
+<!--                                        <button class="btn btn-primary btn-sm text-left" type="submit"-->
+<!--                                                style="width: 100%;">Button-->
+<!--                                        </button>-->
+<!--                                    </div>-->
+<!--                                </form>-->
+<!--                            </div>-->
                             <!--<div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
                                 <form>
                                     <div class="form-group" style="margin-bottom: 0px;">
@@ -309,35 +309,35 @@
                              style="padding-top: 10px;padding-bottom: 10px;padding-left: 15px;background-color: #ffffff;margin-bottom: 25px;">
                             <div class="d-inline-flex" style="margin-bottom: 0px;">
                                 <h2 style="width: auto;">Name:&nbsp;</h2>
-                                <h2 style="width: auto;">Heading</h2>
+                                <h2 style="width: auto;" id="SupplyNameOf">Heading</h2>
                             </div>
                             <div class="d-flex">
                                 <h5 style="width: auto;">Date From:&nbsp;</h5>
-                                <h5 style="width: 120px;">Heading</h5>
+                                <h5 style="width: 120px;" id="SupplyDateFrom">Heading</h5>
                             </div>
                             <div class="d-flex">
                                 <h5 style="width: auto;">Date To:&nbsp;</h5>
-                                <h5 style="width: auto;">Heading</h5>
+                                <h5 style="width: auto;" id="SupplyDateTo">Heading</h5>
                             </div>
                             <div class="d-flex">
                                 <h5 style="width: auto;">Status:&nbsp;</h5>
-                                <h5 style="width: auto;">Status</h5>
+                                <h5 style="width: auto;" id="SupplyStatus">Status</h5>
                             </div>
                             <div class="d-flex">
                                 <h5 style="width: auto;">Deliveryman:&nbsp;</h5>
-                                <h5 style="width: auto;">Status</h5>
+                                <h5 style="width: auto;" id="SupplyDeliveryman">Status</h5>
                             </div>
                             <div class="d-flex">
                                 <h5 style="width: auto;">Receiver:&nbsp;</h5>
-                                <h5 style="width: auto;">Status</h5>
+                                <h5 style="width: auto;" id="SupplyReceiver">Status</h5>
                             </div>
                             <div class="d-flex">
                                 <h5 style="width: auto;">Provider:&nbsp;</h5>
-                                <h5 style="width: auto;">Status</h5>
+                                <h5 style="width: auto;" id="SupplyProvider">Status</h5>
                             </div>
                             <div class="d-flex">
                                 <h5 style="width: auto;">Number of packages:&nbsp;</h5>
-                                <h5 style="width: auto;">Status</h5>
+                                <h5 style="width: auto;" id="SupplyNumberOfPackages">Status</h5>
                             </div>
                             <div>
                                 <div class="btn-toolbar">
@@ -357,14 +357,14 @@
                         <h6>List of packages in chosen supply</h6>
                         <div class="border rounded shadow overflow-auto" id="List-Of-packages-in-supply"
                              style="height: 400px;padding-right: 10px;padding-left: 10px;margin-bottom: 24px;padding-top: 7px;padding-bottom: 7px;">
-                            <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                            <!--<div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
                                 <form>
                                     <div class="form-group" style="margin-bottom: 0px;"><a
                                             class="btn btn-primary btn-sm text-left" role="button" style="width: 100%;"
                                             href="#package-info">Package</a></div>
                                 </form>
                             </div>
-                            <!--<div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                            <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
                                 <form>
                                     <div class="form-group" style="margin-bottom: 0px;">
                                         <button class="btn btn-primary btn-sm text-left" type="submit"
@@ -484,18 +484,25 @@
                                     <button class="btn btn-primary dropdown-toggle float-left" data-toggle="dropdown"
                                             aria-expanded="false" type="button">History type
                                     </button>
-                                    <div class="dropdown-menu" role="menu"><a class="dropdown-item" role="presentation"
-                                                                              href="#">Humiditu history</a><a
-                                            class="dropdown-item" role="presentation" href="#">Temperature history</a><a
-                                            class="dropdown-item" role="presentation" href="#">Luminosity history</a>
-                                        <a
-                                                class="dropdown-item" role="presentation">Acceleration history</a>
-                                    </div>
+                                    <div class="dropdown-menu" role="menu">
+                                        <a class="dropdown-item" role="presentation" value="0"  onclick="selectAnother(this.value)">Humidity history</a>
+                                        <a class="dropdown-item" role="presentation" value="1"  onclick="selectAnother(this.value)">Temperature history</a>
+                                        <a class="dropdown-item" role="presentation" value="2"  onclick="selectAnother(this.value)">Luminosity history</a>
+                                        <a class="dropdown-item" role="presentation" value="3"  onclick="selectAnother(this.value)">Acceleration history</a>
+                                </div>
                                 </div>
                             </div>
                             <div class="card-body" style="overflow-x: scroll;overflow-y: hidden;height: 425px;">
-                                <div class="chart-area"
-                                     style="/*overflow-x: scroll;*/overflow-y: hidden;height: 100%;width: 1000px;padding-left: 0px;padding-right: 20px;">
+                                <div class="chart-area d-none"  id="HumidityChart" style="/*overflow-x: scroll;*/overflow-y: hidden;height: 100%;width: 1000px;padding-left: 0px;padding-right: 20px;">
+                                    <canvas data-bs-chart="{&quot;type&quot;:&quot;line&quot;,&quot;data&quot;:{&quot;labels&quot;:[&quot;Jan&quot;,&quot;Feb&quot;,&quot;Mar&quot;,&quot;Apr&quot;,&quot;May&quot;,&quot;Jun&quot;,&quot;Jul&quot;,&quot;Aug&quot;],&quot;datasets&quot;:[{&quot;label&quot;:&quot;Earnings&quot;,&quot;fill&quot;:true,&quot;data&quot;:[&quot;0&quot;,&quot;10000&quot;,&quot;5000&quot;,&quot;15000&quot;,&quot;10000&quot;,&quot;20000&quot;,&quot;15000&quot;,&quot;25000&quot;],&quot;backgroundColor&quot;:&quot;rgba(78, 115, 223, 0.05)&quot;,&quot;borderColor&quot;:&quot;rgba(78, 115, 223, 1)&quot;}]},&quot;options&quot;:{&quot;maintainAspectRatio&quot;:false,&quot;legend&quot;:{&quot;display&quot;:false},&quot;title&quot;:{&quot;display&quot;:false},&quot;scales&quot;:{&quot;xAxes&quot;:[{&quot;gridLines&quot;:{&quot;color&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;zeroLineColor&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;drawBorder&quot;:true,&quot;drawTicks&quot;:false,&quot;borderDash&quot;:[&quot;10&quot;],&quot;zeroLineBorderDash&quot;:[&quot;10&quot;],&quot;drawOnChartArea&quot;:true},&quot;ticks&quot;:{&quot;fontColor&quot;:&quot;#858796&quot;,&quot;beginAtZero&quot;:false,&quot;padding&quot;:5}}],&quot;yAxes&quot;:[{&quot;gridLines&quot;:{&quot;color&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;zeroLineColor&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;drawBorder&quot;:true,&quot;drawTicks&quot;:false,&quot;borderDash&quot;:[&quot;10&quot;],&quot;zeroLineBorderDash&quot;:[&quot;10&quot;]},&quot;ticks&quot;:{&quot;fontColor&quot;:&quot;#858796&quot;,&quot;beginAtZero&quot;:false,&quot;padding&quot;:5}}]}}}"></canvas>
+                                </div>
+                                <div class="chart-area" id="TemperatureChart" style="/*overflow-x: scroll;*/overflow-y: hidden;height: 100%;width: 1000px;padding-left: 0px;padding-right: 20px;">
+                                    <canvas id="chLine"></canvas>
+                                </div>
+                                <div class="chart-area d-none" id="AccelerationChart" style="/*overflow-x: scroll;*/overflow-y: hidden;height: 100%;width: 1000px;padding-left: 0px;padding-right: 20px;">
+                                    <canvas data-bs-chart="{&quot;type&quot;:&quot;line&quot;,&quot;data&quot;:{&quot;labels&quot;:[&quot;Jan&quot;,&quot;Feb&quot;,&quot;Mar&quot;,&quot;Apr&quot;,&quot;May&quot;,&quot;Jun&quot;,&quot;Jul&quot;,&quot;Aug&quot;],&quot;datasets&quot;:[{&quot;label&quot;:&quot;Earnings&quot;,&quot;fill&quot;:true,&quot;data&quot;:[&quot;0&quot;,&quot;10000&quot;,&quot;5000&quot;,&quot;15000&quot;,&quot;10000&quot;,&quot;20000&quot;,&quot;15000&quot;,&quot;25000&quot;],&quot;backgroundColor&quot;:&quot;rgba(78, 115, 223, 0.05)&quot;,&quot;borderColor&quot;:&quot;rgba(78, 115, 223, 1)&quot;}]},&quot;options&quot;:{&quot;maintainAspectRatio&quot;:false,&quot;legend&quot;:{&quot;display&quot;:false},&quot;title&quot;:{&quot;display&quot;:false},&quot;scales&quot;:{&quot;xAxes&quot;:[{&quot;gridLines&quot;:{&quot;color&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;zeroLineColor&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;drawBorder&quot;:true,&quot;drawTicks&quot;:false,&quot;borderDash&quot;:[&quot;10&quot;],&quot;zeroLineBorderDash&quot;:[&quot;10&quot;],&quot;drawOnChartArea&quot;:true},&quot;ticks&quot;:{&quot;fontColor&quot;:&quot;#858796&quot;,&quot;beginAtZero&quot;:false,&quot;padding&quot;:5}}],&quot;yAxes&quot;:[{&quot;gridLines&quot;:{&quot;color&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;zeroLineColor&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;drawBorder&quot;:true,&quot;drawTicks&quot;:false,&quot;borderDash&quot;:[&quot;10&quot;],&quot;zeroLineBorderDash&quot;:[&quot;10&quot;]},&quot;ticks&quot;:{&quot;fontColor&quot;:&quot;#858796&quot;,&quot;beginAtZero&quot;:false,&quot;padding&quot;:5}}]}}}"></canvas>
+                                </div>
+                                <div class="chart-area d-none" id="LuminosityChart" style="/*overflow-x: scroll;*/overflow-y: hidden;height: 100%;width: 1000px;padding-left: 0px;padding-right: 20px;">
                                     <canvas data-bs-chart="{&quot;type&quot;:&quot;line&quot;,&quot;data&quot;:{&quot;labels&quot;:[&quot;Jan&quot;,&quot;Feb&quot;,&quot;Mar&quot;,&quot;Apr&quot;,&quot;May&quot;,&quot;Jun&quot;,&quot;Jul&quot;,&quot;Aug&quot;],&quot;datasets&quot;:[{&quot;label&quot;:&quot;Earnings&quot;,&quot;fill&quot;:true,&quot;data&quot;:[&quot;0&quot;,&quot;10000&quot;,&quot;5000&quot;,&quot;15000&quot;,&quot;10000&quot;,&quot;20000&quot;,&quot;15000&quot;,&quot;25000&quot;],&quot;backgroundColor&quot;:&quot;rgba(78, 115, 223, 0.05)&quot;,&quot;borderColor&quot;:&quot;rgba(78, 115, 223, 1)&quot;}]},&quot;options&quot;:{&quot;maintainAspectRatio&quot;:false,&quot;legend&quot;:{&quot;display&quot;:false},&quot;title&quot;:{&quot;display&quot;:false},&quot;scales&quot;:{&quot;xAxes&quot;:[{&quot;gridLines&quot;:{&quot;color&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;zeroLineColor&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;drawBorder&quot;:true,&quot;drawTicks&quot;:false,&quot;borderDash&quot;:[&quot;10&quot;],&quot;zeroLineBorderDash&quot;:[&quot;10&quot;],&quot;drawOnChartArea&quot;:true},&quot;ticks&quot;:{&quot;fontColor&quot;:&quot;#858796&quot;,&quot;beginAtZero&quot;:false,&quot;padding&quot;:5}}],&quot;yAxes&quot;:[{&quot;gridLines&quot;:{&quot;color&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;zeroLineColor&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;drawBorder&quot;:true,&quot;drawTicks&quot;:false,&quot;borderDash&quot;:[&quot;10&quot;],&quot;zeroLineBorderDash&quot;:[&quot;10&quot;]},&quot;ticks&quot;:{&quot;fontColor&quot;:&quot;#858796&quot;,&quot;beginAtZero&quot;:false,&quot;padding&quot;:5}}]}}}"></canvas>
                                 </div>
                             </div>
@@ -507,29 +514,29 @@
                              style="padding-top: 10px;padding-bottom: 10px;padding-left: 15px;background-color: #ffffff;margin-bottom: 25px;">
                             <div class="d-inline-flex" style="margin-bottom: 0px;">
                                 <h3 style="width: auto;">Payload:&nbsp;</h3>
-                                <h3 style="width: auto;">Heading</h3>
+                                <h3 style="width: auto;" id="PackagePayload">Heading</h3>
                             </div>
                             <div class="d-flex">
                                 <h6 style="width: auto;">Humidity condition:&nbsp;</h6>
-                                <h6 style="width: 120px;">Heading</h6>
+                                <h6 style="width: 120px;" id="PackageHumidity">Heading</h6>
                             </div>
                             <div class="d-flex">
                                 <h6 style="width: auto;">Temperature&nbsp;<br>condition:&nbsp;</h6>
-                                <h6 style="width: auto;margin-left: 5px;">Heading</h6>
+                                <h6 style="width: auto;margin-left: 5px;" id="PackageTemperature">Heading</h6>
                             </div>
                             <div class="d-flex">
                                 <h6 style="width: auto;">Luminosity&nbsp;<br>condition:&nbsp;</h6>
-                                <h6 style="width: auto;">Status</h6>
+                                <h6 style="width: auto;" id="PackageLumosity">Status</h6>
                             </div>
                             <div class="d-flex">
                                 <h6 style="width: auto;">Acceleration&nbsp;<br>condition:<br></h6>
-                                <h6 style="width: auto;">Status</h6>
+                                <h6 style="width: auto;" id="PackageAcceleration">Status</h6>
                             </div>
                         </div>
                         <h6>Package sensors</h6>
                         <div class="border rounded shadow overflow-auto" id="List-Of-sensors-current"
                              style="height: 165px;padding-right: 10px;padding-left: 10px;margin-bottom: 24px;padding-top: 7px;padding-bottom: 7px;">
-                            <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                           <!-- <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
                                 <form>
                                     <div class="form-group" style="margin-bottom: 0px;">
                                         <button class="btn btn-primary btn-sm text-left" type="submit"
@@ -555,7 +562,7 @@
                                         </button>
                                     </div>
                                 </form>
-                            </div>
+                            </div>-->
                         </div>
                     </div>
                 </div>
