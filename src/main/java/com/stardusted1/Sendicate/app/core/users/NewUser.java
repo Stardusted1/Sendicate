@@ -50,7 +50,7 @@ public class NewUser extends Customer implements Serializable {
 			emails.clear();
 			emails.add(email);
 		}else{
-    		emails = new LinkedList<>();
+    		emails = new ArrayList<>();
     		emails.add(email);
 		}
 

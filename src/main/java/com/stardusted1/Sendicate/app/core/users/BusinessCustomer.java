@@ -3,6 +3,8 @@ package com.stardusted1.Sendicate.app.core.users;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
+import java.sql.Array;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 @MappedSuperclass
@@ -11,7 +13,7 @@ public abstract class BusinessCustomer extends Customer implements Serializable 
 	@Column(name = "description")
 	protected String description;
 	@Column(name = "address")
-	protected LinkedList<String> address;
+	protected ArrayList<String> address;
 	@Column(name = "siteAddress")
 	protected String siteAddress;
 
@@ -31,7 +33,7 @@ public abstract class BusinessCustomer extends Customer implements Serializable 
 				this.phones.add(phone);
 			}
 		}else {
-			phones = new LinkedList<>();
+			phones = new ArrayList<>();
 			phones.add(phone);
 		}
 	}
@@ -48,7 +50,7 @@ public abstract class BusinessCustomer extends Customer implements Serializable 
 				emails.add(email);
 			}
 		}else {
-			emails = new LinkedList<>();
+			emails = new ArrayList<>();
 			emails.add(email);
 		}
 	}
@@ -59,11 +61,11 @@ public abstract class BusinessCustomer extends Customer implements Serializable 
 	}
 
 
-	public LinkedList<String> getAddress() {
+	public ArrayList<String> getAddress() {
 		if(address!=null){
 			return address;
 		}else {
-			address = new LinkedList<>();
+			address = new ArrayList<>();
 			address.add("");
 			return address;
 		}
@@ -72,7 +74,7 @@ public abstract class BusinessCustomer extends Customer implements Serializable 
 
 	public String getAddres() {
 		if(address!=null){
-			return address.getFirst();
+			return address.get(0);
 		}else {
 			return null;
 		}
@@ -85,7 +87,7 @@ public abstract class BusinessCustomer extends Customer implements Serializable 
 				this.address.add(address);
 			}
 		}else{
-			this.address = new LinkedList<>();
+			this.address = new ArrayList<>();
 			this.address.add(address);
 		}
 

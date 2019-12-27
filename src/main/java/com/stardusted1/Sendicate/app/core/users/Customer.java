@@ -20,20 +20,20 @@ public abstract class Customer extends User implements Serializable {
 	@Transient
 	protected LinkedList<Supply> currentSupplies;
 	@Column(name = "emails")
-	protected LinkedList<String> emails;
+	protected ArrayList<String> emails;
 	@Column(name = "phones")
-	protected LinkedList<String> phones;
+	protected ArrayList<String> phones;
 	@Transient
 	SupplyRepository supplyRepository;
 	public Customer() {
 		super();
 	}
 
-	public LinkedList<String> getPhones() {
+	public ArrayList<String> getPhones() {
 		if(phones!=null){
 			return phones;
 		}else{
-			phones = new LinkedList<>();
+			phones = new ArrayList<>();
 			return phones;
 		}
 
@@ -42,9 +42,9 @@ public abstract class Customer extends User implements Serializable {
 
 	public String getPhone() {
 		if(phones!=null){
-			return phones.getFirst();
+			return phones.get(0);
 		}else{
-			return null;
+			return "";
 		}
 
 	}
@@ -53,20 +53,20 @@ public abstract class Customer extends User implements Serializable {
 
 	public abstract void deletePhone(String phone);
 
-	public LinkedList<String> getEmails() {
+	public ArrayList<String> getEmails() {
 		if(emails!=null){
 			return emails;
 		}else{
-			emails = new LinkedList<>();
+			emails = new ArrayList<>();
 			return emails;
 		}
 	}
 
 	public String getEmail() {
 		if(emails!=null){
-			return emails.getFirst();
+			return emails.get(0);
 		}else{
-			return null;
+			return "";
 		}
 
 	}

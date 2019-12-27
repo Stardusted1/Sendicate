@@ -14,12 +14,12 @@ public class Updater {
     /**
      * Creates daily task to update Contracts and client's accounts
      */
-    public void start() {
+    public void start(System system) {
         Timer timer = new Timer();
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
-                UpdateSupplies();
+                UpdateSupplies(system);
                 timer.schedule(this, getTomorrowDate());
             }
         };
@@ -33,13 +33,12 @@ public class Updater {
                 .toInstant());
     }
 
-    private void UpdateSupplies(){
-        System system = new System();
+    private void UpdateSupplies(System system){
         Date now = new Date();
         ArrayList<Supply> supplies = (ArrayList<Supply>) system.supplyRepository.findAllByStatusEquals(SupplyStatus.DELIVERING);
         for(Supply supply: supplies){
             if(supply.getDateEnds().before(now)){
-                supply.setStatus(SupplyStatus.UNDELIVERED);
+                supply.setStatus(SupplyStatus.UNDELIVERED,system);
             }
         }
 

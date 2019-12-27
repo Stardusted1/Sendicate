@@ -18,18 +18,18 @@ import java.util.LinkedList;
 @Table(name="Deliverymans")
 public class Deliveryman extends BusinessCustomer implements Serializable {
 
-    public boolean AcceptSupply(Supply supply){
+    public boolean AcceptSupply(Supply supply,System system){
         supply.deliverymanApprove();
         if(supply.isReceiverApproved()){
-            supply.setStatus(SupplyStatus.DELIVERING);
+            supply.setStatus(SupplyStatus.DELIVERING,system);
         }
         return true;
     }
 
-    public boolean ChangeSupplyStatus(Supply supply){
+    public boolean ChangeSupplyStatus(Supply supply,System  system){
 
         if(supply.getStatus() == SupplyStatus.DELIVERING){
-            supply.setStatus(SupplyStatus.DELIVERED);
+            supply.setStatus(SupplyStatus.DELIVERED, system);
             return true;
         }else{
             return false;
@@ -49,7 +49,7 @@ public class Deliveryman extends BusinessCustomer implements Serializable {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if(authorities.isEmpty()){
-            authorities.add(new Authority("CUSTOMER"));
+            authorities.add(new Authority("DELIVERYMAN"));
         }
         return authorities;
     }

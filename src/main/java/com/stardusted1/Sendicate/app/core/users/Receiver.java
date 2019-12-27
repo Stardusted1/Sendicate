@@ -11,6 +11,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -33,7 +34,7 @@ public class Receiver extends Customer implements Serializable {
 			phones.clear();
 			phones.add(phone);
 		}else {
-			phones = new LinkedList<>();
+			phones = new ArrayList<>();
 			phones.add(phone);
 		}
 	}
@@ -49,7 +50,7 @@ public class Receiver extends Customer implements Serializable {
 			emails.clear();
 			emails.add(email);
 		}else {
-    		emails = new LinkedList<>();
+    		emails = new ArrayList<>();
     		emails.add(email);
 		}
 
@@ -61,28 +62,28 @@ public class Receiver extends Customer implements Serializable {
 	}
 
 
-	public boolean ReceiveSupply(Supply supply) {
-    	supply.setStatus(SupplyStatus.DELIVERED);
+	public boolean ReceiveSupply(Supply supply, System system) {
+    	supply.setStatus(SupplyStatus.DELIVERED, system);
         return true;
     }
 
-    public boolean AcceptSupply(Supply supply) {
+    public boolean AcceptSupply(Supply supply, System system) {
     	supply.receiverApprove();
     	if(supply.isDeliverymanApproved()){
-    	    supply.setStatus(SupplyStatus.DELIVERING);
+    	    supply.setStatus(SupplyStatus.DELIVERING, system);
         }
         return true;
     }
 
-    public boolean ChangeSupplyStatus(Supply supply) {
-        supply.setStatus(SupplyStatus.DELIVERED);
+    public boolean ChangeSupplyStatus(Supply supply, System system) {
+        supply.setStatus(SupplyStatus.DELIVERED,system);
         return false;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if(authorities.isEmpty()){
-            authorities.add(new Authority("USER"));
+            authorities.add(new Authority("RECEIVER"));
         }
         return authorities;
     }

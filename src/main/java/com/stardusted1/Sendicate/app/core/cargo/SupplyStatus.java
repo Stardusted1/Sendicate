@@ -4,5 +4,6 @@ public enum SupplyStatus {
     UNDELIVERED,
     PENDING,
     DELIVERING,
-    DELIVERED
+    DELIVERED,
+    TAKEN
 }

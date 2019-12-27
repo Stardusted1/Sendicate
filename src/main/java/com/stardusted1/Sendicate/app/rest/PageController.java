@@ -58,6 +58,11 @@ public class PageController {
 			return "register";
 		}
 		model.addAttribute("customer",customer);
+		if(customer.getClass().getSimpleName().equals("Provider")){
+			model.addAttribute("isProvider", true);
+		}else {
+			model.addAttribute("isProvider", false);
+		}
 		return "main";
 	}
 
@@ -77,7 +82,7 @@ public class PageController {
 		if (user.getRole().equals("BCUSTOMER")) {
 
 			model.addAttribute("BCUSTOMER", true);
-			model.addAttribute("address", ((BusinessCustomer) user).getAddress().getFirst());
+			model.addAttribute("address", ((BusinessCustomer) user).getAddres());
 			model.addAttribute("addressWeb", ((BusinessCustomer) user).getSiteAddress());
 			model.addAttribute("desc", ((BusinessCustomer) user).getDescription());
 			model.addAttribute("usr", (BusinessCustomer) user);

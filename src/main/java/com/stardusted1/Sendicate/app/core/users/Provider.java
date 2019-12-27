@@ -33,7 +33,7 @@ public class Provider extends BusinessCustomer implements Serializable{
         nSupply.setProviderId(receiver.id);
         nSupply.setReceiverId(receiver.id);
         nSupply.setDeliverymanId(deliveryman.id);
-        nSupply.setStatus(SupplyStatus.PENDING);
+        nSupply.setStatus(SupplyStatus.PENDING, system);
         nSupply.setPackages(packages);
         system.supplyRepository.save(nSupply);
         system.emailNotifier.notifyUsersAboutNewSupply(deliveryman,receiver);
@@ -49,7 +49,7 @@ public class Provider extends BusinessCustomer implements Serializable{
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if(authorities.isEmpty()){
-            authorities.add(new Authority("CUSTOMER"));
+            authorities.add(new Authority("PROVIDER"));
         }
         return authorities;
     }

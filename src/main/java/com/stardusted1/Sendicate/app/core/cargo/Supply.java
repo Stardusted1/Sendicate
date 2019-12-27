@@ -1,6 +1,9 @@
 package com.stardusted1.Sendicate.app.core.cargo;
 
+import com.stardusted1.Sendicate.app.core.repositories.DeliverymanRepository;
 import com.stardusted1.Sendicate.app.core.repositories.PackageRepository;
+import com.stardusted1.Sendicate.app.core.repositories.ProviderRepository;
+import com.stardusted1.Sendicate.app.core.repositories.ReceiverRepository;
 import com.stardusted1.Sendicate.app.core.users.Deliveryman;
 import com.stardusted1.Sendicate.app.core.users.Provider;
 import com.stardusted1.Sendicate.app.core.users.Receiver;
@@ -14,10 +17,6 @@ import java.util.Date;
 @Entity
 @Table(name = "supplies")
 public class Supply {
-    @Transient
-    @Autowired
-    PackageRepository packageRepository;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected long id;
@@ -31,7 +30,6 @@ public class Supply {
     protected String receiverId;
     protected String deliverymanId;
     protected String providerId;
-//    @Transient
     protected ArrayList<Package> packages;
     protected SupplyCondition condition;
 
@@ -105,52 +103,56 @@ public class Supply {
         return status;
     }
 
-    public void setStatus(SupplyStatus status) {
-
+    public void setStatus(SupplyStatus status, System system) {
+        Deliveryman deliveryman = system.deliverymanRepository.findById(deliverymanId).get();
+        Provider provider =  system.providerRepository.findById(providerId).get();
+        Receiver receiver =  system.receiverRepository.findById(receiverId).get();
         if (status.equals(SupplyStatus.UNDELIVERED)) {
-            System system = new System();
-            Deliveryman deliveryman = system.deliverymanRepository.findById(deliverymanId).get();
-            Provider provider = system.providerRepository.findById(providerId).get();
-            Receiver receiver = system.receiverRepository.findById(receiverId).get();
+
             system.emailNotifier.sendMail(deliveryman.getEmail(),
                     "Supply is out of date",
-                    "Supply " + name + " might be delivered at" + dateEnds + "but it wasn't");
+                    "Supply " + name + " might be delivered at " + dateEnds + "but it wasn't");
             system.emailNotifier.sendMail(provider.getEmail(),
                     "Supply is out of date",
-                    "Supply " + name + " might be delivered at" + dateEnds + "but it wasn't");
-            system.emailNotifier.sendMail(provider.getEmail(),
+                    "Supply " + name + " might be delivered at " + dateEnds + "but it wasn't");
+            system.emailNotifier.sendMail(receiver.getEmail(),
                     "Supply is out of date",
-                    "Supply " + name + " might be delivered at" + dateEnds + "but it wasn't");
+                    "Supply " + name + " might be delivered at " + dateEnds + "but it wasn't");
         }
         if(status.equals(SupplyStatus.DELIVERING)){
-            System system = new System();
-            Deliveryman deliveryman = system.deliverymanRepository.findById(deliverymanId).get();
-            Provider provider = system.providerRepository.findById(providerId).get();
-            Receiver receiver = system.receiverRepository.findById(receiverId).get();
             system.emailNotifier.sendMail(deliveryman.getEmail(),
                     "Supply " +name +" is now delivering",
-                    "Supply " + name + " might be delivered at" + dateEnds);
+                    "Supply " + name + " might be delivered at " + dateEnds);
             system.emailNotifier.sendMail(provider.getEmail(),
                     "Supply " +name +" is now delivering",
-                    "Supply " + name + " might be delivered at" + dateEnds);
-            system.emailNotifier.sendMail(provider.getEmail(),
+                    "Supply " + name + " might be delivered at " + dateEnds);
+            system.emailNotifier.sendMail(receiver.getEmail(),
                     "Supply " +name +" is now delivering",
-                    "Supply " + name + " might be delivered at" + dateEnds);
+                    "Supply " + name + " might be delivered at " + dateEnds);
         }
         if(status.equals(SupplyStatus.DELIVERED)){
-            System system = new System();
-            Deliveryman deliveryman = system.deliverymanRepository.findById(deliverymanId).get();
-            Provider provider = system.providerRepository.findById(providerId).get();
-            Receiver receiver = system.receiverRepository.findById(receiverId).get();
-            system.emailNotifier.sendMail(deliveryman.getEmail(),
-                    "Supply " +name +" is now delivered",
-                    "Supply " + name + " might be delivered at" + new Date());
-            system.emailNotifier.sendMail(provider.getEmail(),
-                    "Supply " +name +" is now delivered",
-                    "Supply " + name + " might be delivered at" + new Date());
-            system.emailNotifier.sendMail(provider.getEmail(),
-                    "Supply " +name +" is now delivered",
-                    "Supply " + name + " might be delivered at" + new Date());
+            try {
+                system.emailNotifier.sendMail(deliveryman.getEmail(),
+                        "Supply " +name +" is now delivered",
+                        "Supply " + name + " might be delivered at" + new Date());
+            }catch (Exception e){
+
+            }
+            try {
+                system.emailNotifier.sendMail(provider.getEmail(),
+                        "Supply " +name +" is now delivered",
+                        "Supply " + name + " might be delivered at" + new Date());
+            }catch (Exception e){
+
+            }
+            try {
+                system.emailNotifier.sendMail(receiver.getEmail(),
+                        "Supply " +name +" is now delivered",
+                        "Supply " + name + " might be delivered at" + new Date());
+            } catch (Exception e){
+
+            }
+
         }
         this.status = status;
     }
