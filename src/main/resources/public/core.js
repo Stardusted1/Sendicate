@@ -380,6 +380,8 @@ var main = angular.module("main", [])
     })
 
     .controller("newSupplyController", function ($scope, $http, $compile) {
+        const userToken = document.getElementsByName("userToken")[0].value;
+        const userId = document.getElementsByName("userId")[0].value;
         var conditionIs = angular.element(document.querySelector("#formCheck-1"));
         var maxVal = angular.element(document.querySelector("#maxVal"));
         var minVal = angular.element(document.querySelector("#minVal"));
@@ -444,9 +446,17 @@ var main = angular.module("main", [])
                 receiver: receiver,
                 packages: newPackages,
             };
-            $http.post("api/supply/new_supply", newSupply)
+            $http.post("api/supply/new_supply/"+userId+"/"+userToken, newSupply)
                 .success(function (data) {
-                    if (data) {
+                    if (true) {
+                        let listOfTransmitters = angular.element(document.querySelector("#list-of-transmitters"));
+                        listOfTransmitters.children().detach();
+                        let listOfPackages = angular.element(document.querySelector("#List-Of-packages"));
+                        listOfPackages.children().detach();
+                        newSupply = [];
+                        newPackages = [];
+                        newConditions =[];
+                        newTransmitters =[];
                         alert("Successfully!")
                     }else {
                         alert("Check parameters and try again")
@@ -455,7 +465,7 @@ var main = angular.module("main", [])
                     alert("Something went wrong")
             });
             alert("posted")
-        }
+        };
         $scope.addTransmitter = function () {
             let transmitterId = angular.element(document.querySelector("#TransmitterId")).val()
             $http.get("api/transmitter/" + transmitterId)
@@ -483,7 +493,7 @@ var main = angular.module("main", [])
                     button.append(icon)
                     div.append(button)
                     $compile(div)($scope)
-                    let listOfTransmitters = angular.element(document.querySelector("#TransmittersList"))
+                    let listOfTransmitters = angular.element(document.querySelector("#list-of-transmitters"));
                     listOfTransmitters.append(div);
                 }).error(function () {
                 alert("this transmitter currently unavailable")
@@ -613,7 +623,7 @@ var main = angular.module("main", [])
             var payload = angular.element(document.querySelector("#Payload")).val();
             var transmitters = newTransmitters;
             newTransmitters = [];
-            var conditions = newConditions
+            var conditions = newConditions;
             newConditions = [];
             let pack = {
                 id: listOfPackages.children().length,
@@ -643,6 +653,8 @@ var main = angular.module("main", [])
             div.append(formGroup);
             $compile(div)($scope);
             listOfPackages.append(div);
+            let listOfTransmitters = angular.element(document.querySelector("#list-of-transmitters"));
+            listOfTransmitters.children().detach();
         };
         $scope.removePackage = function (id) {
             for (let pack of newPackages) {
@@ -654,12 +666,14 @@ var main = angular.module("main", [])
         }
     })
 ;
+/* new supply controller*/
 var openedCondition;
 var newTransmitters = [];
 var newPackages = [];
 var newConditions = [];
-var newSupply = []
+var newSupply = [];
 
+/*Workbench current controller*/
 var prevIdDeliveryman;
 var prevIdReceiver;
 var supplies;
