@@ -74,16 +74,22 @@ public class Supply {
         return receiverApproved;
     }
 
-    public void receiverApprove() {
+    public void receiverApprove(System system) {
         this.receiverApproved = true;
+        if(this.isDeliverymanApproved()){
+            this.setStatus(SupplyStatus.DELIVERING, system);
+        }
     }
 
     public boolean isDeliverymanApproved() {
         return deliverymanApproved;
     }
 
-    public void deliverymanApprove() {
+    public void deliverymanApprove(System system) {
         this.deliverymanApproved = true;
+        if(this.isReceiverApproved()){
+            this.setStatus(SupplyStatus.DELIVERING, system);
+        }
     }
 
     public void setConditionPartiallySpoiled() {
@@ -108,27 +114,50 @@ public class Supply {
         Provider provider =  system.providerRepository.findById(providerId).get();
         Receiver receiver =  system.receiverRepository.findById(receiverId).get();
         if (status.equals(SupplyStatus.UNDELIVERED)) {
-
+            try {
             system.emailNotifier.sendMail(deliveryman.getEmail(),
                     "Supply is out of date",
                     "Supply " + name + " might be delivered at " + dateEnds + "but it wasn't");
+            }catch (Exception e){
+
+            }
+            try {
             system.emailNotifier.sendMail(provider.getEmail(),
                     "Supply is out of date",
                     "Supply " + name + " might be delivered at " + dateEnds + "but it wasn't");
+            }catch (Exception e){
+
+            }
+            try {
             system.emailNotifier.sendMail(receiver.getEmail(),
                     "Supply is out of date",
                     "Supply " + name + " might be delivered at " + dateEnds + "but it wasn't");
+            }catch (Exception e){
+
+            }
         }
         if(status.equals(SupplyStatus.DELIVERING)){
+            try {
             system.emailNotifier.sendMail(deliveryman.getEmail(),
-                    "Supply " +name +" is now delivering",
+                    "Supply " +name +" is now might be delivering",
                     "Supply " + name + " might be delivered at " + dateEnds);
+            }catch (Exception e){
+
+            }
+            try {
             system.emailNotifier.sendMail(provider.getEmail(),
                     "Supply " +name +" is now delivering",
                     "Supply " + name + " might be delivered at " + dateEnds);
+            }catch (Exception e){
+
+            }
+            try {
             system.emailNotifier.sendMail(receiver.getEmail(),
                     "Supply " +name +" is now delivering",
                     "Supply " + name + " might be delivered at " + dateEnds);
+            }catch (Exception e){
+
+            }
         }
         if(status.equals(SupplyStatus.DELIVERED)){
             try {
@@ -152,7 +181,6 @@ public class Supply {
             } catch (Exception e){
 
             }
-
         }
         this.status = status;
     }

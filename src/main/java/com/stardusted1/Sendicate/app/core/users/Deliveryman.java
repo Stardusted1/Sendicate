@@ -19,7 +19,7 @@ import java.util.LinkedList;
 public class Deliveryman extends BusinessCustomer implements Serializable {
 
     public boolean AcceptSupply(Supply supply,System system){
-        supply.deliverymanApprove();
+        supply.deliverymanApprove(system);
         if(supply.isReceiverApproved()){
             supply.setStatus(SupplyStatus.DELIVERING,system);
         }

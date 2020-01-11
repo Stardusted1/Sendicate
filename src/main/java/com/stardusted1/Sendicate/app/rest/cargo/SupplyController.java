@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.json.JsonParser;
 import org.springframework.boot.json.JsonParserFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.SecureRandom;
@@ -136,15 +137,38 @@ public class SupplyController {
 	@GetMapping("{id}/get")
 	public Iterable<Supply> getSupplies(@PathVariable("id") String id) {
 		String userclass = SecurityContextHolder.getContext().getAuthentication().getPrincipal().getClass().getSimpleName();
+		LinkedList<SupplyStatus> statuses = new LinkedList<>();
+		statuses.add(SupplyStatus.DELIVERING);
+		statuses.add(SupplyStatus.PENDING);
+		statuses.add(SupplyStatus.DELIVERED);
+		return getSupplies(id, userclass, statuses);
+	}
+
+	@GetMapping("{user}/get_old/{token}")
+	public Iterable<Supply> getOldSupplies(
+			@PathVariable(name = "user") String userId,
+			@PathVariable String token
+	){
+		String userclass = SecurityContextHolder.getContext().getAuthentication().getPrincipal().getClass().getSimpleName();
+		LinkedList<SupplyStatus> statuses = new LinkedList<>();
+		statuses.add(SupplyStatus.UNDELIVERED);
+		return getSupplies(userId, userclass, statuses);
+	}
+
+	private Iterable<Supply> getSupplies(@PathVariable("id") String id, String userclass, LinkedList<SupplyStatus> statuses) {
+		statuses.add(SupplyStatus.TAKEN);
+
 		if (userclass.equals("Provider")) {
-			return supplyRepository.findAllByProviderIdEquals(id);
+			return supplyRepository.findAllByStatusIsInAndProviderIdEquals(statuses,id);
 		} else if (userclass.equals("Deliveryman")) {
-			return supplyRepository.findAllByDeliverymanIdEquals(id);
+			return supplyRepository.findAllByStatusIsInAndDeliverymanIdEquals(statuses,id);
 		} else if (userclass.equals("Optional")) {
-			return supplyRepository.findAllByReceiverIdEquals(id);
+			return supplyRepository.findAllByStatusIsInAndReceiverIdEquals(statuses, id);
 		}
 		return null;
 	}
+
+
 
 	@GetMapping("{id}")
 	public Supply getSupply(@PathVariable String id) {
@@ -167,8 +191,8 @@ public class SupplyController {
 			date.setTime(123123);
 			supply.setDateBegins(date);
 			supply.setDateEnds(new Date());
-			supply.receiverApprove();
-			supply.deliverymanApprove();
+			supply.receiverApprove(system);
+			supply.deliverymanApprove(system);
 			supply.setConditionNormal();
 			for (int j = 0; j < 5; j++) {
 				Package aPackage = new Package();
@@ -226,9 +250,9 @@ public class SupplyController {
 		}
 		if (customer.getToken().equals(token)) {
 			if (userType.toLowerCase().equals("deliveryman")) {
-				supply.deliverymanApprove();
+				supply.deliverymanApprove(system);
 			} else if (userType.toLowerCase().equals("receiver")) {
-				supply.receiverApprove();
+				supply.receiverApprove(system);
 			}
 			supplyRepository.save(supply);
 		}

@@ -1,334 +1,563 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
+    />
     <title>Sendicate-main</title>
-    <link rel="shortcut icon" href="/assets/img/logo.png">
-    <link rel="stylesheet" href="assets/main/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet"
-          href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
-    <link rel="stylesheet" href="assets/main/fonts/fontawesome-all.min.css">
-    <link rel="stylesheet" href="assets/main/fonts/font-awesome.min.css">
-    <link rel="stylesheet" href="assets/main/fonts/ionicons.min.css">
-    <link rel="stylesheet" href="assets/main/fonts/line-awesome.min.css">
-    <link rel="stylesheet" href="assets/main/fonts/fontawesome5-overrides.min.css">
-    <link rel="stylesheet" href="assets/main/css/untitled.css">
+    <link rel="shortcut icon" href="/assets/img/logo.png" />
+    <link rel="stylesheet" href="assets/main/bootstrap/css/bootstrap.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+    />
+    <link rel="stylesheet" href="assets/main/fonts/fontawesome-all.min.css" />
+    <link rel="stylesheet" href="assets/main/fonts/font-awesome.min.css" />
+    <link rel="stylesheet" href="assets/main/fonts/ionicons.min.css" />
+    <link rel="stylesheet" href="assets/main/fonts/line-awesome.min.css" />
+    <link
+      rel="stylesheet"
+      href="assets/main/fonts/fontawesome5-overrides.min.css"
+    />
+    <link rel="stylesheet" href="assets/main/css/untitled.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.js"></script>
     <script src="core.js"></script>
     <script src="misc.js"></script>
     <!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.7.8/angular-sanitize.min.js" integrity="sha256-rkC3YaCKtbLotg8lQpxqYki+DDOVXjcA5wTSxjRlI0E=" crossorigin="anonymous"></script>-->
-</head>
+  </head>
 
-<body id="page-top" ng-app="main">
-<input type="hidden" th:value="${customer.getId()}"
-       name="userId"
-       ng-model="userId">
-<input type="hidden" th:value="${customer.getToken()}"
-       name="userToken"
-       ng-model="userToken">
-<input type="hidden" th:value="${customer.getAuthorities()[0]}"
-       name="userType"
-       ng-model="userType">
-<div id="wrapper">
-    <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0">
+  <body id="page-top" ng-app="main">
+    <input
+      type="hidden"
+      th:value="${customer.getId()}"
+      name="userId"
+      ng-model="userId"
+    />
+    <input
+      type="hidden"
+      th:value="${customer.getToken()}"
+      name="userToken"
+      ng-model="userToken"
+    />
+    <input
+      type="hidden"
+      th:value="${customer.getAuthorities()[0]}"
+      name="userType"
+      ng-model="userType"
+    />
+    <div id="wrapper">
+      <nav
+        class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0"
+      >
         <div class="container-fluid d-flex flex-column p-0">
-            <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
-                <div class="sidebar-brand-icon"><i class="la la-ship"></i></div>
-                <div class="sidebar-brand-text mx-3"><span>Sendicate</span></div>
-            </a>
-            <hr class="sidebar-divider my-0">
-            <ul class="nav navbar-nav text-light" id="accordionSidebar">
-                <li id="curSupplBut" class="nav-item current-button" role="presentation"
-                    onclick="currentSupplyChosen(this)" style="cursor: pointer">
-                    <div class="nav-link active">
-                        <i class="fas fa-play"></i>
-                        <span>Current Supplies</span>
-                    </div>
-                </li>
-                <!--                <li id="hisSupplBut" class="nav-item" role="presentation" onclick="historyChosen(this)"-->
-                <!--                    style="cursor: pointer">-->
-                <!--                    <div class="nav-link active">-->
-                <!--                        <i class="fas fa-history"></i>-->
-                <!--                        <span>Supply History</span>-->
-                <!--                    </div>-->
-                <!--                </li>-->
-                <li th:if="${isProvider == true}" id="newSupplBut" class="nav-item" role="presentation"
-                    onclick="addNewSupplyChosen(this)"
-                    style="cursor: pointer">
-                    <div class="nav-link active">
-                        <i class="fas fa-plus-circle"></i>
-                        <span>New Supply</span>
-                    </div>
-                </li>
-            </ul>
-            <div class="text-center d-none d-md-inline">
-                <button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button>
-            </div>
+          <a
+            class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0"
+            href="#"
+          >
+            <div class="sidebar-brand-icon"><i class="la la-ship"></i></div>
+            <div class="sidebar-brand-text mx-3"><span>Sendicate</span></div>
+          </a>
+          <hr class="sidebar-divider my-0" />
+          <ul class="nav navbar-nav text-light" id="accordionSidebar">
+            <li
+              id="curSupplBut"
+              class="nav-item current-button"
+              role="presentation"
+              onclick="currentSupplyChosen(this)"
+              style="cursor: pointer"
+            >
+              <div class="nav-link active">
+                <i class="fas fa-play"></i>
+                <span>Current Supplies</span>
+              </div>
+            </li>
+            <!--                <li id="hisSupplBut" class="nav-item" role="presentation" onclick="historyChosen(this)"-->
+            <!--                    style="cursor: pointer">-->
+            <!--                    <div class="nav-link active">-->
+            <!--                        <i class="fas fa-history"></i>-->
+            <!--                        <span>Supply History</span>-->
+            <!--                    </div>-->
+            <!--                </li>-->
+            <li
+              th:if="${isProvider == true}"
+              id="newSupplBut"
+              class="nav-item"
+              role="presentation"
+              onclick="addNewSupplyChosen(this)"
+              style="cursor: pointer"
+            >
+              <div class="nav-link active">
+                <i class="fas fa-plus-circle"></i>
+                <span>New Supply</span>
+              </div>
+            </li>
+          </ul>
+          <div class="text-center d-none d-md-inline">
+            <button
+              class="btn rounded-circle border-0"
+              id="sidebarToggle"
+              type="button"
+            ></button>
+          </div>
         </div>
-    </nav>
-    <div class="d-flex flex-column" id="content-wrapper">
+      </nav>
+      <div class="d-flex flex-column" id="content-wrapper">
         <div id="content">
-
-
-            <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
-                <div class="container-fluid">
-                    <button class="btn btn-link d-md-none rounded-circle mr-3" id="sidebarToggleTop" type="button"><i
-                            class="fas fa-bars"></i></button>
-                    <form class="form-inline d-none d-sm-inline-block mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                        <div class="input-group"><input class="bg-light form-control border-0 small" type="text"
-                                                        placeholder="Search for ...">
-                            <div class="input-group-append">
-                                <button class="btn btn-primary py-0" type="button"><i class="fas fa-search"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                    <ul class="nav navbar-nav flex-nowrap ml-auto">
-                        <li class="nav-item dropdown d-sm-none no-arrow"><a class="dropdown-toggle nav-link"
-                                                                            data-toggle="dropdown" aria-expanded="false"
-                                                                            href="#"><i class="fas fa-search"></i></a>
-                            <div class="dropdown-menu dropdown-menu-right p-3 animated--grow-in" role="menu"
-                                 aria-labelledby="searchDropdown">
-                                <form class="form-inline mr-auto navbar-search w-100">
-                                    <div class="input-group"><input class="bg-light form-control border-0 small"
-                                                                    type="text" placeholder="Search for ...">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-primary py-0" type="button"><i
-                                                    class="fas fa-search"></i></button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </li>
-                        <li class="nav-item dropdown no-arrow mx-1" role="presentation">
-                            <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link"
-                                                                       data-toggle="dropdown" aria-expanded="false"
-                                                                       href="#"><span
-                                    class="badge badge-danger badge-counter">3+</span><i class="fas fa-bell fa-fw"></i></a>
-                                <div class="dropdown-menu dropdown-menu-right dropdown-list dropdown-menu-right animated--grow-in"
-                                     role="menu">
-                                    <h6 class="dropdown-header">alerts center</h6>
-                                    <a class="d-flex align-items-center dropdown-item" href="#">
-                                        <div class="mr-3">
-                                            <div class="bg-primary icon-circle"><i
-                                                    class="fas fa-file-alt text-white"></i></div>
-                                        </div>
-                                        <div><span class="small text-gray-500">December 12, 2019</span>
-                                            <p>A new monthly report is ready to download!</p>
-                                        </div>
-                                    </a>
-                                    <a class="d-flex align-items-center dropdown-item" href="#">
-                                        <div class="mr-3">
-                                            <div class="bg-success icon-circle"><i class="fas fa-donate text-white"></i>
-                                            </div>
-                                        </div>
-                                        <div><span class="small text-gray-500">December 7, 2019</span>
-                                            <p>$290.29 has been deposited into your account!</p>
-                                        </div>
-                                    </a>
-                                    <a class="d-flex align-items-center dropdown-item" href="#">
-                                        <div class="mr-3">
-                                            <div class="bg-warning icon-circle"><i
-                                                    class="fas fa-exclamation-triangle text-white"></i></div>
-                                        </div>
-                                        <div><span class="small text-gray-500">December 2, 2019</span>
-                                            <p>Spending Alert: We've noticed unusually high spending for your
-                                                account.</p>
-                                        </div>
-                                    </a><a class="text-center dropdown-item small text-gray-500" href="#">Show All
-                                    Alerts</a></div>
-                            </div>
-                        </li>
-                        <div class="d-none d-sm-block topbar-divider"></div>
-                        <li class="nav-item dropdown no-arrow" role="presentation">
-                            <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link"
-                                                                       data-toggle="dropdown" aria-expanded="false"
-                                                                       href="#"><span
-                                    class="d-none d-lg-inline mr-2 text-gray-600 small"
-                                    th:text="${customer.getName()}"></span><img
-                                    class="border rounded-circle img-profile" th:src="${customer.getPictureUrl()}"></a>
-                                <div
-                                        class="dropdown-menu shadow dropdown-menu-right animated--grow-in" role="menu">
-                                    <a class="dropdown-item" role="presentation" href="/profile"><i
-                                            class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Profile</a><a
-                                        class="dropdown-item" role="presentation" href="#"><i
-                                        class="fas fa-language fa-sm fa-fw mr-2 text-gray-400"
-                                        style="font-size: 12px;"></i>&nbsp;Language</a>
-                                    <div
-                                            class="dropdown-divider"></div>
-                                    <a class="dropdown-item" role="presentation" href="/logout"><i
-                                            class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Logout</a>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-
-
-            <div class="container-fluid" id="supply-container" display="none">
-                <div class="d-sm-flex justify-content-between align-items-center mb-4">
-                    <h3 class="text-dark mb-0">Current supplies</h3>
-                    <button class="btn btn-dark d-none d-sm-inline-block" type="button"
-                            ng-controller="workbenchCurrentController" ng-click="getCurrentSupplies()"><i
-                            class="fa fa-refresh fa-sm text-white-50" style="color: #ffffff;"></i>&nbsp;Refresh
+          <nav
+            class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top"
+          >
+            <div class="container-fluid">
+              <button
+                class="btn btn-link d-md-none rounded-circle mr-3"
+                id="sidebarToggleTop"
+                type="button"
+              >
+                <i class="fas fa-bars"></i>
+              </button>
+              <form
+                class="form-inline d-none d-sm-inline-block mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search"
+              >
+                <div class="input-group">
+                  <input
+                    class="bg-light form-control border-0 small"
+                    type="text"
+                    placeholder="Search for ..."
+                  />
+                  <div class="input-group-append">
+                    <button class="btn btn-primary py-0" type="button">
+                      <i class="fas fa-search"></i>
                     </button>
+                  </div>
                 </div>
-                <div class="row">
-                    <div class="col-xl-4">
-                        <h6>List of supplies&nbsp;</h6>
-                        <div class="border rounded shadow overflow-auto"
-                             style="height: 400px;padding-right: 10px;padding-left: 10px;margin-bottom: 24px;padding-top: 7px;padding-bottom: 7px;"
-                             ng-controller="workbenchCurrentController"
-                             ng-bind-html="list_of_supplies"
-                             id="List-Of-supplies-current"
-                             compile="html">
+              </form>
+              <ul class="nav navbar-nav flex-nowrap ml-auto">
+                <li class="nav-item dropdown d-sm-none no-arrow">
+                  <a
+                    class="dropdown-toggle nav-link"
+                    data-toggle="dropdown"
+                    aria-expanded="false"
+                    href="#"
+                    ><i class="fas fa-search"></i
+                  ></a>
+                  <div
+                    class="dropdown-menu dropdown-menu-right p-3 animated--grow-in"
+                    role="menu"
+                    aria-labelledby="searchDropdown"
+                  >
+                    <form class="form-inline mr-auto navbar-search w-100">
+                      <div class="input-group">
+                        <input
+                          class="bg-light form-control border-0 small"
+                          type="text"
+                          placeholder="Search for ..."
+                        />
+                        <div class="input-group-append">
+                          <button class="btn btn-primary py-0" type="button">
+                            <i class="fas fa-search"></i>
+                          </button>
                         </div>
-                    </div>
-                    <div class="col-xl-4">
-                        <h6>Supply description</h6>
-                        <div class="border rounded shadow"
-                             style="padding-top: 10px;padding-bottom: 10px;padding-left: 15px;background-color: #ffffff;margin-bottom: 25px;">
-                            <div class="d-inline-flex" style="margin-bottom: 0px;">
-                                <h2 style="width: auto;">Name:&nbsp;</h2>
-                                <h2 style="width: auto;" id="SupplyNameOf">Heading</h2>
-                            </div>
-                            <div class="d-flex">
-                                <h5 style="width: auto;">Date From:&nbsp;</h5>
-                                <h5 style="width: 120px;" id="SupplyDateFrom">Heading</h5>
-                            </div>
-                            <div class="d-flex">
-                                <h5 style="width: auto;">Supply condition:&nbsp;</h5>
-                                <h5 style="width: 120px;" id="SupplyCondition">Heading</h5>
-                            </div>
-                            <div class="d-flex">
-                                <h5 style="width: auto;">Date To:&nbsp;</h5>
-                                <h5 style="width: auto;" id="SupplyDateTo">Heading</h5>
-                            </div>
-                            <div class="d-flex">
-                                <h5 style="width: auto;">Status:&nbsp;</h5>
-                                <h5 style="width: auto;" id="SupplyStatus">Status</h5>
-                            </div>
-                            <div class="d-flex">
-                                <h6 style="width: auto;">Deliveryman:&nbsp;</h6>
-                                <h6 style="width: auto;" id="SupplyDeliveryman">Status</h6>
-                            </div>
-                            <div class="d-flex">
-                                <h6 style="width: auto;">Receiver:&nbsp;</h6>
-                                <h6 style="width: auto;" id="SupplyReceiver">Status</h6>
-                            </div>
-                            <div class="d-flex">
-                                <h6 style="width: auto;">Provider:&nbsp;</h6>
-                                <h6 style="width: auto;" id="SupplyProvider">Status</h6>
-                            </div>
-                            <div class="d-flex">
-                                <h5 style="width: auto;">Number of packages:&nbsp;</h5>
-                                <h5 style="width: auto;" id="SupplyNumberOfPackages">Status</h5>
-                            </div>
-                            <div>
-                                <div class="btn-toolbar">
-                                    <div class="btn-group" role="group">
-                                        <!--${customer.getRole().equals('BCUSTOMER')?' ':'d-none'}"-->
-                                        <button class="btn btn-light" id="AcceptButton" type="button"
-                                                ng-controller="workbenchCurrentController" ng-click="acceptSupply()">
-                                            Accept<i class="fa fa-check" style="padding-left: 10px;"></i>
-                                        </button>
-                                        <button class="btn btn-success" id="SupplyDeliveredButton" type="button"
-                                                ng-controller="workbenchCurrentController" ng-click="supplyDelivered()">
-                                            Delivered<i class="fa fa-truck" style="padding-left: 10px;"></i>
-                                        </button>
-                                        <button class="btn btn-warning" id="SupplyTakenButton" type="button">Taken<i
-                                                class="fas fa-hands"
-                                                style="padding-left: 10px;"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
+                      </div>
+                    </form>
+                  </div>
+                </li>
+                <li class="nav-item dropdown no-arrow mx-1" role="presentation">
+                  <div class="nav-item dropdown no-arrow">
+                    <a
+                      class="dropdown-toggle nav-link"
+                      data-toggle="dropdown"
+                      aria-expanded="false"
+                      href="#"
+                      ><span class="badge badge-danger badge-counter">3+</span
+                      ><i class="fas fa-bell fa-fw"></i
+                    ></a>
+                    <div
+                      class="dropdown-menu dropdown-menu-right dropdown-list dropdown-menu-right animated--grow-in"
+                      role="menu"
+                    >
+                      <h6 class="dropdown-header">alerts center</h6>
+                      <a
+                        class="d-flex align-items-center dropdown-item"
+                        href="#"
+                      >
+                        <div class="mr-3">
+                          <div class="bg-primary icon-circle">
+                            <i class="fas fa-file-alt text-white"></i>
+                          </div>
                         </div>
-                    </div>
-                    <div class="col">
-                        <h6>List of packages in chosen supply</h6>
-                        <div class="border rounded shadow overflow-auto" id="List-Of-packages-in-supply"
-                             style="height: 400px;padding-right: 10px;padding-left: 10px;margin-bottom: 24px;padding-top: 7px;padding-bottom: 7px;">
+                        <div>
+                          <span class="small text-gray-500"
+                            >December 12, 2019</span
+                          >
+                          <p>A new monthly report is ready to download!</p>
                         </div>
+                      </a>
+                      <a
+                        class="d-flex align-items-center dropdown-item"
+                        href="#"
+                      >
+                        <div class="mr-3">
+                          <div class="bg-success icon-circle">
+                            <i class="fas fa-donate text-white"></i>
+                          </div>
+                        </div>
+                        <div>
+                          <span class="small text-gray-500"
+                            >December 7, 2019</span
+                          >
+                          <p>$290.29 has been deposited into your account!</p>
+                        </div>
+                      </a>
+                      <a
+                        class="d-flex align-items-center dropdown-item"
+                        href="#"
+                      >
+                        <div class="mr-3">
+                          <div class="bg-warning icon-circle">
+                            <i
+                              class="fas fa-exclamation-triangle text-white"
+                            ></i>
+                          </div>
+                        </div>
+                        <div>
+                          <span class="small text-gray-500"
+                            >December 2, 2019</span
+                          >
+                          <p>
+                            Spending Alert: We've noticed unusually high
+                            spending for your account.
+                          </p>
+                        </div> </a
+                      ><a
+                        class="text-center dropdown-item small text-gray-500"
+                        href="#"
+                        >Show All Alerts</a
+                      >
                     </div>
+                  </div>
+                </li>
+                <div class="d-none d-sm-block topbar-divider"></div>
+                <li class="nav-item dropdown no-arrow" role="presentation">
+                  <div class="nav-item dropdown no-arrow">
+                    <a
+                      class="dropdown-toggle nav-link"
+                      data-toggle="dropdown"
+                      aria-expanded="false"
+                      href="#"
+                      ><span
+                        class="d-none d-lg-inline mr-2 text-gray-600 small"
+                        th:text="${customer.getName()}"
+                      ></span
+                      ><img
+                        class="border rounded-circle img-profile"
+                        th:src="${customer.getPictureUrl()}"
+                    /></a>
+
+                    <div
+                      class="dropdown-menu shadow dropdown-menu-right animated--grow-in"
+                      role="menu"
+                    >
+                      <a
+                        class="dropdown-item"
+                        role="presentation"
+                        href="/profile"
+                        ><i
+                          class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"
+                        ></i
+                        >&nbsp;Profile</a
+                      ><a class="dropdown-item" role="presentation" href="#"
+                        ><i
+                          class="fas fa-language fa-sm fa-fw mr-2 text-gray-400"
+                          style="font-size: 12px;"
+                        ></i
+                        >&nbsp;Language</a
+                      >
+                      <div class="dropdown-divider"></div>
+                      <a
+                        class="dropdown-item"
+                        role="presentation"
+                        href="/logout"
+                        ><i
+                          class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"
+                        ></i
+                        >&nbsp;Logout</a
+                      >
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </nav>
+
+          <div class="container-fluid" id="supply-container" display="none">
+            <div
+              class="d-sm-flex justify-content-between align-items-center mb-4"
+            >
+              <h3 class="text-dark mb-0">Current supplies</h3>
+              <button
+                class="btn btn-dark d-none d-sm-inline-block"
+                type="button"
+                ng-controller="workbenchCurrentController"
+                ng-click="getCurrentSupplies()"
+              >
+                <i
+                  class="fa fa-refresh fa-sm text-white-50"
+                  style="color: #ffffff;"
+                ></i
+                >&nbsp;Refresh
+              </button>
+            </div>
+            <div class="row">
+              <div class="col-xl-4">
+                <h6>List of supplies&nbsp;</h6>
+                <div
+                  class="border rounded shadow overflow-auto"
+                  style="height: 400px;padding-right: 10px;padding-left: 10px;margin-bottom: 24px;padding-top: 7px;padding-bottom: 7px;"
+                  ng-controller="workbenchCurrentController"
+                  ng-bind-html="list_of_supplies"
+                  id="List-Of-supplies-current"
+                  compile="html"
+                ></div>
+              </div>
+              <div class="col-xl-4">
+                <h6>Supply description</h6>
+                <div
+                  class="border rounded shadow"
+                  style="padding-top: 10px;padding-bottom: 10px;padding-left: 15px;background-color: #ffffff;margin-bottom: 25px;"
+                >
+                  <div class="d-inline-flex" style="margin-bottom: 0px;">
+                    <h2 style="width: auto;">Name:&nbsp;</h2>
+                    <h2 style="width: auto;" id="SupplyNameOf">Heading</h2>
+                  </div>
+                  <div class="d-flex">
+                    <h5 style="width: auto;">Date From:&nbsp;</h5>
+                    <h5 style="width: 120px;" id="SupplyDateFrom">Heading</h5>
+                  </div>
+                  <div class="d-flex">
+                    <h5 style="width: auto;">Supply condition:&nbsp;</h5>
+                    <h5 style="width: 120px;" id="SupplyCondition">Heading</h5>
+                  </div>
+                  <div class="d-flex">
+                    <h5 style="width: auto;">Date To:&nbsp;</h5>
+                    <h5 style="width: auto;" id="SupplyDateTo">Heading</h5>
+                  </div>
+                  <div class="d-flex">
+                    <h5 style="width: auto;">Status:&nbsp;</h5>
+                    <h5 style="width: auto;" id="SupplyStatus">Status</h5>
+                  </div>
+                  <div class="d-flex">
+                    <h6 style="width: auto;">Deliveryman:&nbsp;</h6>
+                    <h6 style="width: auto;" id="SupplyDeliveryman">Status</h6>
+                  </div>
+                  <div class="d-flex">
+                    <h6 style="width: auto;">Receiver:&nbsp;</h6>
+                    <h6 style="width: auto;" id="SupplyReceiver">Status</h6>
+                  </div>
+                  <div class="d-flex">
+                    <h6 style="width: auto;">Provider:&nbsp;</h6>
+                    <h6 style="width: auto;" id="SupplyProvider">Status</h6>
+                  </div>
+                  <div class="d-flex">
+                    <h5 style="width: auto;">Number of packages:&nbsp;</h5>
+                    <h5 style="width: auto;" id="SupplyNumberOfPackages">
+                      Status
+                    </h5>
+                  </div>
+                  <div>
+                    <div class="btn-toolbar">
+                      <div class="btn-group" role="group">
+                        <!--${customer.getRole().equals('BCUSTOMER')?' ':'d-none'}"-->
+                        <button
+                          class="btn btn-light"
+                          id="AcceptButton"
+                          type="button"
+                          ng-controller="workbenchCurrentController"
+                          ng-click="acceptSupply()"
+                        >
+                          Accept<i
+                            class="fa fa-check"
+                            style="padding-left: 10px;"
+                          ></i>
+                        </button>
+                        <button
+                          class="btn btn-success"
+                          id="SupplyDeliveredButton"
+                          type="button"
+                          ng-controller="workbenchCurrentController"
+                          ng-click="supplyDelivered()"
+                        >
+                          Delivered<i
+                            class="fa fa-truck"
+                            style="padding-left: 10px;"
+                          ></i>
+                        </button>
+                        <button
+                          class="btn btn-warning"
+                          id="SupplyTakenButton"
+                          type="button"
+                        >
+                          Taken<i
+                            class="fas fa-hands"
+                            style="padding-left: 10px;"
+                          ></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div class="row" id="package-info-current">
-                    <div class="col-lg-7 col-xl-8">
-                        <div class="card shadow mb-4" style="height: auto;margin-bottom: 0px;">
-                            <div class="card-header d-flex justify-content-between align-items-center">
-                                <h6 class="text-primary font-weight-bold m-0" id="HistoryLabel">Temperature history</h6>
-                                <div class="dropdown">
-                                    <button class="btn btn-primary dropdown-toggle float-left" data-toggle="dropdown"
-                                            aria-expanded="false" type="button">History type
-                                    </button>
-                                    <div class="dropdown-menu" role="menu">
-                                        <a class="dropdown-item" role="presentation" id="0"
-                                           onclick="selectAnother(this.id)">Humidity history</a>
-                                        <a class="dropdown-item" role="presentation" id="1"
-                                           onclick="selectAnother(this.id)">Temperature history</a>
-                                        <a class="dropdown-item" role="presentation" id="2"
-                                           onclick="selectAnother(this.id)">Luminosity history</a>
-                                        <a class="dropdown-item" role="presentation" id="3"
-                                           onclick="selectAnother(this.id)">Acceleration history</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-body" style="overflow-x: scroll;overflow-y: hidden;height: 425px;">
-                                <div class="chart-area d-none" id="HumidityChart"
-                                     style="/*overflow-x: scroll;*/overflow-y: hidden;height: 100%;width: 1000px;padding-left: 0px;padding-right: 20px;">
-                                    <canvas id="chLineHumidity"></canvas>
-                                </div>
-                                <div class="chart-area" id="TemperatureChart"
-                                     style="overflow-x: scroll;overflow-y: scroll;height: 400px;width: 1000px;padding-left: 0px;padding-right: 20px;">
-                                    <canvas id="chLineTemperature"></canvas>
-                                </div>
-                                <div class="chart-area d-none" id="AccelerationChart"
-                                     style="/*overflow-x: scroll;*/overflow-y: hidden;height: 100%;width: 1000px;padding-left: 0px;padding-right: 20px;">
-                                    <canvas id="chLineAcceleration"></canvas>
-                                </div>
-                                <div class="chart-area d-none" id="LuminosityChart"
-                                     style="/*overflow-x: scroll;*/overflow-y: hidden;height: 100%;width: 1000px;padding-left: 0px;padding-right: 20px;">
-                                    <canvas id="chLineLuminosity"></canvas>
-                                </div>
-                            </div>
-                        </div>
+              </div>
+              <div class="col">
+                <h6>List of packages in chosen supply</h6>
+                <div
+                  class="border rounded shadow overflow-auto"
+                  id="List-Of-packages-in-supply"
+                  style="height: 400px;padding-right: 10px;padding-left: 10px;margin-bottom: 24px;padding-top: 7px;padding-bottom: 7px;"
+                ></div>
+              </div>
+            </div>
+            <div class="row" id="package-info-current">
+              <div class="col-lg-7 col-xl-8">
+                <div
+                  class="card shadow mb-4"
+                  style="height: auto;margin-bottom: 0px;"
+                >
+                  <div
+                    class="card-header d-flex justify-content-between align-items-center"
+                  >
+                    <h6
+                      class="text-primary font-weight-bold m-0"
+                      id="HistoryLabel"
+                    >
+                      Temperature history
+                    </h6>
+                    <div class="dropdown">
+                      <button
+                        class="btn btn-primary dropdown-toggle float-left"
+                        data-toggle="dropdown"
+                        aria-expanded="false"
+                        type="button"
+                      >
+                        History type
+                      </button>
+                      <div class="dropdown-menu" role="menu">
+                        <a
+                          class="dropdown-item"
+                          role="presentation"
+                          id="0"
+                          onclick="selectAnother(this.id)"
+                          >Humidity history</a
+                        >
+                        <a
+                          class="dropdown-item"
+                          role="presentation"
+                          id="1"
+                          onclick="selectAnother(this.id)"
+                          >Temperature history</a
+                        >
+                        <a
+                          class="dropdown-item"
+                          role="presentation"
+                          id="2"
+                          onclick="selectAnother(this.id)"
+                          >Luminosity history</a
+                        >
+                        <a
+                          class="dropdown-item"
+                          role="presentation"
+                          id="3"
+                          onclick="selectAnother(this.id)"
+                          >Acceleration history</a
+                        >
+                      </div>
                     </div>
-                    <div class="col-lg-5 col-xl-4">
-                        <h6>Package description</h6>
-                        <div class="border rounded shadow"
-                             style="padding-top: 10px;padding-bottom: 10px;padding-left: 15px;background-color: #ffffff;margin-bottom: 25px;">
-                            <div class="d-inline-flex" style="margin-bottom: 0px;">
-                                <h3 style="width: auto;">Payload:&nbsp;</h3>
-                                <h3 style="width: auto;" id="PackagePayload">Heading</h3>
-                            </div>
-                            <div class="d-flex">
-                                <h6 style="width: auto;">Package status:&nbsp;</h6>
-                                <h6 style="width: 120px;" id="PackageStatus">Heading</h6>
-                            </div>
-                            <div class="d-flex">
-                                <h6 style="width: auto;">Humidity condition:&nbsp;</h6>
-                                <h6 style="width: 120px;" id="PackageHumidity">Heading</h6>
-                            </div>
-                            <div class="d-flex">
-                                <h6 style="width: auto;">Temperature&nbsp;<br>condition:&nbsp;</h6>
-                                <h6 style="width: auto;margin-left: 5px;" id="PackageTemperature">Heading</h6>
-                            </div>
-                            <div class="d-flex">
-                                <h6 style="width: auto;">Luminosity&nbsp;<br>condition:&nbsp;</h6>
-                                <h6 style="width: auto;" id="PackageLumosity">Status</h6>
-                            </div>
-                            <div class="d-flex">
-                                <h6 style="width: auto;">Acceleration&nbsp;<br>condition:<br></h6>
-                                <h6 style="width: auto;" id="PackageAcceleration">Status</h6>
-                            </div>
-                        </div>
-                        <h6>Package sensors</h6>
-                        <div class="border rounded shadow overflow-auto" id="List-Of-sensors-current"
-                             style="height: 165px;padding-right: 10px;padding-left: 10px;margin-bottom: 24px;padding-top: 7px;padding-bottom: 7px;">
-                            <!-- <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
+                  </div>
+                  <div
+                    class="card-body"
+                    style="overflow-x: scroll;overflow-y: hidden;height: 425px;"
+                  >
+                    <div
+                      class="chart-area d-none"
+                      id="HumidityChart"
+                      style="/*overflow-x: scroll;*/overflow-y: hidden;height: 100%;width: 1000px;padding-left: 0px;padding-right: 20px;"
+                    >
+                      <canvas id="chLineHumidity"></canvas>
+                    </div>
+                    <div
+                      class="chart-area"
+                      id="TemperatureChart"
+                      style="overflow-x: scroll;overflow-y: scroll;height: 400px;width: 1000px;padding-left: 0px;padding-right: 20px;"
+                    >
+                      <canvas id="chLineTemperature"></canvas>
+                    </div>
+                    <div
+                      class="chart-area d-none"
+                      id="AccelerationChart"
+                      style="/*overflow-x: scroll;*/overflow-y: hidden;height: 100%;width: 1000px;padding-left: 0px;padding-right: 20px;"
+                    >
+                      <canvas id="chLineAcceleration"></canvas>
+                    </div>
+                    <div
+                      class="chart-area d-none"
+                      id="LuminosityChart"
+                      style="/*overflow-x: scroll;*/overflow-y: hidden;height: 100%;width: 1000px;padding-left: 0px;padding-right: 20px;"
+                    >
+                      <canvas id="chLineLuminosity"></canvas>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-5 col-xl-4">
+                <h6>Package description</h6>
+                <div
+                  class="border rounded shadow"
+                  style="padding-top: 10px;padding-bottom: 10px;padding-left: 15px;background-color: #ffffff;margin-bottom: 25px;"
+                >
+                  <div class="d-inline-flex" style="margin-bottom: 0px;">
+                    <h3 style="width: auto;">Payload:&nbsp;</h3>
+                    <h3 style="width: auto;" id="PackagePayload">Heading</h3>
+                  </div>
+                  <div class="d-flex">
+                    <h6 style="width: auto;">Package status:&nbsp;</h6>
+                    <h6 style="width: 120px;" id="PackageStatus">Heading</h6>
+                  </div>
+                  <div class="d-flex">
+                    <h6 style="width: auto;">Humidity condition:&nbsp;</h6>
+                    <h6 style="width: 120px;" id="PackageHumidity">Heading</h6>
+                  </div>
+                  <div class="d-flex">
+                    <h6 style="width: auto;">
+                      Temperature&nbsp;<br />condition:&nbsp;
+                    </h6>
+                    <h6
+                      style="width: auto;margin-left: 5px;"
+                      id="PackageTemperature"
+                    >
+                      Heading
+                    </h6>
+                  </div>
+                  <div class="d-flex">
+                    <h6 style="width: auto;">
+                      Luminosity&nbsp;<br />condition:&nbsp;
+                    </h6>
+                    <h6 style="width: auto;" id="PackageLumosity">Status</h6>
+                  </div>
+                  <div class="d-flex">
+                    <h6 style="width: auto;">
+                      Acceleration&nbsp;<br />condition:<br />
+                    </h6>
+                    <h6 style="width: auto;" id="PackageAcceleration">
+                      Status
+                    </h6>
+                  </div>
+                </div>
+                <h6>Package sensors</h6>
+                <div
+                  class="border rounded shadow overflow-auto"
+                  id="List-Of-sensors-current"
+                  style="height: 165px;padding-right: 10px;padding-left: 10px;margin-bottom: 24px;padding-top: 7px;padding-bottom: 7px;"
+                >
+                  <!-- <div class="list-element" style="margin-top: 2px;margin-bottom: 2px;">
                                  <form>
                                      <div class="form-group" style="margin-bottom: 0px;">
                                          <button class="btn btn-primary btn-sm text-left" type="submit"
@@ -355,13 +584,12 @@
                                      </div>
                                  </form>
                              </div>-->
-                        </div>
-                    </div>
                 </div>
+              </div>
             </div>
+          </div>
 
-
-            <!-- <div class="container-fluid d-none" id="supply-history-container" display="none">
+          <!-- <div class="container-fluid d-none" id="supply-history-container" display="none">
                  <div class="d-sm-flex justify-content-between align-items-center mb-4">
                      <h3 class="text-dark mb-0">Supply history</h3>
                      <button class="btn btn-dark d-none d-sm-inline-block" type="button"><i
@@ -738,216 +966,373 @@
                  </div>
              </div>-->
 
-
-            <div class="container d-none" id="new-supply-container" th:if="${isProvider == true}"
-                 ng-controller="newSupplyController">
-                <div class="row">
-                    <div class="col">
-                        <div class="border rounded shadow"
-                             style="padding-top: 10px;padding-right: 10px;padding-bottom: 10px;padding-left: 10px;">
-                            <h5>Supply overview</h5>
-                            <form>
-                                <div class="form-group">
-                                    <h6>New supply name:</h6><input class="border rounded form-control" type="text"
-                                                                    placeholder="Supply name" autofocus=""
-                                                                    name="supplyName"
-                                                                    ng-model="supplyName"
-                                                                    id="supplyName"></div>
-                                <div class="form-group">
-                                    <h6>Date supply delivery begins:</h6><input class="form-control" type="date"
-                                                                                name="supplyDateBegin"
-                                                                                ng-model="supplyDateBegin"
-                                                                                id="supplyDateBegin"
-                                ></div>
-                                <div class="form-group">
-                                    <h6>Date supply delivery ends:</h6><input class="form-control" type="date" id="supplyDateEnd"></div>
-                            </form>
-                            <button class="btn btn-success d-block" type="button"
-                                    style="margin: auto;margin-top: 8px;margin-bottom: 10px;"
-                                    ng-controller="newSupplyController" ng-click="postSupply()">Initiate Supply&nbsp;<i
-                                    class="fa fa-plus"></i></button>
-                        </div>
+          <div
+            class="container d-none"
+            id="new-supply-container"
+            th:if="${isProvider == true}"
+            ng-controller="newSupplyController"
+          >
+            <div class="row">
+              <div class="col">
+                <div
+                  class="border rounded shadow"
+                  style="padding-top: 10px;padding-right: 10px;padding-bottom: 10px;padding-left: 10px;"
+                >
+                  <h5>Supply overview</h5>
+                  <form>
+                    <div class="form-group">
+                      <h6>New supply name:</h6>
+                      <input
+                        class="border rounded form-control"
+                        type="text"
+                        placeholder="Supply name"
+                        autofocus=""
+                        name="supplyName"
+                        ng-model="supplyName"
+                        id="supplyName"
+                      />
                     </div>
-                    <div class="col">
-                        <div class="border rounded shadow"
-                             style="padding-top: 5px;padding-right: 10px;padding-bottom: 10px;padding-left: 10px;">
-                            <h5>Supply delivery options</h5>
-                            <form>
-                                <div class="form-group">
-                                    <h6>Deliveryman Id</h6><input class="form-control" type="text"
-                                                                  id="deliverymanId"
-                                                                  name="deliverymanId"
-                                                                  ng-model="deliverymanId"
-                                                                  ng-controller="newSupplyController"
-                                                                  ng-change="onIdInputD()">
-                                    <div class="border rounded shadow profile-info d-none" id="deliverymans-info"
-                                         style="background-color: #ffffff;padding-top: 0px;margin-top: 15px;"><img
-                                            class="border rounded d-inline-flex float-left" style="height: 60px;"
-                                            src="" loading="auto"
-                                            id="pictureDeliveryman">
-                                        <div class="d-inline-flex">
-                                            <h6 class="d-inline-flex" style="padding-left: 0px;margin-left: 10px;">Name:&nbsp;</h6>
-                                            <h6 class="d-inline-flex" style="padding-left: 0px;margin-left: 10px;"
-                                                id="nameDeliveryman"></h6>
-                                        </div>
-                                        <div class="d-inline-flex">
-                                            <h6 class="justify-content-xl-start"
-                                                style="padding-left: 0px;margin-left: 10px;">Description:&nbsp;</h6>
-                                            <h6 style="padding-left: 0px;margin-left: 10px;"
-                                                id="descriptionDeliveryman"></h6>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <h6>Receiver Id</h6>
-                                    <input class="form-control" type="text"
-                                           id="receiverId"
-                                           name="receiverId"
-                                           ng-model="receiverId"
-                                           ng-controller="newSupplyController"
-                                           ng-change="onIdInputR()">
-                                    <div class="border rounded shadow profile-info d-none" id="receiver-info"
-                                         style="background-color: #ffffff;padding-top: 0px;margin-top: 15px;"><img
-                                            class="border rounded d-inline-flex float-left" style="height: 60px;"
-                                            src="" loading="auto"
-                                            id="pictureReceiver">
-                                        <div class="d-inline-flex float-left">
-                                            <h6 class="d-inline-flex" style="padding-left: 0px;margin-left: 10px;">Name:&nbsp;</h6>
-                                            <h6 class="d-inline-flex" style="padding-left: 0px;margin-left: 10px;"
-                                                id="nameReceiver">
-                                                Name value</h6>
-                                        </div>
-                                        <div class="d-inline-flex">
-                                            <h6 class="justify-content-xl-start"
-                                                style="padding-left: 0px;margin-left: 10px;">Description:&nbsp;</h6>
-                                            <h6 style="padding-left: 0px;margin-left: 10px;" id="descriptionReceiver">
-                                                dsf</h6>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
+                    <div class="form-group">
+                      <h6>Date supply delivery begins:</h6>
+                      <input
+                        class="form-control"
+                        type="date"
+                        name="supplyDateBegin"
+                        ng-model="supplyDateBegin"
+                        id="supplyDateBegin"
+                      />
                     </div>
+                    <div class="form-group">
+                      <h6>Date supply delivery ends:</h6>
+                      <input
+                        class="form-control"
+                        type="date"
+                        id="supplyDateEnd"
+                      />
+                    </div>
+                  </form>
+                  <button
+                    class="btn btn-success d-block"
+                    type="button"
+                    style="margin: auto;margin-top: 8px;margin-bottom: 10px;"
+                    ng-controller="newSupplyController"
+                    ng-click="postSupply()"
+                  >
+                    Initiate Supply&nbsp;<i class="fa fa-plus"></i>
+                  </button>
                 </div>
-                <div class="row" style="padding-top: 30px;">
-                    <div class="col">
-                        <div class="border rounded shadow"
-                             style="padding-top: 10px;padding-right: 10px;padding-bottom: 10px;padding-left: 10px;">
-                            <h5>Package editing</h5>
-                            <form>
-                                <div class="form-group">
-                                    <h6>Package payload:</h6><input class="border rounded form-control" type="text"
-                                                                    placeholder="Payload" autofocus=""
-                                                                    ng-controller="newSupplyController"
-                                                                    name="payload"
-                                                                    id="Payload"></div>
-                            </form>
-                            <form id="TransmittersList">
-                                <h6>Package transmitter:</h6>
-                                <div class="form-group d-inline-flex"><input class="border rounded form-control"
-                                                                             type="text" placeholder="Transmitter Id"
-                                                                             autofocus="" id="TransmitterId">
-                                    <button class="btn btn-success" type="button"
-                                            ng-click="addTransmitter()"
-                                            ng-controller="newSupplyController">
-                                        <i class="fas fa-plus"></i>
-                                    </button>
-                                </div>
-                                <div id="list-of-transmitters">
-
-                                </div>
-
-                            </form>
-                            <div>
-                                <h6 style="margin-top: 15px;margin-bottom: -5px;">Package conditions:</h6>
-                                <div class="d-block d-xl-flex align-items-xl-center" style="margin-top: 10px;">
-                                    <button class="btn btn-primary" type="button"
-                                            ng-controller="newSupplyController"
-                                            ng-click="openHumidityConditions()"
-                                            style="width: 25%;height: 38px;padding-left: 0px;padding-right: 0px;padding-bottom: 0px;padding-top: 0px;">
-                                        &nbsp;<i class="icon ion-waterdrop" style="margin-left: -5px;"></i></button>
-                                    <button
-                                            ng-controller="newSupplyController"
-                                            ng-click="openTemperatureConditions()"
-                                            class="btn btn-warning" type="button"
-                                            style="width: 25%;height: 38px;padding-left: 0px;padding-right: 0px;padding-bottom: 0px;padding-top: 0px;">
-                                        &nbsp;<i class="icon ion-thermometer" style="margin-left: -5px;"></i></button>
-                                    <button class="btn btn-light" type="button"
-                                            ng-controller="newSupplyController"
-                                            ng-click="openLuminocityConditions()"
-                                            style="width: 25%;height: 38px;padding-left: 0px;padding-right: 0px;padding-bottom: 0px;padding-top: 0px;">
-                                        &nbsp;<i class="icon ion-ios-lightbulb" style="margin-left: -5px;"></i></button>
-                                    <button
-                                            ng-controller="newSupplyController"
-                                            ng-click="openAccelerationConditions()"
-                                            class="btn btn-success" type="button"
-                                            style="width: 25%;height: 38px;padding-left: 0px;padding-right: 0px;padding-bottom: 0px;padding-top: 0px;">
-                                        &nbsp;<i class="icon ion-arrow-move" style="margin-left: -5px;"></i></button>
-                                </div>
-                            </div>
-
+              </div>
+              <div class="col">
+                <div
+                  class="border rounded shadow"
+                  style="padding-top: 5px;padding-right: 10px;padding-bottom: 10px;padding-left: 10px;"
+                >
+                  <h5>Supply delivery options</h5>
+                  <form>
+                    <div class="form-group">
+                      <h6>Deliveryman Id</h6>
+                      <input
+                        class="form-control"
+                        type="text"
+                        id="deliverymanId"
+                        name="deliverymanId"
+                        ng-model="deliverymanId"
+                        ng-controller="newSupplyController"
+                        ng-change="onIdInputD()"
+                      />
+                      <div
+                        class="border rounded shadow profile-info d-none"
+                        id="deliverymans-info"
+                        style="background-color: #ffffff;padding-top: 0px;margin-top: 15px;"
+                      >
+                        <img
+                          class="border rounded d-inline-flex float-left"
+                          style="height: 60px;"
+                          src=""
+                          loading="auto"
+                          id="pictureDeliveryman"
+                        />
+                        <div class="d-inline-flex">
+                          <h6
+                            class="d-inline-flex"
+                            style="padding-left: 0px;margin-left: 10px;"
+                          >
+                            Name:&nbsp;
+                          </h6>
+                          <h6
+                            class="d-inline-flex"
+                            style="padding-left: 0px;margin-left: 10px;"
+                            id="nameDeliveryman"
+                          ></h6>
                         </div>
-                    </div>
-                    <div class="col">
-                        <div class="border rounded shadow"
-                             style="padding-top: 10px;padding-right: 10px;padding-bottom: 10px;padding-left: 10px;">
-                            <h5>Package condition</h5>
-                            <form>
-                                <div class="custom-control custom-control-inline custom-checkbox"
-                                     style="padding-bottom: 10px;"><input class="custom-control-input"
-                                                                          type="checkbox"
-                                                                          id="formCheck-1"
-                                                                          ng-click="checkCondition()"
-                                                                          ng-controller="newSupplyController"><label
-                                        class="custom-control-label" for="formCheck-1">Enabled</label></div>
-                                <div class="form-group">
-                                    <h6>Max value:</h6><input class="form-control" type="number" required=""
-                                                              id="maxVal"></div>
-                                <div class="form-group">
-                                    <h6>Min value:</h6><input class="form-control" type="number" required=""
-                                                              id="minVal"></div>
-                                <div class="form-group">
-                                    <h6>Preffered value:</h6><input class="form-control" type="number" required=""
-                                                                    id="preferredVal">
-                                </div>
-                            </form>
+                        <div class="d-inline-flex">
+                          <h6
+                            class="justify-content-xl-start"
+                            style="padding-left: 0px;margin-left: 10px;"
+                          >
+                            Description:&nbsp;
+                          </h6>
+                          <h6
+                            style="padding-left: 0px;margin-left: 10px;"
+                            id="descriptionDeliveryman"
+                          ></h6>
                         </div>
+                      </div>
                     </div>
-                    <div class="col">
-                        <div class="border rounded shadow">
-                            <button class="btn btn-success d-block" type="button"
-                                    style="margin: auto;margin-top: 8px;margin-bottom: 10px;" ng-click="addPackage()"
-                                    ng-controller="newSupplyController">Add package&nbsp;<i
-                                    class="fa fa-plus"></i></button>
-                            <div>
-                                <div class="border rounded overflow-auto" id="List-Of-packages"
-                                     style="height: 400px;padding-right: 10px;padding-left: 10px;padding-top: 10px;">
-                                </div>
-                            </div>
+                    <div class="form-group">
+                      <h6>Receiver Id</h6>
+                      <input
+                        class="form-control"
+                        type="text"
+                        id="receiverId"
+                        name="receiverId"
+                        ng-model="receiverId"
+                        ng-controller="newSupplyController"
+                        ng-change="onIdInputR()"
+                      />
+                      <div
+                        class="border rounded shadow profile-info d-none"
+                        id="receiver-info"
+                        style="background-color: #ffffff;padding-top: 0px;margin-top: 15px;"
+                      >
+                        <img
+                          class="border rounded d-inline-flex float-left"
+                          style="height: 60px;"
+                          src=""
+                          loading="auto"
+                          id="pictureReceiver"
+                        />
+                        <div class="d-inline-flex float-left">
+                          <h6
+                            class="d-inline-flex"
+                            style="padding-left: 0px;margin-left: 10px;"
+                          >
+                            Name:&nbsp;
+                          </h6>
+                          <h6
+                            class="d-inline-flex"
+                            style="padding-left: 0px;margin-left: 10px;"
+                            id="nameReceiver"
+                          >
+                            Name value
+                          </h6>
                         </div>
+                        <div class="d-inline-flex">
+                          <h6
+                            class="justify-content-xl-start"
+                            style="padding-left: 0px;margin-left: 10px;"
+                          >
+                            Description:&nbsp;
+                          </h6>
+                          <h6
+                            style="padding-left: 0px;margin-left: 10px;"
+                            id="descriptionReceiver"
+                          >
+                            dsf
+                          </h6>
+                        </div>
+                      </div>
                     </div>
+                  </form>
                 </div>
+              </div>
             </div>
-
-
+            <div class="row" style="padding-top: 30px;">
+              <div class="col">
+                <div
+                  class="border rounded shadow"
+                  style="padding-top: 10px;padding-right: 10px;padding-bottom: 10px;padding-left: 10px;"
+                >
+                  <h5>Package editing</h5>
+                  <form>
+                    <div class="form-group">
+                      <h6>Package payload:</h6>
+                      <input
+                        class="border rounded form-control"
+                        type="text"
+                        placeholder="Payload"
+                        autofocus=""
+                        ng-controller="newSupplyController"
+                        name="payload"
+                        id="Payload"
+                      />
+                    </div>
+                  </form>
+                  <form id="TransmittersList">
+                    <h6>Package transmitter:</h6>
+                    <div class="form-group d-inline-flex">
+                      <input
+                        class="border rounded form-control"
+                        type="text"
+                        placeholder="Transmitter Id"
+                        autofocus=""
+                        id="TransmitterId"
+                      />
+                      <button
+                        class="btn btn-success"
+                        type="button"
+                        ng-click="addTransmitter()"
+                        ng-controller="newSupplyController"
+                      >
+                        <i class="fas fa-plus"></i>
+                      </button>
+                    </div>
+                    <div id="list-of-transmitters"></div>
+                  </form>
+                  <div>
+                    <h6 style="margin-top: 15px;margin-bottom: -5px;">
+                      Package conditions:
+                    </h6>
+                    <div
+                      class="d-block d-xl-flex align-items-xl-center"
+                      style="margin-top: 10px;"
+                    >
+                      <button
+                        class="btn btn-primary"
+                        type="button"
+                        ng-controller="newSupplyController"
+                        ng-click="openHumidityConditions()"
+                        style="width: 25%;height: 38px;padding-left: 0px;padding-right: 0px;padding-bottom: 0px;padding-top: 0px;"
+                      >
+                        &nbsp;<i
+                          class="icon ion-waterdrop"
+                          style="margin-left: -5px;"
+                        ></i>
+                      </button>
+                      <button
+                        ng-controller="newSupplyController"
+                        ng-click="openTemperatureConditions()"
+                        class="btn btn-warning"
+                        type="button"
+                        style="width: 25%;height: 38px;padding-left: 0px;padding-right: 0px;padding-bottom: 0px;padding-top: 0px;"
+                      >
+                        &nbsp;<i
+                          class="icon ion-thermometer"
+                          style="margin-left: -5px;"
+                        ></i>
+                      </button>
+                      <button
+                        class="btn btn-light"
+                        type="button"
+                        ng-controller="newSupplyController"
+                        ng-click="openLuminocityConditions()"
+                        style="width: 25%;height: 38px;padding-left: 0px;padding-right: 0px;padding-bottom: 0px;padding-top: 0px;"
+                      >
+                        &nbsp;<i
+                          class="icon ion-ios-lightbulb"
+                          style="margin-left: -5px;"
+                        ></i>
+                      </button>
+                      <button
+                        ng-controller="newSupplyController"
+                        ng-click="openAccelerationConditions()"
+                        class="btn btn-success"
+                        type="button"
+                        style="width: 25%;height: 38px;padding-left: 0px;padding-right: 0px;padding-bottom: 0px;padding-top: 0px;"
+                      >
+                        &nbsp;<i
+                          class="icon ion-arrow-move"
+                          style="margin-left: -5px;"
+                        ></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col">
+                <div
+                  class="border rounded shadow"
+                  style="padding-top: 10px;padding-right: 10px;padding-bottom: 10px;padding-left: 10px;"
+                >
+                  <h5>Package condition</h5>
+                  <form>
+                    <div
+                      class="custom-control custom-control-inline custom-checkbox"
+                      style="padding-bottom: 10px;"
+                    >
+                      <input
+                        class="custom-control-input"
+                        type="checkbox"
+                        id="formCheck-1"
+                        ng-click="checkCondition()"
+                        ng-controller="newSupplyController"
+                      /><label class="custom-control-label" for="formCheck-1"
+                        >Enabled</label
+                      >
+                    </div>
+                    <div class="form-group">
+                      <h6>Max value:</h6>
+                      <input
+                        class="form-control"
+                        type="number"
+                        required=""
+                        id="maxVal"
+                      />
+                    </div>
+                    <div class="form-group">
+                      <h6>Min value:</h6>
+                      <input
+                        class="form-control"
+                        type="number"
+                        required=""
+                        id="minVal"
+                      />
+                    </div>
+                    <div class="form-group">
+                      <h6>Preffered value:</h6>
+                      <input
+                        class="form-control"
+                        type="number"
+                        required=""
+                        id="preferredVal"
+                      />
+                    </div>
+                  </form>
+                </div>
+              </div>
+              <div class="col">
+                <div class="border rounded shadow">
+                  <button
+                    class="btn btn-success d-block"
+                    type="button"
+                    style="margin: auto;margin-top: 8px;margin-bottom: 10px;"
+                    ng-click="addPackage()"
+                    ng-controller="newSupplyController"
+                  >
+                    Add package&nbsp;<i class="fa fa-plus"></i>
+                  </button>
+                  <div>
+                    <div
+                      class="border rounded overflow-auto"
+                      id="List-Of-packages"
+                      style="height: 400px;padding-right: 10px;padding-left: 10px;padding-top: 10px;"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         <footer class="bg-white sticky-footer">
-            <div class="container my-auto">
-                <div class="text-center my-auto copyright"><span>❤·Sendicate 2020</span></div>
+          <div class="container my-auto">
+            <div class="text-center my-auto copyright">
+              <span>❤·Sendicate 2020</span>
             </div>
+          </div>
         </footer>
+      </div>
+      <a class="border rounded d-inline scroll-to-top" href="#page-top"
+        ><i class="fas fa-angle-up"></i
+      ></a>
     </div>
-    <a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a></div>
 
-<script src="assets/main/js/jquery.min.js"></script>
-<script src="assets/main/bootstrap/js/bootstrap.min.js"></script>
-<script src="assets/main/js/chart.min.js"></script>
-<script src="assets/main/js/bs-init.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
-<script src="assets/main/js/theme.js"></script>
-<script src="core.js"></script>
-<script src="misc.js"></script>
-</body>
-
+    <script src="assets/main/js/jquery.min.js"></script>
+    <script src="assets/main/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/main/js/chart.min.js"></script>
+    <script src="assets/main/js/bs-init.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
+    <script src="assets/main/js/theme.js"></script>
+    <script src="core.js"></script>
+    <script src="misc.js"></script>
+  </body>
 </html>

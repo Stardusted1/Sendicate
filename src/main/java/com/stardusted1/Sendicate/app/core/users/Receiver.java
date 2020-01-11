@@ -68,7 +68,7 @@ public class Receiver extends Customer implements Serializable {
     }
 
     public boolean AcceptSupply(Supply supply, System system) {
-    	supply.receiverApprove();
+    	supply.receiverApprove(system);
     	if(supply.isDeliverymanApproved()){
     	    supply.setStatus(SupplyStatus.DELIVERING, system);
         }
