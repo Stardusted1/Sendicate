@@ -42,13 +42,13 @@ var profile = angular.module("profile", [])
         $scope.newToken = function () {
             const url = document.getElementsByName("urlRequest")[0].value;
             const userToken = document.getElementsByName("userToken")[0].value;
-            $http.post(url+"/new_token/"+userToken,[])
+            $http.post(url + "/new_token/" + userToken, [])
                 .success(function (data) {
                     document.getElementsByName("userToken")[0].value = data.token;
                     document.getElementById("TokenVisible").innerText = data.token;
                     alert("Changed successfully");
                 }).error(function (data) {
-                    alert("There was an error during processing your request");
+                alert("There was an error during processing your request");
             })
         }
     });
@@ -85,16 +85,6 @@ var main = angular.module("main", [])
                         div = angular.element(div)
                         $compile(div)($scope);
                         supplyList.append(div);
-                        //< div class="list-element" style = "margin-top: 2px;margin-bottom: 2px;">
-                        //    <form>
-                        //       <div class="form-group" style="margin-bottom: 0px;">
-                        //           <button class="btn btn-primary btn-sm text-left" type="submit"
-                        //               style="width: 100%;margin-top: 2px;margin-bottom: 2px;">
-                        //               Button
-                        //           </button>
-                        //       </div>
-                        //    </form>
-                        //</div>
                     }
                     return data;
                 })
@@ -102,9 +92,11 @@ var main = angular.module("main", [])
                     alert("failure, reload page")
                 });
         };
+
         $scope.init = function ($scope, $http) {
             alert("init");
         };
+
         $scope.clicked = function (el) {
             let supply;
             for (let s of supplies) {
@@ -377,7 +369,19 @@ var main = angular.module("main", [])
                     var DeliveredButton = angular.element(document.querySelector("#SupplyDeliveredButton"));
                     DeliveredButton.addClass("d-none");
                 })
-        }
+        };
+
+        $scope.supplyTaken = function () {
+            $http.post("api/supply/" + currentSupply.id + "/" + userId + "/" + userToken, [])
+                .success(function (data) {
+                    var AcceptButton = angular.element(document.querySelector("#AcceptButton"));
+                    currentSupply = data;
+                    AcceptButton.addClass("d-none");
+                    $scope.getCurrentSupplies();
+                }).error(function () {
+                alert("failure, reload page");
+            })
+        };
 
         $scope.acceptSupply = function () {
             let url = "api/supply/" + currentSupply.id + "/accepted/" + userToken + "/" + userId + "/" + userType;
@@ -387,11 +391,310 @@ var main = angular.module("main", [])
                     var AcceptButton = angular.element(document.querySelector("#AcceptButton"));
                     AcceptButton.addClass("d-none");
                 })
-        }
+        };
 
 
     })
+    .controller("workbenchHistoryController", function ($scope, $http, $compile) {
+        const userToken = document.getElementsByName("userToken")[0].value;
+        const userId = document.getElementsByName("userId")[0].value;
+        const userType = document.getElementsByName("userType")[0].value;
+        $scope.getOldSupplies = function () {
+            var supplyList = angular.element(document.querySelector("#List-Of-supplies-old"));
+            $http.get("api/supply/" + userId + "/get_old/" + userToken)
+                .success(function (data) {
+                    supplyList.children().detach();
+                    supplies = data;
+                    for (supply of data) {
+                        var div = /*angular.element*/(document.createElement("div"));
+                        div.className += "list-element";
+                        div.style.marginTop = "2px";
+                        div.style.marginBottom = "2px";
+                        var form = document.createElement("form");
+                        var div_form_group = document.createElement("div");
+                        div_form_group.className += "form-group";
+                        var button = document.createElement("button");
+                        button.className += "btn btn-primary btn-sm text-left";
+                        button.style.width = "100%";
+                        button.innerText += supply.name;
+                        button.value += supply.id;
+                        button.setAttribute("ng-controller", "workbenchHistoryController");
+                        button.setAttribute("ng-click", "clicked(" + supply.id + ")");
+                        div_form_group.appendChild(button);
+                        div.appendChild(div_form_group);
+                        div = angular.element(div)
+                        $compile(div)($scope);
+                        supplyList.append(div);
+                    }
+                    return data;
+                })
+                .error(function (error) {
+                    alert("failure, reload page")
+                });
+        };
+        $scope.init = function ($scope, $http) {
+            alert("init");
+        };
+        $scope.clicked = function (el) {
+            let supply;
+            for (let s of supplies) {
+                if (s.id === el) {
+                    supply = s;
+                    break;
+                }
+            }
+            if (supply === null) {
+                return;
+            }
+            currentSupply = supply;
+            var SupplyNameOf = angular.element(document.querySelector("#SupplyNameOfOld"));
+            var SupplyDateFrom = angular.element(document.querySelector("#SupplyDateFromOld"));
+            var SupplyDateTo = angular.element(document.querySelector("#SupplyDateToOld"));
+            var SupplyStatus = angular.element(document.querySelector("#SupplyStatusOld"));
+            var SupplyDeliveryman = angular.element(document.querySelector("#SupplyDeliverymanOld"));
+            var SupplyReceiver = angular.element(document.querySelector("#SupplyReceiverOld"));
+            var SupplyProvider = angular.element(document.querySelector("#SupplyProviderOld"));
+            var SupplyCondition = angular.element(document.querySelector("#SupplyConditionOld"));
+            var SupplyNumberOfPackages = angular.element(document.querySelector("#SupplyNumberOfPackagesOld"));
+            // var DeliveredButton = angular.element(document.querySelector("#SupplyDeliveredButtonOld"));
+            // var TakenButton = angular.element(document.querySelector("#SupplyTakenButtonOld"));
+            // var AcceptButton = angular.element(document.querySelector("#AcceptButtonOld"));
+            // DeliveredButton.addClass("d-none");
+            // TakenButton.addClass("d-none");
+            // AcceptButton.addClass("d-none");
+            // if (userType === "DELIVERYMAN" || userType === "RECEIVER") {
+            //     if (supply.status === "DELIVERED") {
+            //         if (userType === "RECEIVER") {
+            //             TakenButton.removeClass("d-none");
+            //         }
+            //     } else if (supply.status === "PENDING") {
+            //         DeliveredButton.addClass("d-none");
+            //         TakenButton.addClass("d-none");
+            //     }
+            // }
+            // if (userType === "DELIVERYMAN") {
+            //     if (supply.status === "PENDING") {
+            //         if (!supply.deliverymanApproved)
+            //             AcceptButton.removeClass("d-none");
+            //     }
+            // } else if (userType === "RECEIVER") {
+            //     if (supply.status === "PENDING") {
+            //         if (!supply.receiverApproved)
+            //             AcceptButton.removeClass("d-none");
+            //     }
+            // }
+            //
 
+            SupplyNameOf.text(supply.name);
+            SupplyDateFrom.text(supply.dateBegins.slice(0, 10));
+            SupplyDateTo.text(supply.dateEnds.slice(0, 10));
+            SupplyStatus.text(supply.status);
+            SupplyDeliveryman.text(supply.deliverymanId);
+            SupplyReceiver.text(supply.receiverId);
+            SupplyProvider.text(supply.providerId);
+            SupplyCondition.text(supply.condition);
+            SupplyNumberOfPackages.text(supply.packages ? supply.packages.length : 0);
+            var listOfPackages = angular.element(document.querySelector("#List-Of-packages-in-supply-old"))
+            listOfPackages.children().detach();
+            packages = supply.packages;
+            for (let pack of packages) {
+                var div = document.createElement("div");
+                div.className += "list-element";
+                div.style.marginTop = "2px";
+                div.style.marginBottom = "2px";
+                var div_form_group = document.createElement("div");
+                div_form_group.className += "form-group";
+                var button = document.createElement("button");
+                button.className += "btn btn-primary btn-sm text-left";
+                button.style.width = "100%";
+                button.innerText += pack.payload;
+                button.value += pack.id;
+                button.setAttribute("ng-controller", "workbenchHistoryController");
+                button.setAttribute("ng-click", "clickedPackage(" + pack.id + ")");
+                div_form_group.appendChild(button);
+                div.appendChild(div_form_group);
+                div = angular.element(div);
+                $compile(div)($scope);
+                listOfPackages.append(div);
+            }
+        };
+        $scope.clickedPackage = function (packid) {
+            let pack;
+            for (let s of packages) {
+                if (s.id === packid) {
+                    pack = s;
+                    break;
+                }
+            }
+            if (!pack) {
+                return;
+            }
+            var Payload = angular.element(document.querySelector("#PackagePayloadOld"));
+            var PackageHumidity = angular.element(document.querySelector("#PackageHumidityOld"));
+            var PackageTemperature = angular.element(document.querySelector("#PackageTemperatureOld"));
+            var PackageLumosity = angular.element(document.querySelector("#PackageLumosityOld"));
+            var PackageAcceleration = angular.element(document.querySelector("#PackageAccelerationOld"));
+            var PackageStatus = angular.element(document.querySelector("#PackageStatusOld"));
+            Payload.text(pack.payload);
+            PackageStatus.text(pack.status);
+            PackageHumidity.text("None");
+            PackageTemperature.text("Max:" + pack.conditions[0].max + " Min:" + pack.conditions[0].min);
+            PackageLumosity.text("None");
+            PackageAcceleration.text("None");
+            var list_sensors = angular.element(document.querySelector("#List-Of-sensors-current-old"));
+            list_sensors.children().detach();
+            for (let sensor of pack.transmitters) {
+                var div = document.createElement("div");
+                div.className += "list-element";
+                div.style.marginTop = "2px";
+                div.style.marginBottom = "2px";
+                var div_form_group = document.createElement("div");
+                div_form_group.className += "form-group";
+                var button = document.createElement("button");
+                button.className += "btn btn-primary btn-sm text-left";
+                button.style.width = "100%";
+                button.innerText += sensor.id + " sensor";
+                button.value += sensor.id;
+                div_form_group.appendChild(button);
+                div.appendChild(div_form_group);
+                div = angular.element(div);
+                $compile(div)($scope);
+                list_sensors.append(div);
+            }
+            var colors = ['#ffe845',
+                '#2346a7',
+                '#0c3f38',
+                '#23e666',];
+            var dataTemperature = [];
+            var dataHumidity = [];
+            var dataAcceleration = [];
+            var dataLuminocity = [];
+            var time = [];
+            for (let frame of pack.history) {
+                dataTemperature.push(frame.temperature);
+                dataAcceleration.push(frame.acceleration);
+                dataHumidity.push(frame.humidity);
+                dataLuminocity.push(frame.illumination);
+                time.push(frame.datetime.slice(0, 10) + "\n" + frame.datetime.slice(11, 19))
+            }
+            var chartDataT = {
+                labels: time,
+                datasets: [{
+                    data: dataTemperature,
+                    backgroundColor: 'transparent',
+                    borderColor: colors[0],
+                    borderWidth: 4,
+                    pointBackgroundColor: colors[0]
+                }]
+            };
+            var chartDataH = {
+                labels: time,
+                datasets: [{
+                    data: dataHumidity,
+                    backgroundColor: 'transparent',
+                    borderColor: colors[1],
+                    borderWidth: 4,
+                    pointBackgroundColor: colors[1]
+                }]
+            };
+            var chartDataA = {
+                labels: time,
+                datasets: [{
+                    data: dataAcceleration,
+                    backgroundColor: 'transparent',
+                    borderColor: colors[3],
+                    borderWidth: 4,
+                    pointBackgroundColor: colors[3]
+                }]
+            };
+            var chartDataL = {
+                labels: time,
+                datasets: [{
+                    data: dataLuminocity,
+                    backgroundColor: 'transparent',
+                    borderColor: colors[2],
+                    borderWidth: 4,
+                    pointBackgroundColor: colors[2]
+                }]
+            };
+            var chLineTemperature = document.getElementById("chLineTemperatureOld");
+            if (chLineTemperature) {
+                new Chart(chLineTemperature, {
+                    type: 'line',
+                    data: chartDataT,
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: false
+                                }
+                            }]
+                        },
+                        legend: {
+                            display: false
+                        }
+                    }
+                });
+            }
+            var chLineAcceleration = document.getElementById("chLineAccelerationOld");
+            if (chLineAcceleration) {
+                new Chart(chLineAcceleration, {
+                    type: 'line',
+                    data: chartDataA,
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: false
+                                }
+                            }]
+                        },
+                        legend: {
+                            display: false
+                        }
+                    }
+                });
+            }
+            var chLineLuminosity = document.getElementById("chLineLuminosityOld");
+            if (chLineLuminosity) {
+                new Chart(chLineLuminosity, {
+                    type: 'line',
+                    data: chartDataL,
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: false
+                                }
+                            }]
+                        },
+                        legend: {
+                            display: false
+                        }
+                    }
+                });
+            }
+            var chLineHumidity = document.getElementById("chLineHumidityOld");
+            if (chLineHumidity) {
+                new Chart(chLineHumidity, {
+                    type: 'line',
+                    data: chartDataH,
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: false
+                                }
+                            }]
+                        },
+                        legend: {
+                            display: false
+                        }
+                    }
+                });
+            }
+        };
+    })
     .controller("newSupplyController", function ($scope, $http, $compile) {
         const userToken = document.getElementsByName("userToken")[0].value;
         const userId = document.getElementsByName("userId")[0].value;
@@ -459,7 +762,7 @@ var main = angular.module("main", [])
                 receiver: receiver,
                 packages: newPackages,
             };
-            $http.post("api/supply/new_supply/"+userId+"/"+userToken, newSupply)
+            $http.post("api/supply/new_supply/" + userId + "/" + userToken, newSupply)
                 .success(function (data) {
                     if (true) {
                         let listOfTransmitters = angular.element(document.querySelector("#list-of-transmitters"));
@@ -468,14 +771,14 @@ var main = angular.module("main", [])
                         listOfPackages.children().detach();
                         newSupply = [];
                         newPackages = [];
-                        newConditions =[];
-                        newTransmitters =[];
+                        newConditions = [];
+                        newTransmitters = [];
                         alert("Successfully!")
-                    }else {
+                    } else {
                         alert("Check parameters and try again")
                     }
                 }).error(function () {
-                    alert("Something went wrong")
+                alert("Something went wrong")
             });
             alert("posted")
         };

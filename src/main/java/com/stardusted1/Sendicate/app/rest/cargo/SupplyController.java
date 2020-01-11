@@ -6,6 +6,7 @@ import com.stardusted1.Sendicate.app.core.cargo.condition.*;
 import com.stardusted1.Sendicate.app.core.repositories.*;
 import com.stardusted1.Sendicate.app.core.users.Customer;
 import com.stardusted1.Sendicate.app.core.users.Provider;
+import com.stardusted1.Sendicate.app.core.users.Receiver;
 import com.stardusted1.Sendicate.app.service.System;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.json.JsonParser;
@@ -152,18 +153,44 @@ public class SupplyController {
 		String userclass = SecurityContextHolder.getContext().getAuthentication().getPrincipal().getClass().getSimpleName();
 		LinkedList<SupplyStatus> statuses = new LinkedList<>();
 		statuses.add(SupplyStatus.UNDELIVERED);
+		statuses.add(SupplyStatus.TAKEN);
 		return getSupplies(userId, userclass, statuses);
 	}
 
-	private Iterable<Supply> getSupplies(@PathVariable("id") String id, String userclass, LinkedList<SupplyStatus> statuses) {
+	@PostMapping("{supplyId}/{id}/{token}")
+	public Supply takeSupply(@PathVariable(name = "supplyId") Supply supply,
+							 @PathVariable(name = "id")Receiver receiver,
+							 @PathVariable(name = "token") String token){
+		if(receiver.getToken().equals(token)){
+			supply.setStatus(SupplyStatus.TAKEN,system);
+			supplyRepository.save(supply);
+			return supply;
+		}
+		return null;
+	}
+
+	private Iterable<Supply> getSupplies(String id, String userclass, LinkedList<SupplyStatus> statuses) {
 		statuses.add(SupplyStatus.TAKEN);
 
+		LinkedList result = new LinkedList();
 		if (userclass.equals("Provider")) {
-			return supplyRepository.findAllByStatusIsInAndProviderIdEquals(statuses,id);
+			for(SupplyStatus status: statuses){
+				ArrayList supplies = (ArrayList) supplyRepository.findAllByStatusEqualsAndProviderIdEquals(status,id);
+				supplies.forEach(result::add);
+			}
+			return result;
 		} else if (userclass.equals("Deliveryman")) {
-			return supplyRepository.findAllByStatusIsInAndDeliverymanIdEquals(statuses,id);
+			for(SupplyStatus status: statuses){
+				ArrayList supplies = (ArrayList) supplyRepository.findAllByStatusEqualsAndDeliverymanIdEquals(status,id);
+				supplies.forEach(result::add);
+			}
+			return result;
 		} else if (userclass.equals("Optional")) {
-			return supplyRepository.findAllByStatusIsInAndReceiverIdEquals(statuses, id);
+			for(SupplyStatus status: statuses){
+				ArrayList supplies = (ArrayList)supplyRepository.findAllByStatusEqualsAndReceiverIdEquals(status,id);
+				supplies.forEach(result::add);
+			}
+			return result;
 		}
 		return null;
 	}
