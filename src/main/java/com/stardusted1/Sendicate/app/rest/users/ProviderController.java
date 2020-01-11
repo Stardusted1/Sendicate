@@ -1,6 +1,7 @@
 package com.stardusted1.Sendicate.app.rest.users;
 
 import com.stardusted1.Sendicate.app.core.repositories.ProviderRepository;
+import com.stardusted1.Sendicate.app.core.users.Deliveryman;
 import com.stardusted1.Sendicate.app.core.users.Provider;
 import com.stardusted1.Sendicate.app.core.users.Receiver;
 import com.stardusted1.Sendicate.app.service.System;
@@ -16,6 +17,7 @@ import java.net.URLDecoder;
 import java.net.http.HttpClient;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -78,6 +80,21 @@ public class ProviderController {
 
 		return request;
 	}
+
+	@PostMapping("{id}/new_token/{old_token}")
+	Map<String, String> updateToken(@PathVariable(name = "id") Provider provider,
+									@PathVariable(name = "old_token") String token){
+		if(provider.getToken().equals(token)){
+			provider.newToken();
+			providerRepository.save(provider);
+			((Provider)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).setToken(provider.getToken());
+			HashMap<String,String> response = new HashMap<>();
+			response.put("token",provider.getToken());
+			return response;
+		}
+		return null;
+	}
+
 	@PostMapping(path = "{id}/delete/{token}")
 	String deleteReceiver(@PathVariable("id") String id,
 						  @PathVariable("token") String token){

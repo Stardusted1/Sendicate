@@ -1,6 +1,8 @@
 package com.stardusted1.Sendicate.app.rest.users;
 
 import com.stardusted1.Sendicate.app.core.repositories.ReceiverRepository;
+import com.stardusted1.Sendicate.app.core.users.Deliveryman;
+import com.stardusted1.Sendicate.app.core.users.Provider;
 import com.stardusted1.Sendicate.app.core.users.Receiver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.json.BasicJsonParser;
@@ -67,6 +69,20 @@ public class ReceiverController {
 			}
 		}
 		return "ok";
+	}
+
+	@PostMapping("{id}/new_token/{old_token}")
+	Map<String, String> updateToken(@PathVariable(name = "id") Receiver receiver,
+									@PathVariable(name = "old_token") String token){
+		if(receiver.getToken().equals(token)){
+			receiver.newToken();
+			receiverRepository.save(receiver);
+			((Receiver)((Optional)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).get()).setToken(receiver.getToken());
+			HashMap<String,String> response = new HashMap<>();
+			response.put("token",receiver.getToken());
+			return response;
+		}
+		return null;
 	}
 
 	@PostMapping(path = "/add")

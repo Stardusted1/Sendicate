@@ -10,6 +10,7 @@ var profile = angular.module("profile", [])
             const description = $scope.description;
 
             const url = document.getElementsByName("urlRequest")[0].value;
+
             const data1 = {
                 name,
                 phone,
@@ -37,6 +38,18 @@ var profile = angular.module("profile", [])
                     alert(err);
                 })
 
+        };
+        $scope.newToken = function () {
+            const url = document.getElementsByName("urlRequest")[0].value;
+            const userToken = document.getElementsByName("userToken")[0].value;
+            $http.post(url+"/new_token/"+userToken,[])
+                .success(function (data) {
+                    document.getElementsByName("userToken")[0].value = data.token;
+                    document.getElementById("TokenVisible").innerText = data.token;
+                    alert("Changed successfully");
+                }).error(function (data) {
+                    alert("There was an error during processing your request");
+            })
         }
     });
 

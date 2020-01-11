@@ -70,6 +70,9 @@
                        th:value="${'/api/users/'+type+'/'+usr.getId()}"
                        name="urlRequest"
                        ng-model="urlRequest">
+                <input type="hidden" th:value="${usr.getToken()}"
+                       name="userToken"
+                       ng-model="userToken">
                 <div class="form-group" style="border-radius: 10px !important;"><input
                         name="username"
                         ng-model="username"
@@ -81,7 +84,7 @@
                         name="emailaddr"
                         th:placeholder="${usr.getEmail() + '| Email'}"
                         title="Split your addresses by space"
-                        required=""></div>
+                        ></div>
                 <div class="form-group"><input class="form-control profile-input" type="tel" data-toggle="tooltip"
                                                 ng-model="phone"
                                                name="phone"
@@ -103,6 +106,15 @@
                                                                              ng-model="description"
                                                                              name="description"
                                                                              th:placeholder="${ desc + '| Description'}"></textarea>
+
+                </div>
+                <div class="form-group"><textarea class="form-control profile-input" disabled="true"
+                                                                             style="min-height: 40px;"
+                                                                             id="TokenVisible"
+                                                                             th:text="${usr.getToken()}"></textarea>
+                    <button class="btn btn-info d-block"
+                            ng-click="newToken()"
+                            ng-controller="profileController">New Token</button>
 
                 </div>
                 <div class="form-group">
