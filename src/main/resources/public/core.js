@@ -53,7 +53,7 @@ var profile = angular.module("profile", [])
         }
     });
 
-var main = angular.module("main", [])
+var main = angular.module("main", ['ngResource'])
     .controller("workbenchCurrentController", function ($scope, $http, $compile) {
         const userToken = document.getElementsByName("userToken")[0].value;
         const userId = document.getElementsByName("userId")[0].value;
@@ -82,7 +82,7 @@ var main = angular.module("main", [])
                         button.setAttribute("ng-click", "clicked(" + supply.id + ")");
                         div_form_group.appendChild(button);
                         div.appendChild(div_form_group);
-                        div = angular.element(div)
+                        div = angular.element(div);
                         $compile(div)($scope);
                         supplyList.append(div);
                     }
@@ -156,7 +156,7 @@ var main = angular.module("main", [])
             SupplyProvider.text(supply.providerId);
             SupplyCondition.text(supply.condition);
             SupplyNumberOfPackages.text(supply.packages ? supply.packages.length : 0);
-            var listOfPackages = angular.element(document.querySelector("#List-Of-packages-in-supply"))
+            var listOfPackages = angular.element(document.querySelector("#List-Of-packages-in-supply"));
             listOfPackages.children().detach();
             packages = supply.packages;
             for (let pack of packages) {
@@ -422,7 +422,7 @@ var main = angular.module("main", [])
                         button.setAttribute("ng-click", "clicked(" + supply.id + ")");
                         div_form_group.appendChild(button);
                         div.appendChild(div_form_group);
-                        div = angular.element(div)
+                        div = angular.element(div);
                         $compile(div)($scope);
                         supplyList.append(div);
                     }
@@ -494,7 +494,7 @@ var main = angular.module("main", [])
             SupplyProvider.text(supply.providerId);
             SupplyCondition.text(supply.condition);
             SupplyNumberOfPackages.text(supply.packages ? supply.packages.length : 0);
-            var listOfPackages = angular.element(document.querySelector("#List-Of-packages-in-supply-old"))
+            var listOfPackages = angular.element(document.querySelector("#List-Of-packages-in-supply-old"));
             listOfPackages.children().detach();
             packages = supply.packages;
             for (let pack of packages) {
@@ -714,7 +714,7 @@ var main = angular.module("main", [])
                                 var descriptionDeliveryman = angular.element(document.querySelector("#descriptionDeliveryman"));
                                 var deliverymans_info = angular.element(document.querySelector("#deliverymans-info"));
                                 deliverymanPic.attr("src", data.pictureUrl);
-                                nameDeliveryman.text(data.name)
+                                nameDeliveryman.text(data.name);
                                 descriptionDeliveryman.text(data.description);
                                 deliverymans_info.removeClass("d-none")
                             }
@@ -737,7 +737,7 @@ var main = angular.module("main", [])
                                 var descriptionReceiver = angular.element(document.querySelector("#descriptionReceiver"));
                                 var receiver_info = angular.element(document.querySelector("#receiver-info"));
                                 receiverPic.attr("src", data.pictureUrl);
-                                nameReceiver.text(data.name)
+                                nameReceiver.text(data.name);
                                 descriptionReceiver.text(data.description);
                                 receiver_info.removeClass("d-none")
                             }
@@ -752,7 +752,7 @@ var main = angular.module("main", [])
             var dateFrom = angular.element(document.querySelector("#supplyDateBegin")).val();
             var dateTo = angular.element(document.querySelector("#supplyDateEnd")).val();
             var supplyName = angular.element(document.querySelector("#supplyName")).val();
-            var deliveryman = angular.element(document.querySelector("#deliverymanId")).val()
+            var deliveryman = angular.element(document.querySelector("#deliverymanId")).val();
             var receiver = angular.element(document.querySelector("#receiverId")).val();
             newSupply = {
                 name: supplyName,
@@ -783,32 +783,32 @@ var main = angular.module("main", [])
             alert("posted")
         };
         $scope.addTransmitter = function () {
-            let transmitterId = angular.element(document.querySelector("#TransmitterId")).val()
+            let transmitterId = angular.element(document.querySelector("#TransmitterId")).val();
             $http.get("api/transmitter/" + transmitterId)
                 .success(function (data) {
                     if (!data) {
-                        alert("this transmitter currently unavailable")
+                        alert("this transmitter currently unavailable");
                         return;
                     }
-                    newTransmitters.push(transmitterId)
-                    let div = document.createElement("div")
+                    newTransmitters.push(transmitterId);
+                    let div = document.createElement("div");
                     div = angular.element(div);
-                    div.addClass("form-group d-inline-flex")
-                    div.prop("id", "TransmitterId_" + transmitterId)
-                    let input = angular.element(document.createElement("input"))
-                    input.addClass("border rounded form-control")
-                    input.prop("disabled", true)
-                    input.val(transmitterId)
-                    div.append(input)
-                    let button = angular.element(document.createElement("button"))
+                    div.addClass("form-group d-inline-flex");
+                    div.prop("id", "TransmitterId_" + transmitterId);
+                    let input = angular.element(document.createElement("input"));
+                    input.addClass("border rounded form-control");
+                    input.prop("disabled", true);
+                    input.val(transmitterId);
+                    div.append(input);
+                    let button = angular.element(document.createElement("button"));
                     button.addClass("btn btn-danger");
                     button.attr("ng-click", "removeTransmitter(" + transmitterId + ")");
-                    button.attr("ng-controller", "newSupplyController")
-                    let icon = angular.element(document.createElement("i"))
-                    icon.addClass("fa fa-remove")
-                    button.append(icon)
-                    div.append(button)
-                    $compile(div)($scope)
+                    button.attr("ng-controller", "newSupplyController");
+                    let icon = angular.element(document.createElement("i"));
+                    icon.addClass("fa fa-remove");
+                    button.append(icon);
+                    div.append(button);
+                    $compile(div)($scope);
                     let listOfTransmitters = angular.element(document.querySelector("#list-of-transmitters"));
                     listOfTransmitters.append(div);
                 }).error(function () {
@@ -832,9 +832,9 @@ var main = angular.module("main", [])
                 if (condition.type == "h") {
                     minVal.val(condition.minval);
                     maxVal.val(condition.maxval);
-                    preferredVal.val(condition.pref)
-                    conditionIs.val(true)
-                    openedCondition = condition
+                    preferredVal.val(condition.pref);
+                    conditionIs.val(true);
+                    openedCondition = condition;
                     return
                 }
             }
@@ -854,9 +854,9 @@ var main = angular.module("main", [])
                 if (condition.type == "t") {
                     minVal.val(condition.minval);
                     maxVal.val(condition.maxval);
-                    preferredVal.val(condition.pref)
-                    conditionIs.val(true)
-                    openedCondition = condition
+                    preferredVal.val(condition.pref);
+                    conditionIs.val(true);
+                    openedCondition = condition;
                     return
                 }
             }
@@ -876,9 +876,9 @@ var main = angular.module("main", [])
                 if (condition.type == "l") {
                     minVal.val(condition.minval);
                     maxVal.val(condition.maxval);
-                    preferredVal.val(condition.pref)
-                    conditionIs.val(true)
-                    openedCondition = condition
+                    preferredVal.val(condition.pref);
+                    conditionIs.val(true);
+                    openedCondition = condition;
                     return
                 }
             }
@@ -898,9 +898,9 @@ var main = angular.module("main", [])
                 if (condition.type == "a") {
                     minVal.val(condition.minval);
                     maxVal.val(condition.maxval);
-                    preferredVal.val(condition.pref)
-                    conditionIs.val(true)
-                    openedCondition = condition
+                    preferredVal.val(condition.pref);
+                    conditionIs.val(true);
+                    openedCondition = condition;
                     return
                 }
             }
@@ -946,7 +946,7 @@ var main = angular.module("main", [])
                 payload: payload,
                 transmitters: transmitters,
                 conditions: conditions
-            }
+            };
             newPackages.push(pack);
 
             let div = angular.element(document.createElement("div"));
@@ -981,7 +981,57 @@ var main = angular.module("main", [])
             angular.element(document.querySelector("#List-Of-packages")).children()[id].remove();
         }
     })
+    .controller("translatorController", ['$scope', 'translationService',
+        function ($scope, translationService) {
+
+            //Выполняем перевод, если произошло событие смены языка
+            $scope.translateAll = function () {
+
+                translationService.getTranslation($scope, selectedLanguage);
+                function getCookie(name) {
+                    let matches = document.cookie.match(new RegExp(
+                        "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+                    ));
+                    return matches ? decodeURIComponent(matches[1]) : undefined;
+                }
+                var currentLang = getCookie("localization");
+                if (currentLang === 'en') {
+                    currentLang = 'ua';
+
+                } else {
+                    currentLang = 'en';
+                }
+                document.cookie = "localization=" + currentLang;
+                location.reload();
+            };
+
+            $scope.translateOnload = function () {
+                function getCookie(name) {
+                    let matches = document.cookie.match(new RegExp(
+                        "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+                    ));
+                    return matches ? decodeURIComponent(matches[1]) : undefined;
+                }
+                var selectedLang = getCookie("localization");
+                translationService.getTranslation($scope, selectedLang);
+            };
+            // Инициализация
+            var selectedLanguage = 'ua';
+            $scope.translateOnload();
+
+        }])
 ;
+main.service('translationService', function ($resource) {
+    this.getTranslation = function ($scope, language) {
+        var languageFilePath = 'translation_' + language + '.json';
+        // console.log(languageFilePath);
+        $resource(languageFilePath).get(function (data) {
+            $scope.translation = data;
+        });
+    };
+});
+
+
 /* new supply controller*/
 var openedCondition;
 var newTransmitters = [];
@@ -995,5 +1045,3 @@ var prevIdReceiver;
 var supplies;
 var currentSupply;
 var packages;
-
-
