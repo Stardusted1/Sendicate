@@ -9,15 +9,20 @@
         <relativePath/>
     </parent>
     <groupId>com.stardusted1</groupId>
-    <artifactId>Sendicate</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <artifactId>sendicate-app</artifactId>
+
+    <packaging>jar</packaging>
+    <version>0.0.1</version>
     <name>Sendicate</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>
+        <jib-maven-plugin.version>1.8.0</jib-maven-plugin.version>
+        <docker.image.prefix>sendicate.azurecr.io</docker.image.prefix>
         <java.version>11</java.version>
+        <username>Sendicate</username>
+        <password>XByKeqVmF+91+jH2tZc79qqCpIX4gs0v</password>
     </properties>
-
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -78,11 +83,16 @@
             <artifactId>spring-security-oauth2-autoconfigure</artifactId>
             <version>2.1.3.RELEASE</version>
         </dependency>
+        <dependency>
+            <groupId>com.google.cloud.tools</groupId>
+            <artifactId>jib-maven-plugin</artifactId>
+            <version>1.8.0</version>
+        </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.session</groupId>-->
-<!--            <artifactId>spring-session-jdbc</artifactId>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.springframework.session</groupId>-->
+        <!--            <artifactId>spring-session-jdbc</artifactId>-->
+        <!--        </dependency>-->
 
     </dependencies>
     <build>
@@ -90,6 +100,23 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <artifactId>jib-maven-plugin</artifactId>
+                <groupId>com.google.cloud.tools</groupId>
+                <version>1.8.0</version>
+                <configuration>
+                    <from>
+                        <image>openjdk:8-jre-alpine</image>
+                    </from>
+                    <to>
+                        <image>sendicate.azurecr.io/sendicate-app-0.0.1</image>
+                        <auth>
+                            <username>Sendicate</username>
+                            <password>XByKeqVmF+91+jH2tZc79qqCpIX4gs0v</password>
+                        </auth>
+                    </to>
+                </configuration>
             </plugin>
         </plugins>
     </build>
