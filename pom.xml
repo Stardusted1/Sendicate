@@ -12,14 +12,14 @@
     <artifactId>sendicate-app</artifactId>
 
     <packaging>jar</packaging>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
     <name>Sendicate</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>
         <jib-maven-plugin.version>1.8.0</jib-maven-plugin.version>
         <docker.image.prefix>sendicate.azurecr.io</docker.image.prefix>
-        <java.version>11</java.version>
+        <java.version>12</java.version>
         <username>Sendicate</username>
         <password>XByKeqVmF+91+jH2tZc79qqCpIX4gs0v</password>
     </properties>
@@ -107,7 +107,7 @@
                 <version>1.8.0</version>
                 <configuration>
                     <from>
-                        <image>openjdk:8-jre-alpine</image>
+                        <image>openjdk:12</image>
                     </from>
                     <to>
                         <image>sendicate.azurecr.io/sendicate-app-0.0.1</image>
