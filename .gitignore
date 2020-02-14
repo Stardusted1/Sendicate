@@ -1,5 +1,6 @@
 HELP.md
-target/
+
+/target/**
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**
 !**/src/test/**
@@ -40,3 +41,5 @@ src/main/resources/templates/debug.log
 .idea/misc.xml
 src/main/resources/templates/debug.log
 .idea/libraries/Maven__org_ow2_asm_asm_5_0_4.xml
+.idea/misc.xml
+target/test-classes/com/stardusted1/Sendicate/SendicateApplicationTests.class
